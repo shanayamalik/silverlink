@@ -46,3 +46,16 @@ export interface LiveChatSession {
   }) => void;
   close: () => void;
 }
+
+// New types for authentication and user profiles
+export interface User {
+  id: string;
+  email: string;
+  password?: string; // Password is used for signup/login, but not stored in session state
+}
+
+export interface UserProfile {
+  userId: string;
+  name: string;
+  interests: string;
+}
