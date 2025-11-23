@@ -1,32 +1,81 @@
-// TODO: Main server entry point
+// TODO: Simple Express server for SilverGuide prototype
 //
-// Setup Express server with:
-// - Express app initialization
-// - Middleware (cors, body-parser, morgan for logging)
-// - Database connection (MongoDB/PostgreSQL)
-// - Route imports and mounting
-// - Error handling middleware
-// - Server listening on port (e.g., 3001)
+// This is a simplified backend for the high-fidelity prototype.
+// Uses in-memory storage (or JSON file) instead of a database.
 //
-// Example structure:
+// Features to implement:
+// 1. User authentication (simple email/password, store in memory or users.json)
+// 2. Save user preferences from Easy Task
+// 3. Save user interests from AI interview (Difficult Task)
+// 4. Save scheduled chats from Medium Task
+// 5. OpenAI API integration for voice interview
+//
+// Required packages (install with npm):
+// - express
+// - cors
+// - dotenv
+// - openai (for AI interview)
+//
+// API Endpoints to create:
+//
+// POST /api/auth/register
+// - Body: { name, email, password, age }
+// - Save user to in-memory users array or users.json
+// - Return user object (no password)
+//
+// POST /api/auth/login
+// - Body: { email, password }
+// - Check credentials
+// - Return user object if valid
+//
+// GET /api/users/:id
+// - Return user profile
+//
+// PUT /api/users/:id/preferences
+// - Body: { helpType, communicationStyle, location, agePreference }
+// - Update user preferences (Easy Task)
+//
+// PUT /api/users/:id/interests
+// - Body: { interests: [...] }
+// - Update user interests (Difficult Task - from AI interview)
+//
+// POST /api/chats
+// - Body: { userId, volunteerId, volunteerName, scheduledDate, scheduledTime, helpType }
+// - Save scheduled chat (Medium Task)
+//
+// GET /api/chats/user/:userId
+// - Return all chats for a user
+//
+// POST /api/ai/chat
+// - Body: { message, conversationHistory }
+// - Send to OpenAI API
+// - Return AI response with follow-up questions
+// - Extract interests/preferences from conversation
+//
+// Example starter code:
+// require('dotenv').config();
 // const express = require('express');
 // const cors = require('cors');
-// const connectDB = require('./config/database');
+// const OpenAI = require('openai');
 //
 // const app = express();
+// const PORT = process.env.PORT || 3001;
+//
+// // In-memory storage (replace with JSON file if needed)
+// let users = [];
+// let chats = [];
 //
 // // Middleware
 // app.use(cors());
 // app.use(express.json());
 //
-// // Routes
-// app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/users', require('./routes/users'));
-// app.use('/api/chats', require('./routes/chats'));
+// // OpenAI setup
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 //
-// // Connect to database
-// connectDB();
+// // Routes go here...
 //
-// // Start server
-// const PORT = process.env.PORT || 3001;
-// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, () => {
+//   console.log(`SilverGuide server running on port ${PORT}`);
+// });
