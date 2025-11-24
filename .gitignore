@@ -5,6 +5,7 @@ package-lock.json
 # Environment variables
 .env
 .env.local
+server/crenditial.env
 
 # Build output
 dist/
