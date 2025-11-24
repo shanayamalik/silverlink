@@ -7,14 +7,14 @@ Track your progress as you build the app! Check off [✔️] items as you comple
 ## Phase 1: Foundation (Days 1-2) - MUST DO FIRST
 
 ### Person 1: Project Setup & Routing
-- [ ] Run `npm install` to install all dependencies
-- [ ] Create `.env` file from `server/.env.example`
-- [ ] Implement basic routing in `src/App.jsx`
-  - [ ] Import all page components
-  - [ ] Set up React Router with BrowserRouter
-  - [ ] Define routes: /, /home, /preferences, /volunteers, /interview, /dashboard
-- [ ] Test navigation between pages (pages can be empty for now)
-- [ ] Verify app runs with `npm run dev`
+- [x] Run `npm install` to install all dependencies
+- [x] Create `.env` file from `server/.env.example`
+- [x] Implement basic routing in `src/App.jsx`
+  - [x] Import all page components
+  - [x] Set up React Router with BrowserRouter
+  - [x] Define routes: /, /home, /preferences, /volunteers, /interview, /dashboard
+- [x] Test navigation between pages (pages can be empty for now)
+- [x] Verify app runs with `npm run dev`
 
 ### Person 2: Design System & Common Components
 - [ ] Implement `src/styles/variables.css`
@@ -85,8 +85,8 @@ Track your progress as you build the app! Check off [✔️] items as you comple
   - [ ] Save user to localStorage on login
   - [ ] Navigate to /home after login
   - [ ] (Optional) Simple validation
-- [ ] Implement `src/pages/HomePage.jsx`
-  - [ ] Welcome message with user's name
+- [x] Implement `src/pages/HomePage.jsx`
+  - [x] Welcome message with user's name
   - [ ] 3 large action buttons:
     - [ ] "Set My Preferences" → /preferences
     - [ ] "Find Volunteers" → /volunteers
@@ -95,15 +95,15 @@ Track your progress as you build the app! Check off [✔️] items as you comple
 - [ ] Test login → home → navigation flow
 
 ### Person 3: Backend Setup
-- [ ] Implement `server/index.js`
-  - [ ] Set up Express with cors and body-parser
-  - [ ] In-memory storage (users array, chats array)
+- [x] Implement `server/index.js`
+  - [x] Set up Express with cors and body-parser
+  - [x] In-memory storage (users array, chats array)
   - [ ] POST /api/auth/register endpoint
   - [ ] POST /api/auth/login endpoint
   - [ ] PUT /api/users/:id/preferences endpoint
   - [ ] GET /api/users/:id endpoint
 - [ ] Test backend with Postman/Thunder Client
-- [ ] Run server with `npm run server`
+- [x] Run server with `npm run server`
 - [ ] Test frontend calling backend APIs
 
 **Checkpoint:** ✅ User can log in, set preferences, save to backend
