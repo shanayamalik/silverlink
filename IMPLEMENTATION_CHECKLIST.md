@@ -63,11 +63,11 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 2: Easy Task + Authentication 
 
 ### Easy Task - PreferencesPage
-- [x] Implement `src/components/HelpTypeTiles.jsx`
-  - [x] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
-  - [x] Use icons from `public/icons/`
-  - [x] Highlight selected tile
-  - [x] Props: onSelect, selectedType
+- [ ] Implement `src/components/HelpTypeTiles.jsx`
+  - [ ] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
+  - [ ] Use icons from `public/icons/`
+  - [ ] Highlight selected tile
+  - [ ] Props: onSelect, selectedType
 - [ ] Implement `src/components/PreferenceSelector.jsx`
   - [ ] 3 preference options: Communication Style, Location, Age
   - [ ] Large toggles or sliders
@@ -79,12 +79,12 @@ Track your progress as you build the app! Check off items as you complete them.
 - [ ] Test complete Easy Task flow
 
 ### Authentication & Home
-- [x] Implement `src/pages/LoginPage.jsx`
-  - [x] Email and password input fields (large, accessible)
-  - [x] "Log In" button
-  - [x] Save user to localStorage on login (Mocked)
-  - [x] Navigate to /volunteers after login
-  - [x] (Optional) Simple validation
+- [] Implement `src/pages/LoginPage.jsx`
+  - [ ] Email and password input fields (large, accessible)
+  - [ ] "Log In" button
+  - [ ] Save user to localStorage on login (Mocked)
+  - [ ] Navigate to /volunteers after login
+  - [ ] (Optional) Simple validation
 - [x] Implement `src/pages/HomePage.jsx`
   - [x] Welcome message
   - [x] "How it Works" section
