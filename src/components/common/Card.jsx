@@ -1,28 +1,44 @@
-// TODO: Create reusable Card wrapper component
-//
-// Props to implement:
-// - children: card content
-// - title: optional card title
-// - onClick: optional click handler (makes card clickable)
-// - className: additional CSS classes
-// - hoverable: boolean (adds hover effect)
-//
-// Features:
-// - Consistent padding and spacing
-// - Rounded corners
-// - Shadow for depth
-// - Responsive layout
-//
-// Used by:
-// - VolunteerCard (Medium Task)
-// - Profile displays
-// - Dashboard widgets
-//
-// Example usage:
-// <Card title="Volunteer Name">
-//   <p>Card content here</p>
-// </Card>
+import React from 'react';
+import './Card.css';
 
-export default function Card() {
-  return null;
+/**
+ * Reusable Card component
+ * 
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Card content
+ * @param {string} [props.title] - Optional title
+ * @param {function} [props.onClick] - Click handler
+ * @param {'shadow'|'border'|'tint'} [props.variant='shadow'] - Visual style
+ * @param {'lift'|'glow'|'fill'} [props.hoverEffect='lift'] - Hover animation
+ * @param {boolean} [props.hoverable=false] - Whether to show hover effects
+ * @param {string} [props.className] - Additional classes
+ */
+export default function Card({
+  children,
+  title,
+  onClick,
+  variant = 'shadow',
+  hoverEffect = 'lift',
+  hoverable = false,
+  className = '',
+  ...props
+}) {
+  const isInteractive = hoverable || !!onClick;
+  
+  return (
+    <div 
+      className={`
+        card 
+        card-${variant} 
+        ${isInteractive ? 'card-hoverable' : ''} 
+        ${isInteractive ? `card-hover-${hoverEffect}` : ''} 
+        ${className}
+      `}
+      onClick={onClick}
+      {...props}
+    >
+      {title && <h3 className="card-title">{title}</h3>}
+      {children}
+    </div>
+  );
 }

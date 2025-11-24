@@ -1,0 +1,59 @@
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem; /* Generous padding */
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: var(--font-size-xl);
+  color: var(--color-text-main);
+}
+
+/* --- Variants (for testing) --- */
+
+/* Option A: Shadow Only (Modern, Clean) */
+.card-shadow {
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+
+/* Option B: Border Only (High Contrast, Structured) */
+.card-border {
+  box-shadow: none;
+  border: 2px solid var(--color-border);
+}
+
+/* Option C: Soft Tint (Friendly, Distinct) */
+.card-tint {
+  background-color: var(--color-primary-light); /* Very faint blue */
+  border: 1px solid var(--color-primary); /* Subtle blue border */
+  box-shadow: none;
+}
+
+/* --- Interactive States --- */
+
+.card-hoverable {
+  cursor: pointer;
+}
+
+/* Hover Effect 1: Lift */
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Hover Effect 2: Glow (Blue Border) */
+.card-hover-glow:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-light);
+}
+
+/* Hover Effect 3: Background Shift */
+.card-hover-fill:hover {
+  background-color: var(--color-primary-light);
+}
