@@ -112,13 +112,14 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ## Phase 3: Medium Task - VolunteersPage (Days 5-7)
 
-### Volunteer Display Components
+### Person 1: Volunteer Display Components
 - [ ] Implement `src/components/VolunteerCard.jsx`
   - [ ] Props: volunteer, onClick, selected, compact
-  - [ ] Display photo, name, interests, verified badge
-  - [ ] Communication style indicator
-  - [ ] Match score (optional)
-  - [ ] Large, tap-friendly card
+  - [ ] Display photo/icon, name, verified badge
+  - [ ] Display profession/role tag (instead of location)
+  - [ ] "Can help with" section
+  - [ ] Dynamic button text ("Chat with..." vs "Request Help") based on context
+  - [ ] Large, tap-friendly card (Border variant)
 - [ ] Implement `src/components/VolunteerComparison.jsx`
   - [ ] Props: volunteers (2-3), onSelect, selectedId
   - [ ] Side-by-side layout (responsive: stack on mobile)

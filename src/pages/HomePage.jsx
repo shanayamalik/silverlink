@@ -10,73 +10,101 @@ export default function HomePage() {
         Connecting seniors with friendly volunteers for conversation, hobbies, and help.
       </p>
       
-      {/* --- CARD PREVIEW SECTION --- */}
+      {/* --- VOLUNTEER CARD CONCEPTS --- */}
       <section style={{ marginBottom: '4rem', textAlign: 'left' }}>
-        <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Card Design Options</h2>
+        <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Volunteer Card Concepts</h2>
         <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#666' }}>
-          Goal: Avoid "dating app" feel. Look for friendly, community-focused styles.
+          Exploring different ways to present volunteer info to avoid the "dating app" feel.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           
-          {/* Option A: Shadow Only */}
-          <Card title="Option A: Clean Shadow" variant="shadow" hoverable hoverEffect="lift">
-            <p>This style uses a soft shadow and white background. It's very modern and clean.</p>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '1rem' }}>
-              <b>Hover Effect:</b> Lifts up slightly.
-            </p>
-          </Card>
-
-          {/* Option B: Border Only */}
-          <Card title="Option B: Structured Border" variant="border" hoverable hoverEffect="glow">
-            <p>This style uses a solid border. It feels more like a "document" or "directory" entry.</p>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '1rem' }}>
-              <b>Hover Effect:</b> Glows with blue border.
-            </p>
-          </Card>
-
-          {/* Option C: Tinted Background */}
-          <Card title="Option C: Friendly Tint" variant="tint" hoverable hoverEffect="fill">
-            <p>This style uses a very faint blue background. It feels softer and less "stark" than white.</p>
-            <p style={{ fontSize: '14px', color: '#666', marginTop: '1rem' }}>
-              <b>Hover Effect:</b> Darkens slightly.
-            </p>
-          </Card>
-
-        </div>
-      </section>
-
-      <section style={{ marginBottom: '4rem', textAlign: 'left' }}>
-        <h2 style={{ marginBottom: '2rem', textAlign: 'center' }}>Context: Volunteer Card Mockup</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-          
-          {/* Mockup: Dating App Vibe (To Avoid) */}
-          <Card title="Sarah, 68" variant="shadow" hoverable>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#ddd' }}></div>
+          {/* Concept 1: The "Community Helper" (Refined based on feedback) */}
+          <Card variant="border" hoverable hoverEffect="glow">
+             <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <div style={{ 
+                width: '60px', height: '60px', borderRadius: '12px', 
+                backgroundColor: '#E0F7FA', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '30px'
+              }}>
+                🌿
+              </div>
               <div>
-                <p style={{ margin: 0 }}><b>Interests:</b> Gardening, Cooking</p>
-                <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>"Looking for a chat..."</p>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>Sarah Jenkins</h3>
+                <div style={{ display: 'flex', gap: '8px', fontSize: '13px', color: '#666', alignItems: 'center' }}>
+                  <span style={{ color: 'var(--color-success)', fontWeight: 'bold' }}>✓ Verified</span>
+                  <span>•</span>
+                  <span style={{ backgroundColor: '#F0F0F0', padding: '2px 6px', borderRadius: '4px', color: '#333' }}>Retired Nurse</span>
+                </div>
               </div>
             </div>
-            <div style={{ marginTop: '1rem', textAlign: 'right' }}>
-               <span style={{ color: 'red' }}>⚠ Too much like a profile?</span>
+            
+            <div style={{ marginBottom: '1rem', padding: '12px', backgroundColor: '#F9F9F9', borderRadius: '8px' }}>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Can help with</p>
+              <p style={{ margin: 0, fontWeight: '600' }}>Gardening, Recipe Swapping</p>
             </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px', color: '#666', marginBottom: '1rem' }}>
+              <span>📅 Mon, Wed Mornings</span>
+            </div>
+
+            <Button size="medium" variant="primary" fullWidth>Request Help</Button>
           </Card>
 
-          {/* Mockup: Community Directory Vibe (Better?) */}
-          <Card title="Community Volunteer" variant="border" hoverable hoverEffect="glow">
+          {/* Concept 2: The "Storyteller" (Focus on Connection) */}
+          <Card variant="tint" hoverable hoverEffect="lift">
              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
-              <div style={{ width: '50px', height: '50px', borderRadius: '8px', backgroundColor: '#BDE0FE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '24px' }}>🌿</span>
+              <div style={{ 
+                width: '60px', height: '60px', borderRadius: '50%', 
+                backgroundColor: '#FFE0B2', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '24px', border: '2px solid white'
+              }}>
+                📚
               </div>
               <div>
-                <h4 style={{ margin: 0 }}>Sarah Jenkins</h4>
-                <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>Verified Helper • 2 miles away</p>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>Robert Chen</h3>
+                <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>Retired History Teacher</p>
               </div>
             </div>
-            <p style={{ fontSize: '15px' }}>Can help with: <b>Gardening, Recipe Swapping</b></p>
-            <Button size="small" variant="outline" fullWidth style={{ marginTop: '1rem' }}>View Availability</Button>
+            
+            <p style={{ fontStyle: 'italic', color: '#555', marginBottom: '1rem', lineHeight: '1.4' }}>
+              "I miss the classroom and love sharing stories about local history with new friends."
+            </p>
+
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+              <span style={{ fontSize: '12px', padding: '4px 8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #eee' }}>🗣️ Mandarin/English</span>
+              <span style={{ fontSize: '12px', padding: '4px 8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #eee' }}>♟️ Chess</span>
+            </div>
+
+            <Button size="medium" variant="primary" fullWidth>Chat with Robert</Button>
+          </Card>
+
+          {/* Concept 3: The "Tech Support" (Focus on Skills) */}
+          <Card variant="shadow" hoverable hoverEffect="fill">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+              <div>
+                <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>Emily Davis</h3>
+                <span style={{ fontSize: '12px', padding: '2px 6px', backgroundColor: '#E3F2FD', color: '#1565C0', borderRadius: '4px', fontWeight: 'bold' }}>
+                  Tech Savvy
+                </span>
+              </div>
+              <div style={{ fontSize: '24px' }}>💻</div>
+            </div>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <p style={{ margin: '0 0 8px 0', fontSize: '14px' }}><b>Former IT Specialist</b> who is patient and a good listener.</p>
+            </div>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <p style={{ margin: '0 0 4px 0', fontSize: '12px', color: '#888' }}>SKILLS</p>
+              <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '14px', color: '#444' }}>
+                <li>Setting up Zoom calls</li>
+                <li>Email & Password help</li>
+                <li>iPad basics</li>
+              </ul>
+            </div>
+
+            <Button size="medium" variant="secondary" fullWidth>Request Help</Button>
           </Card>
 
         </div>
