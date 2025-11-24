@@ -7,12 +7,12 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="container" style={{ padding: '0 0 4rem 0' }}>
+    <div className="container" style={{ padding: '0 0 2rem 0' }}>
       
       {/* --- TOP NAVIGATION (Linear Style) --- */}
       <nav style={{ 
         display: 'flex', justifyContent: 'flex-end', alignItems: 'center', 
-        padding: '1.5rem 0', marginBottom: '3rem' 
+        padding: '1rem 0', marginBottom: '1rem' 
       }}>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <button 
@@ -31,7 +31,7 @@ export default function HomePage() {
       </nav>
 
       {/* --- HERO: Warm & Personal --- */}
-      <header style={{ textAlign: 'center', marginBottom: '5rem', marginTop: '2rem' }}>
+      <header style={{ textAlign: 'center', marginBottom: '3rem', marginTop: '1rem' }}>
         <div style={{ 
             width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', 
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', marginBottom: '1.5rem'
@@ -47,11 +47,11 @@ export default function HomePage() {
       </header>
 
       {/* --- PROCESS: How it Works --- */}
-      <section style={{ marginBottom: '6rem' }}>
-        <h2 style={{ textAlign: 'center', fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '3rem', fontWeight: '700' }}>
+      <section style={{ marginBottom: '2rem' }}>
+        <h2 style={{ textAlign: 'center', fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '2rem', fontWeight: '700' }}>
           How it Works
         </h2>
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '4rem', marginBottom: '4rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '4rem', marginBottom: '2rem' }}>
           <div style={{ textAlign: 'center', maxWidth: '220px' }}>
             <div style={{ width: '64px', height: '64px', background: '#E0F2F1', borderRadius: '20px', margin: '0 auto 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', color: '#00695C', fontWeight: 'bold' }}>1</div>
             <h3 style={{ fontSize: '18px', marginBottom: '0.75rem' }}>Sign Up</h3>
