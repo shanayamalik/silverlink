@@ -63,11 +63,11 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 2: Easy Task + Authentication (Days 3-4)
 
 ### Easy Task - PreferencesPage
-- [ ] Implement `src/components/HelpTypeTiles.jsx`
-  - [ ] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
-  - [ ] Use icons from `public/icons/`
-  - [ ] Highlight selected tile
-  - [ ] Props: onSelect, selectedType
+- [x] Implement `src/components/HelpTypeTiles.jsx`
+  - [x] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
+  - [x] Use icons from `public/icons/`
+  - [x] Highlight selected tile
+  - [x] Props: onSelect, selectedType
 - [ ] Implement `src/components/PreferenceSelector.jsx`
   - [ ] 3 preference options: Communication Style, Location, Age
   - [ ] Large toggles or sliders
