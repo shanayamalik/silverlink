@@ -32,9 +32,9 @@ export default function HomePage() {
               <div>
                 <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>Sarah Jenkins</h3>
                 <div style={{ display: 'flex', gap: '8px', fontSize: '13px', color: '#666', alignItems: 'center' }}>
-                  <span style={{ color: 'var(--color-success)', fontWeight: 'bold' }}>✓ Verified</span>
+                  <span style={{ color: '#2E7D32', fontWeight: 'bold' }}>✓ Verified</span>
                   <span>•</span>
-                  <span style={{ backgroundColor: '#F0F0F0', padding: '2px 6px', borderRadius: '4px', color: '#333' }}>Retired Nurse</span>
+                  <span style={{ backgroundColor: 'var(--color-success)', padding: '2px 8px', borderRadius: '4px', color: '#004D40', fontWeight: '600' }}>Retired Nurse</span>
                 </div>
               </div>
             </div>

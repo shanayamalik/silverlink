@@ -27,13 +27,13 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] Body font family and size
   - [x] Focus states for accessibility
   - [x] Link styles
-- [ ] Build `src/components/common/Button.jsx`
-  - [ ] Props: children, onClick, variant, size, disabled, fullWidth
-  - [ ] Large, accessible styling (min 44x44px)
-  - [ ] Variants: primary, secondary, outline
-- [ ] Build `src/components/common/Card.jsx`
-  - [ ] Props: children, title, onClick, hoverable
-  - [ ] Consistent padding, rounded corners, shadow
+- [x] Build `src/components/common/Button.jsx`
+  - [x] Props: children, onClick, variant, size, disabled, fullWidth
+  - [x] Large, accessible styling (min 44x44px)
+  - [x] Variants: primary, secondary, outline
+- [x] Build `src/components/common/Card.jsx`
+  - [x] Props: children, title, onClick, hoverable
+  - [x] Consistent padding, rounded corners, shadow
 - [ ] Build `src/components/common/Header.jsx`
   - [ ] Props: title, showBack, showHome
   - [ ] Navigation buttons with icons
