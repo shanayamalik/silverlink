@@ -4,7 +4,7 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Phase 1: Foundation (Days 1-2) - MUST DO FIRST
+## Phase 1: Foundation 
 
 ### Project Setup & Routing
 - [x] Run `npm install` to install all dependencies
@@ -60,7 +60,7 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Phase 2: Easy Task + Authentication (Days 3-4)
+## Phase 2: Easy Task + Authentication 
 
 ### Easy Task - PreferencesPage
 - [x] Implement `src/components/HelpTypeTiles.jsx`
@@ -79,20 +79,18 @@ Track your progress as you build the app! Check off items as you complete them.
 - [ ] Test complete Easy Task flow
 
 ### Authentication & Home
-- [ ] Implement `src/pages/LoginPage.jsx`
-  - [ ] Email and password input fields (large, accessible)
-  - [ ] "Log In" button
-  - [ ] Save user to localStorage on login
-  - [ ] Navigate to /home after login
-  - [ ] (Optional) Simple validation
+- [x] Implement `src/pages/LoginPage.jsx`
+  - [x] Email and password input fields (large, accessible)
+  - [x] "Log In" button
+  - [x] Save user to localStorage on login (Mocked)
+  - [x] Navigate to /volunteers after login
+  - [x] (Optional) Simple validation
 - [x] Implement `src/pages/HomePage.jsx`
-  - [x] Welcome message with user's name
-  - [ ] 3 large action buttons:
-    - [ ] "Set My Preferences" → /preferences
-    - [ ] "Find Volunteers" → /volunteers
-    - [ ] "AI Interview" → /interview
-  - [ ] Use Header component (no back button)
-- [ ] Test login → home → navigation flow
+  - [x] Welcome message
+  - [x] "How it Works" section
+  - [x] Navigation to Login/Sign Up
+  - [x] Use Header component (Custom nav implemented)
+- [x] Test login → home → navigation flow
 
 ### Backend Setup
 - [x] Implement `server/index.js`
@@ -110,7 +108,7 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Phase 3: Medium Task - VolunteersPage (Days 5-7)
+## Phase 3: Medium Task - VolunteersPage 
 
 ### Person 1: Volunteer Display Components
 - [ ] Implement `src/components/VolunteerCard.jsx`
@@ -153,7 +151,7 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Phase 4: Difficult Task - AI Voice Interview (Days 8-10)
+## Phase 4: Difficult Task - AI Voice Interview 
 
 ### Voice Recognition Core
 - [ ] Implement `src/components/VoiceInterview.jsx` (main component)
@@ -267,7 +265,7 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Phase 6: Final Integration & Deployment (Days 13-14)
+## Phase 6: Final Integration & Deployment 
 
 ### All Together
 - [ ] **End-to-End Testing**
