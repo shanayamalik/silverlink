@@ -6,11 +6,35 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Mock login - just navigate to dashboard or volunteers page
-    navigate('/volunteers');
+    setError('');
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/volunteers');
+      } else {
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Unable to connect to the server. Please ensure the backend is running (npm run server).');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -20,53 +44,74 @@ export default function LoginPage() {
       flexDirection: 'column', 
       alignItems: 'center', 
       justifyContent: 'center', 
-      backgroundColor: '#F7F9FC', // Light gray background like Stripe
+      backgroundColor: '#FFFFFF',
       padding: '2rem'
     }}>
       
-      {/* Logo / Brand */}
-      <div style={{ marginBottom: '2rem', fontWeight: 'bold', fontSize: '24px', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--color-primary)' }}></div>
-        SilverGuide
-      </div>
-
-      {/* Login Card */}
       <div style={{ 
-        backgroundColor: 'white', 
-        padding: '40px', 
-        borderRadius: '8px', 
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1)', // Subtle shadow
         width: '100%', 
         maxWidth: '400px' 
       }}>
-        <h1 style={{ fontSize: '24px', marginBottom: '2rem', color: '#333' }}>Sign in to your account</h1>
+        <h1 style={{ 
+          fontSize: '32px', 
+          marginBottom: '0.5rem', 
+          color: '#111', 
+          fontWeight: '700',
+          textAlign: 'left'
+        }}>Welcome Back!</h1>
+        
+        <p style={{ 
+          marginBottom: '2rem', 
+          color: '#666', 
+          fontSize: '16px',
+          textAlign: 'left'
+        }}>
+          Please enter your details.
+        </p>
+
+        {error && (
+          <div style={{ 
+            backgroundColor: '#FFF5F5', 
+            color: '#E53E3E', 
+            padding: '12px', 
+            borderRadius: '6px', 
+            marginBottom: '1.5rem', 
+            fontSize: '14px',
+            border: '1px solid #FED7D7'
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '600', color: '#444' }}>Email</label>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Email</label>
             <input 
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{ 
                 width: '100%', 
-                padding: '10px 12px', 
-                borderRadius: '6px', 
-                border: '1px solid #E0E0E0', 
+                padding: '12px 0', 
+                borderRadius: '0', 
+                border: 'none',
+                borderBottom: '1px solid #E2E8F0', 
                 fontSize: '16px',
                 outline: 'none',
+                backgroundColor: 'transparent',
                 transition: 'border-color 0.2s'
               }}
+              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
               placeholder="jane@example.com"
-              onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
-              onBlur={(e) => e.target.style.borderColor = '#E0E0E0'}
+              required
             />
           </div>
 
-          <div style={{ marginBottom: '2rem' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '14px', fontWeight: '600', color: '#444' }}>Password</label>
-              <a href="#" style={{ fontSize: '14px', color: 'var(--color-primary)', textDecoration: 'none' }}>Forgot password?</a>
+              <label style={{ fontSize: '14px', fontWeight: '500', color: '#333' }}>Password</label>
+              <button onClick={() => navigate('/recover-password')} style={{ background: 'none', border: 'none', fontSize: '14px', color: '#0056b3', textDecoration: 'none', cursor: 'pointer', padding: 0 }}>Forgot password?</button>
             </div>
             <input 
               type="password" 
@@ -74,57 +119,45 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               style={{ 
                 width: '100%', 
-                padding: '10px 12px', 
-                borderRadius: '6px', 
-                border: '1px solid #E0E0E0', 
+                padding: '12px 0', 
+                borderRadius: '0', 
+                border: 'none',
+                borderBottom: '1px solid #E2E8F0', 
                 fontSize: '16px',
-                outline: 'none'
+                outline: 'none',
+                backgroundColor: 'transparent',
+                transition: 'border-color 0.2s'
               }}
-              onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
-              onBlur={(e) => e.target.style.borderColor = '#E0E0E0'}
+              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+              required
             />
           </div>
 
-          <Button variant="primary" fullWidth size="large" style={{ marginBottom: '1.5rem' }}>
-            Sign In
+          <Button 
+            type="submit" 
+            variant="primary" 
+            fullWidth 
+            size="large" 
+            style={{ 
+              marginBottom: '1.5rem', 
+              backgroundColor: '#000', 
+              color: '#fff', 
+              borderRadius: '8px',
+              height: '48px',
+              fontWeight: '600'
+            }}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Logging in...' : 'Sign In'}
           </Button>
         </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0' }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#E0E0E0' }}></div>
-          <span style={{ padding: '0 10px', color: '#888', fontSize: '14px' }}>Or</span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#E0E0E0' }}></div>
+        <div style={{ marginTop: '1.5rem', fontSize: '14px', color: '#666', textAlign: 'left' }}>
+          Don't have an account? <button onClick={() => navigate('/preferences')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Sign Up</button>
         </div>
 
-        {/* Google Sign In Mock */}
-        <button style={{ 
-          width: '100%', 
-          padding: '10px', 
-          backgroundColor: 'white', 
-          border: '1px solid #E0E0E0', 
-          borderRadius: '6px', 
-          fontSize: '15px', 
-          fontWeight: '600', 
-          color: '#333', 
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '10px',
-          transition: 'background-color 0.2s'
-        }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#F9F9F9'}
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
-        >
-          <span style={{ fontSize: '18px' }}>G</span> Sign in with Google
-        </button>
-
       </div>
-
-      <div style={{ marginTop: '2rem', fontSize: '15px', color: '#666' }}>
-        New to SilverGuide? <button onClick={() => navigate('/preferences')} style={{ background: 'none', border: 'none', color: 'var(--color-primary)', fontWeight: '600', cursor: 'pointer', padding: 0 }}>Create account</button>
-      </div>
-
     </div>
   );
 }

@@ -79,12 +79,12 @@ Track your progress as you build the app! Check off items as you complete them.
 - [ ] Test complete Easy Task flow
 
 ### Authentication & Home
-- [] Implement `src/pages/LoginPage.jsx`
-  - [ ] Email and password input fields (large, accessible)
-  - [ ] "Log In" button
-  - [ ] Save user to localStorage on login (Mocked)
-  - [ ] Navigate to /volunteers after login
-  - [ ] (Optional) Simple validation
+- [x] Implement `src/pages/LoginPage.jsx`
+  - [x] Email and password input fields (large, accessible)
+  - [x] "Log In" button
+  - [x] Save user to localStorage on login (Mocked)
+  - [x] Navigate to /volunteers after login
+  - [x] (Optional) Simple validation
 - [x] Implement `src/pages/HomePage.jsx`
   - [x] Welcome message
   - [x] "How it Works" section
@@ -96,13 +96,13 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Implement `server/index.js`
   - [x] Set up Express with cors and body-parser
   - [x] In-memory storage (users array, chats array)
-  - [ ] POST /api/auth/register endpoint
-  - [ ] POST /api/auth/login endpoint
+  - [x] POST /api/auth/register endpoint
+  - [x] POST /api/auth/login endpoint
   - [ ] PUT /api/users/:id/preferences endpoint
   - [ ] GET /api/users/:id endpoint
 - [ ] Test backend with Postman/Thunder Client
 - [x] Run server with `npm run server`
-- [ ] Test frontend calling backend APIs
+- [x] Test frontend calling backend APIs
 
 **Checkpoint:** ✅ User can log in, set preferences, save to backend
 
