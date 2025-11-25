@@ -4,6 +4,7 @@ import Button from '../components/common/Button';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,6 +12,24 @@ export default function SignUpPage() {
   const [securityAnswer, setSecurityAnswer] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  React.useEffect(() => {
+    if (localStorage.getItem('user')) {
+      navigate('/volunteers');
+    }
+  }, [navigate]);
+
+  const handleNextStep = (e) => {
+    e.preventDefault();
+    if (step === 1) {
+      if (!name || !email || !password) {
+        setError('Please fill in all fields');
+        return;
+      }
+      setError('');
+      setStep(2);
+    }
+  };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -27,9 +46,7 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Save user to localStorage (mock session)
         localStorage.setItem('user', JSON.stringify(data.user));
-        // Navigate to preferences to complete profile
         navigate('/preferences');
       } else {
         setError(data.message || 'Registration failed');
@@ -50,190 +67,230 @@ export default function SignUpPage() {
       alignItems: 'center', 
       justifyContent: 'center', 
       backgroundColor: '#FFFFFF',
-      padding: '2rem'
+      padding: '1rem'
     }}>
       
       <div style={{ 
         width: '100%', 
-        maxWidth: '400px' 
+        maxWidth: '360px' 
       }}>
         <h1 style={{ 
-          fontSize: '32px', 
-          marginBottom: '0.5rem', 
+          fontSize: '28px', 
+          marginBottom: '0.25rem', 
           color: '#111', 
           fontWeight: '700',
           textAlign: 'left'
-        }}>Create Account</h1>
+        }}>
+          {step === 1 ? 'Create Account' : 'Set Security Question'}
+        </h1>
         
         <p style={{ 
-          marginBottom: '2rem', 
+          marginBottom: '1.5rem', 
           color: '#666', 
-          fontSize: '16px',
+          fontSize: '15px',
           textAlign: 'left'
         }}>
-          Join SilverGuide today.
+          {step === 1 ? 'Join SilverGuide today.' : 'This helps you recover your account if you forget your password.'}
         </p>
 
         {error && (
           <div style={{ 
             backgroundColor: '#FFF5F5', 
             color: '#E53E3E', 
-            padding: '12px', 
+            padding: '10px', 
             borderRadius: '6px', 
-            marginBottom: '1.5rem', 
-            fontSize: '14px',
+            marginBottom: '1rem', 
+            fontSize: '13px',
             border: '1px solid #FED7D7'
           }}>
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSignUp}>
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Full Name</label>
-            <input 
-              type="text" 
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '12px 0', 
-                borderRadius: '0', 
-                border: 'none',
-                borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
-                outline: 'none',
-                backgroundColor: 'transparent',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
-              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
-              placeholder="Jane Doe"
-              required
-            />
-          </div>
+        <form onSubmit={step === 1 ? handleNextStep : handleSignUp}>
+          
+          {step === 1 && (
+            <>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Full Name</label>
+                <input 
+                  type="text" 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px 0', 
+                    borderRadius: '0', 
+                    border: 'none',
+                    borderBottom: '1px solid #E2E8F0', 
+                    fontSize: '15px',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    transition: 'border-color 0.2s'
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+                  placeholder="Jane Doe"
+                  required
+                />
+              </div>
 
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Email</label>
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '12px 0', 
-                borderRadius: '0', 
-                border: 'none',
-                borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
-                outline: 'none',
-                backgroundColor: 'transparent',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
-              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
-              placeholder="jane@example.com"
-              required
-            />
-          </div>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Email</label>
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px 0', 
+                    borderRadius: '0', 
+                    border: 'none',
+                    borderBottom: '1px solid #E2E8F0', 
+                    fontSize: '15px',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    transition: 'border-color 0.2s'
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+                  placeholder="jane@example.com"
+                  required
+                />
+              </div>
 
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Password</label>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '12px 0', 
-                borderRadius: '0', 
-                border: 'none',
-                borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
-                outline: 'none',
-                backgroundColor: 'transparent',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
-              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
-              required
-            />
-          </div>
+              <div style={{ marginBottom: '2rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Password</label>
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px 0', 
+                    borderRadius: '0', 
+                    border: 'none',
+                    borderBottom: '1px solid #E2E8F0', 
+                    fontSize: '15px',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    transition: 'border-color 0.2s'
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+                  required
+                />
+              </div>
 
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Security Question</label>
-            <select
-              value={securityQuestion}
-              onChange={(e) => setSecurityQuestion(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '12px 0', 
-                borderRadius: '0', 
-                border: 'none',
-                borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
-                outline: 'none',
-                backgroundColor: 'transparent',
-                transition: 'border-color 0.2s',
-                color: '#333',
-                cursor: 'pointer'
-              }}
-              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
-              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
-            >
-              <option>What is your mother's maiden name?</option>
-              <option>What was the name of your first pet?</option>
-              <option>What city were you born in?</option>
-              <option>What is your favorite book?</option>
-            </select>
-          </div>
+              <Button 
+                type="submit" 
+                variant="primary" 
+                fullWidth 
+                size="medium" 
+                style={{ 
+                  marginBottom: '1rem', 
+                  backgroundColor: '#000', 
+                  color: '#fff', 
+                  borderRadius: '8px',
+                  height: '44px',
+                  fontWeight: '600'
+                }}
+              >
+                Next
+              </Button>
+            </>
+          )}
 
-          <div style={{ marginBottom: '2.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Security Answer</label>
-            <input 
-              type="text" 
-              value={securityAnswer}
-              onChange={(e) => setSecurityAnswer(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '12px 0', 
-                borderRadius: '0', 
-                border: 'none',
-                borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
-                outline: 'none',
-                backgroundColor: 'transparent',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderBottomColor = '#333'}
-              onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
-              placeholder="Answer"
-              required
-            />
-          </div>
+          {step === 2 && (
+            <>
+              <div style={{ marginBottom: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Security Question</label>
+                <select
+                  value={securityQuestion}
+                  onChange={(e) => setSecurityQuestion(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px 0', 
+                    borderRadius: '0', 
+                    border: 'none',
+                    borderBottom: '1px solid #E2E8F0', 
+                    fontSize: '15px',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    transition: 'border-color 0.2s',
+                    color: '#333',
+                    cursor: 'pointer'
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+                >
+                  <option>What is your mother's maiden name?</option>
+                  <option>What was the name of your first pet?</option>
+                  <option>What city were you born in?</option>
+                  <option>What is your favorite book?</option>
+                </select>
+              </div>
 
-          <Button 
-            type="submit" 
-            variant="primary" 
-            fullWidth 
-            size="large" 
-            style={{ 
-              marginBottom: '1.5rem', 
-              backgroundColor: '#000', 
-              color: '#fff', 
-              borderRadius: '8px',
-              height: '48px',
-              fontWeight: '600'
-            }}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating Account...' : 'Sign Up'}
-          </Button>
+              <div style={{ marginBottom: '2rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Security Answer</label>
+                <input 
+                  type="text" 
+                  value={securityAnswer}
+                  onChange={(e) => setSecurityAnswer(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '8px 0', 
+                    borderRadius: '0', 
+                    border: 'none',
+                    borderBottom: '1px solid #E2E8F0', 
+                    fontSize: '15px',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    transition: 'border-color 0.2s'
+                  }}
+                  onFocus={(e) => e.target.style.borderBottomColor = '#333'}
+                  onBlur={(e) => e.target.style.borderBottomColor = '#E2E8F0'}
+                  placeholder="Answer"
+                  required
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                variant="primary" 
+                fullWidth 
+                size="medium" 
+                style={{ 
+                  marginBottom: '1rem', 
+                  backgroundColor: '#000', 
+                  color: '#fff', 
+                  borderRadius: '8px',
+                  height: '44px',
+                  fontWeight: '600'
+                }}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Creating Account...' : 'Sign Up'}
+              </Button>
+              
+              <div style={{ textAlign: 'center' }}>
+                <button 
+                  type="button"
+                  onClick={() => setStep(1)} 
+                  style={{ background: 'none', border: 'none', color: '#666', fontSize: '13px', cursor: 'pointer', padding: '0.5rem' }}
+                >
+                  Back
+                </button>
+              </div>
+            </>
+          )}
         </form>
 
-        <div style={{ marginTop: '1.5rem', fontSize: '14px', color: '#666', textAlign: 'left' }}>
-          Already have an Account? <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Log In</button>
-        </div>
+        {step === 1 && (
+          <div style={{ marginTop: '1rem', fontSize: '13px', color: '#666', textAlign: 'left' }}>
+            Already have an Account? <button onClick={() => navigate('/login')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Log In</button>
+          </div>
+        )}
 
       </div>
     </div>

@@ -85,11 +85,20 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] Save user to localStorage on login (Mocked)
   - [x] Navigate to /volunteers after login
   - [x] (Optional) Simple validation
+  - [x] Minimalist design update (Compact mode)
+- [x] Implement `src/pages/SignUpPage.jsx`
+  - [x] Multi-step wizard (Name/Email/Password -> Security Question)
+  - [x] Auto-redirect if already logged in
+- [x] Implement `src/pages/ForgotPasswordPage.jsx`
+  - [x] Email lookup
+  - [x] Security question verification
+  - [x] Password reset
 - [x] Implement `src/pages/HomePage.jsx`
   - [x] Welcome message
   - [x] "How it Works" section
   - [x] Navigation to Login/Sign Up
   - [x] Use Header component (Custom nav implemented)
+  - [x] Logged-in state (Sign Out button)
 - [x] Test login → home → navigation flow
 
 ### Backend Setup
@@ -98,6 +107,8 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] In-memory storage (users array, chats array)
   - [x] POST /api/auth/register endpoint
   - [x] POST /api/auth/login endpoint
+  - [x] GET /api/auth/security-question endpoint
+  - [x] POST /api/auth/reset-password endpoint
   - [ ] PUT /api/users/:id/preferences endpoint
   - [ ] GET /api/users/:id endpoint
 - [ ] Test backend with Postman/Thunder Client

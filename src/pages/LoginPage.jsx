@@ -9,6 +9,12 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (localStorage.getItem('user')) {
+      navigate('/volunteers');
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -45,25 +51,25 @@ export default function LoginPage() {
       alignItems: 'center', 
       justifyContent: 'center', 
       backgroundColor: '#FFFFFF',
-      padding: '2rem'
+      padding: '1rem'
     }}>
       
       <div style={{ 
         width: '100%', 
-        maxWidth: '400px' 
+        maxWidth: '360px' 
       }}>
         <h1 style={{ 
-          fontSize: '32px', 
-          marginBottom: '0.5rem', 
+          fontSize: '28px', 
+          marginBottom: '0.25rem', 
           color: '#111', 
           fontWeight: '700',
           textAlign: 'left'
         }}>Welcome Back!</h1>
         
         <p style={{ 
-          marginBottom: '2rem', 
+          marginBottom: '1.5rem', 
           color: '#666', 
-          fontSize: '16px',
+          fontSize: '15px',
           textAlign: 'left'
         }}>
           Please enter your details.
@@ -73,10 +79,10 @@ export default function LoginPage() {
           <div style={{ 
             backgroundColor: '#FFF5F5', 
             color: '#E53E3E', 
-            padding: '12px', 
+            padding: '10px', 
             borderRadius: '6px', 
-            marginBottom: '1.5rem', 
-            fontSize: '14px',
+            marginBottom: '1rem', 
+            fontSize: '13px',
             border: '1px solid #FED7D7'
           }}>
             {error}
@@ -84,19 +90,19 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleLogin}>
-          <div style={{ marginBottom: '1.25rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '14px', fontWeight: '500', color: '#333' }}>Email</label>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.25rem', fontSize: '13px', fontWeight: '500', color: '#333' }}>Email</label>
             <input 
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{ 
                 width: '100%', 
-                padding: '12px 0', 
+                padding: '8px 0', 
                 borderRadius: '0', 
                 border: 'none',
                 borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
+                fontSize: '15px',
                 outline: 'none',
                 backgroundColor: 'transparent',
                 transition: 'border-color 0.2s'
@@ -108,10 +114,10 @@ export default function LoginPage() {
             />
           </div>
 
-          <div style={{ marginBottom: '2.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <label style={{ fontSize: '14px', fontWeight: '500', color: '#333' }}>Password</label>
-              <button onClick={() => navigate('/recover-password')} style={{ background: 'none', border: 'none', fontSize: '14px', color: '#0056b3', textDecoration: 'none', cursor: 'pointer', padding: 0 }}>Forgot password?</button>
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
+              <label style={{ fontSize: '13px', fontWeight: '500', color: '#333' }}>Password</label>
+              <button onClick={() => navigate('/recover-password')} style={{ background: 'none', border: 'none', fontSize: '13px', color: '#0056b3', textDecoration: 'none', cursor: 'pointer', padding: 0 }}>Forgot password?</button>
             </div>
             <input 
               type="password" 
@@ -119,11 +125,11 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               style={{ 
                 width: '100%', 
-                padding: '12px 0', 
+                padding: '8px 0', 
                 borderRadius: '0', 
                 border: 'none',
                 borderBottom: '1px solid #E2E8F0', 
-                fontSize: '16px',
+                fontSize: '15px',
                 outline: 'none',
                 backgroundColor: 'transparent',
                 transition: 'border-color 0.2s'
@@ -138,13 +144,13 @@ export default function LoginPage() {
             type="submit" 
             variant="primary" 
             fullWidth 
-            size="large" 
+            size="medium" 
             style={{ 
-              marginBottom: '1.5rem', 
+              marginBottom: '1rem', 
               backgroundColor: '#000', 
               color: '#fff', 
               borderRadius: '8px',
-              height: '48px',
+              height: '44px',
               fontWeight: '600'
             }}
             disabled={isLoading}
@@ -153,7 +159,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div style={{ marginTop: '1.5rem', fontSize: '14px', color: '#666', textAlign: 'left' }}>
+        <div style={{ marginTop: '1rem', fontSize: '13px', color: '#666', textAlign: 'left' }}>
           Don't have an account? <button onClick={() => navigate('/preferences')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Sign Up</button>
         </div>
 

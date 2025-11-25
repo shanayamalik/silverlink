@@ -5,6 +5,20 @@ import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+  };
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
@@ -15,25 +29,40 @@ export default function HomePage() {
           display: 'flex', justifyContent: 'flex-end', alignItems: 'center', 
           padding: '1rem 0', marginBottom: '1rem' 
         }}>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <button 
-              onClick={() => navigate('/login')}
-              style={{ 
-                background: 'none', border: 'none', fontSize: '13px', fontWeight: '600', 
-                color: 'var(--color-text-main)', cursor: 'pointer', padding: '0.4rem 0.8rem'
-              }}
-            >
-              Log In
-            </button>
-            <Button 
-              variant="primary" 
-              size="small" 
-              onClick={() => navigate('/signup')}
-              style={{ fontSize: '13px', padding: '0.4rem 1rem', minHeight: '32px' }}
-            >
-              Sign Up
-            </Button>
-          </div>
+          {user ? (
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              {/* TODO: Implement welcome message later */}
+              <button 
+                onClick={handleLogout}
+                style={{ 
+                  background: 'none', border: 'none', fontSize: '13px', fontWeight: '600', 
+                  color: '#666', cursor: 'pointer', padding: '0.4rem 0.8rem'
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button 
+                onClick={() => navigate('/login')}
+                style={{ 
+                  background: 'none', border: 'none', fontSize: '13px', fontWeight: '600', 
+                  color: 'var(--color-text-main)', cursor: 'pointer', padding: '0.4rem 0.8rem'
+                }}
+              >
+                Log In
+              </button>
+              <Button 
+                variant="primary" 
+                size="small" 
+                onClick={() => navigate('/signup')}
+                style={{ fontSize: '13px', padding: '0.4rem 1rem', minHeight: '32px' }}
+              >
+                Sign Up
+              </Button>
+            </div>
+          )}
         </nav>
 
         {/* --- HERO: Warm & Personal --- */}
