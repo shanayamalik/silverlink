@@ -120,12 +120,12 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] "Can help with" section
   - [x] Dynamic button text ("Chat with..." vs "Request Help") based on context
   - [x] Large, tap-friendly card (Border variant)
-- [ ] Implement `src/components/VolunteerComparison.jsx`
-  - [ ] Props: volunteers (2-3), onSelect, selectedId
-  - [ ] Side-by-side layout (responsive: stack on mobile)
-  - [ ] Use VolunteerCard with compact prop
-  - [ ] "Select" button on each card
-- [ ] Test with mock volunteer data
+- [x] Implement `src/components/VolunteerComparison.jsx`
+  - [x] Props: volunteers (2-3), onSelect, selectedId
+  - [x] Side-by-side layout (responsive: stack on mobile)
+  - [x] Use VolunteerCard with compact prop
+  - [x] "Select" button on each card
+- [x] Test with mock volunteer data
 
 ### Scheduling Component
 - [ ] Implement `src/components/SchedulingCalendar.jsx`
