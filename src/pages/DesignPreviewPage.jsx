@@ -6,11 +6,7 @@ export default function DesignPreviewPage() {
   return (
     <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>
       <h1 style={{ color: 'var(--color-text-main)', marginBottom: '1rem' }}>Design Preview</h1>
-      <p style={{ fontSize: 'var(--font-size-lg)', maxWidth: '600px', margin: '0 auto 3rem' }}>
-        A showcase of the volunteer card designs.
-      </p>
-      
-      <section style={{ marginBottom: '4rem', textAlign: 'left' }}>
+      <section style={{ marginBottom: '4rem', textAlign: 'left', marginTop: '3rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           
           <Card variant="border" hoverable hoverEffect="glow">
