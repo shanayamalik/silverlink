@@ -1,12 +1,12 @@
 import React from "react";
 import "../../styles/StepCommunicationMode.css";
 
-const COMMUNICATION_OPTIONS = [
-  "🎥 Video Call",
-  "📞 Phone Call",
-  "🧍 In-Person",
-  "💬 Chat Only"
-];
+export const COMMUNICATION_OPTIONS = {
+  "Video Call": "🎥",
+  "Phone Call": "📞",
+  "In-Person": "🧍",
+  "Chat Only": "💬"
+};
 
 export default function StepCommunicationMode({ selected, onChange, onNext, onBack }) {
   const toggleMode = (mode) => {
@@ -21,13 +21,13 @@ export default function StepCommunicationMode({ selected, onChange, onNext, onBa
       <h1>How would you like to connect?</h1>
 
       <div className="chips-row">
-        {COMMUNICATION_OPTIONS.map((mode) => (
+        {Object.entries(COMMUNICATION_OPTIONS).map(([mode, emoji]) => (
           <button
             key={mode}
             className={`chip ${selected.includes(mode) ? "selected" : ""}`}
             onClick={() => toggleMode(mode)}
           >
-            {mode}
+            {emoji} {mode}
           </button>
         ))}
       </div>

@@ -1,8 +1,22 @@
 import React from "react";
 import "../../styles/StepHelperType.css";
 
-const DAYS = ["📅 Mon", "📅 Tue", "📅 Wed", "📅 Thu", "📅 Fri", "📅 Sat", "📅 Sun"];
-const TIMES = ["☀️Morning (9AM - 12PM)", "🌇 Afternoon (1PM - 5PM)", "🌙 Evening (6PM - 10PM)", "🕒 Anytime works for me"];
+export const DAYS_OPTIONS = {
+  Mon: "1️⃣",
+  Tue: "2️⃣",
+  Wed: "3️⃣",
+  Thu: "4️⃣",
+  Fri: "5️⃣",
+  Sat: "6️⃣",
+  Sun: "7️⃣"
+};
+
+export const TIMES_OPTION = {
+  "Morning (9AM - 12PM)": "☀️",
+  "Afternoon (1PM - 5PM)": "🌇", 
+  "Evening (6PM - 10PM)": "🌙 ", 
+  "Anytime works for me": "🕒 "
+};
 
 
 export default function StepAvailability({ availability, onChange, onNext, onBack }) {
@@ -37,26 +51,26 @@ export default function StepAvailability({ availability, onChange, onNext, onBac
 
       <h2>Days of the Week</h2>
       <div className="chips-row">
-        {DAYS.map((day) => (
+        {Object.entries(DAYS_OPTIONS).map(([day, emoji]) => (
           <button
             key={day}
             className={`chip ${availability.days.includes(day) ? "selected" : ""}`}
             onClick={() => toggleDay(day)}
           >
-            {day}
+            {emoji} {day}
           </button>
         ))}
       </div>
 
       <h2>Time of Day</h2>
       <div className="chips-row">
-        {TIMES.map((time) => (
+        {Object.entries(TIMES_OPTION).map(([time, emoji]) => (
           <button
             key={time}
             className={`chip ${availability.times.includes(time) ? "selected" : ""}`}
             onClick={() => toggleTime(time)}
           >
-            {time}
+            {emoji} {time}
           </button>
         ))}
       </div>

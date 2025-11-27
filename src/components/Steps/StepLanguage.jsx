@@ -1,17 +1,17 @@
 import React from "react";
 import "../../styles/StepLanguage.css";
 
-const LANGUAGE_OPTIONS = [
-  "🇺🇸 English",
-  "🇪🇸 Spanish",
-  "🇨🇳 Chinese",
-  "🇵🇭 Tagalog",
-  "🇫🇷 French",
-  "🇩🇪 German",
-  "🇯🇵 Japanese",
-  "🇰🇷 Korean",
-  "🌍 Others"
-];
+export const LANGUAGE_OPTIONS = {
+  "English": "🇺🇸",
+  "Spanish": "🇪🇸",
+  "Chinese": "🇨🇳",
+  "Tagalog": "🇵🇭",
+  "French": "🇫🇷",
+  "German": "🇩🇪",
+  "Japanese": "🇯🇵",
+  "Korean": "🇰🇷",
+  "Others": "🌍"
+};
 
 export default function StepLanguage({ selected, onChange, onNext, onBack }) {
   const toggleLanguage = (lang) => {
@@ -26,13 +26,13 @@ export default function StepLanguage({ selected, onChange, onNext, onBack }) {
       <h1>Which languages do you prefer?</h1>
 
       <div className="chips-row">
-        {LANGUAGE_OPTIONS.map((lang) => (
+        {Object.entries(LANGUAGE_OPTIONS).map(([lang, emoji]) => (
           <button
             key={lang}
             className={`chip ${selected.includes(lang) ? "selected" : ""}`}
             onClick={() => toggleLanguage(lang)}
           >
-            {lang}
+            {emoji} {lang}
           </button>
         ))}
       </div>

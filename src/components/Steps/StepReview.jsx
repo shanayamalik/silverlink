@@ -1,8 +1,11 @@
 import React from "react";
 import "../../styles/StepReview.css";
+import { LANGUAGE_OPTIONS } from "./StepLanguage";
+import { INTEREST_OPTIONS } from "./StepInterests";
+import { COMMUNICATION_OPTIONS } from "./StepCommunicationMode";
 
 export default function StepReview({ preferences, onEdit, onBack, onSave }) {
-  const { helpTypes, availability, interests } = preferences;
+  const { helpTypes, availability, interests, language, communicationMode} = preferences;
 
   const formatAvailability = () => {
     if (availability.anytime) return "Anytime works";
@@ -10,6 +13,9 @@ export default function StepReview({ preferences, onEdit, onBack, onSave }) {
     const times = availability.times.length ? availability.times.join(", ") : "No times selected";
     return `${days} / ${times}`;
   };
+
+  const formatWithEmoji = (list, emojiMap) =>
+    list.length? list.map((item) => `${emojiMap[item] || ""} ${item}`).join(", ") : "None selected";
 
   return (
     <div className="step-container">
@@ -30,13 +36,13 @@ export default function StepReview({ preferences, onEdit, onBack, onSave }) {
 
         <div className="summary-section">
           <h2>🎨 Interests</h2>
-          <p>{interests.length ? interests.join(", ") : "None selected"}</p>
+          <p>{formatWithEmoji(interests, INTEREST_OPTIONS)}</p>
           <button className="edit-link" onClick={() => onEdit(3)}>Edit</button>
         </div>
 
         <div className="summary-section">
           <h2>🗣️ Language Preference</h2>
-          <p>{preferences.language.length ? preferences.language.join(", ") : "None selected"}</p>
+          <p>{formatWithEmoji(language, LANGUAGE_OPTIONS)}</p>
           <button className="edit-link" onClick={() => onEdit(4)}>Edit</button>
         </div>
 
@@ -48,7 +54,7 @@ export default function StepReview({ preferences, onEdit, onBack, onSave }) {
 
         <div className="summary-section">
           <h2>📞 Communication Mode</h2>
-          <p>{preferences.communicationMode.length ? preferences.communicationMode.join(", ") : "None selected"}</p>
+          <p>{formatWithEmoji(communicationMode, COMMUNICATION_OPTIONS)}</p>
           <button className="edit-link" onClick={() => onEdit(6)}>Edit</button>
         </div>
       </div>
