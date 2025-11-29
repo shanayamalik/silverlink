@@ -109,6 +109,7 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] POST /api/auth/login endpoint
   - [x] GET /api/auth/security-question endpoint
   - [x] POST /api/auth/reset-password endpoint
+  - [x] Persist users to `server/data/users.json`
   - [ ] PUT /api/users/:id/preferences endpoint
   - [ ] GET /api/users/:id endpoint
 - [ ] Test backend with Postman/Thunder Client
@@ -164,64 +165,44 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ## Phase 4: Difficult Task - AI Voice Interview 
 
-### Voice Recognition Core
-- [ ] Implement `src/components/VoiceInterview.jsx` (main component)
-  - [ ] Large microphone button (use microphone.svg)
-  - [ ] Integrate Web Speech API (SpeechRecognition)
-  - [ ] Start/stop recording functionality
-  - [ ] State: isListening, transcript, conversationHistory
-  - [ ] Text input fallback option
-  - [ ] Progress indicator
-- [ ] Test voice recording and transcription
-- [ ] Handle browser compatibility (webkit prefix)
+### Step 1: The Conversation (Focus Mode)
+- [ ] Implement `src/components/VoiceInterview/FocusMode.jsx`
+  - [ ] Minimalist UI: AI Avatar/Icon + Current Question
+  - [ ] Large Microphone Button (Start/Stop)
+  - [ ] Live Transcript Display (Large, readable text)
+  - [ ] Hidden background state for profile accumulation
 
-### Live Display Components
-- [ ] Implement `src/components/LiveTranscription.jsx`
-  - [ ] Props: transcript (array), isListening
-  - [ ] Display real-time speech-to-text
-  - [ ] Color coding by confidence: green (>0.8), yellow (0.5-0.8), red (<0.5)
-  - [ ] Auto-scroll to latest
-  - [ ] Different styling for user vs AI speech
-- [ ] Implement `src/components/ProfileTagsLive.jsx`
-  - [ ] Props: tags (array), onRemove
-  - [ ] Display extracted preferences as tags
-  - [ ] Animate new tags (fade-in)
-  - [ ] Group by category: interests, communication, availability
-  - [ ] Color-code by category
-- [ ] Test live updates and animations
+### Step 2: AI Intelligence & Privacy
+- [ ] Implement `server/services/openai.js`
+  - [ ] Conversation Logic: Generate next question based on user input
+  - [ ] Extraction Logic: Extract profile data (Interests, Bio, Availability) from transcript
+  - [ ] **Privacy Filter**: Detect and redact PII (Phone, Address) before processing
+- [ ] Create Backend Endpoints
+  - [ ] `POST /api/ai/chat`: Handles conversation turn
+  - [ ] `POST /api/ai/extract`: Generates profile JSON from full transcript
 
-### AI Integration & Error Handling
-- [ ] Implement `src/components/ErrorRecovery.jsx`
-  - [ ] Props: errorType, originalText, suggestions, onCorrect, onSkip
-  - [ ] "Did you mean...?" interface
-  - [ ] Display original text + suggestions
-  - [ ] Undo/retry options
-  - [ ] Text input fallback
-- [ ] Add OpenAI integration in `server/index.js`
-  - [ ] Install openai package
-  - [ ] POST /api/ai/chat endpoint
-  - [ ] Send user message + conversation history to OpenAI
-  - [ ] Extract interests/preferences from AI response
-  - [ ] Return AI question + extracted data
-- [ ] Add backend endpoint: PUT /api/users/:id/interests
-- [ ] Test AI conversation flow
+### Step 3: The Review (Verification Mode)
+- [ ] Implement `src/components/VoiceInterview/ReviewMode.jsx`
+  - [ ] **Smart Transcript**: Display full conversation with key terms **bolded/highlighted**
+  - [ ] **Profile Form**: Display extracted data (Bio, Interests, Availability)
+  - [ ] Interaction: Clicking a bold term in transcript highlights the corresponding form field
+  - [ ] Manual Override: User can edit form fields (locks field from future AI updates)
+
+### Step 4: Hybrid Profile Management
+- [ ] Implement `src/pages/ProfilePage.jsx`
+  - [ ] Display current profile card
+  - [ ] **Option A (Manual):** "Edit" pencil icon for standard form input
+  - [ ] **Option B (Voice):** "Update with Voice" button launches Mini-Interview context
 
 ### Integration & Testing
-- [ ] Integrate all voice components in VoiceInterviewPage
-- [ ] Implement `src/pages/VoiceInterviewPage.jsx`
-  - [ ] Use VoiceInterview component
-  - [ ] Handle completion (save interests to backend)
-  - [ ] Navigate to /home or summary screen
-- [ ] Test full AI interview flow:
-  - [ ] Start interview
-  - [ ] Speak or type responses
-  - [ ] See live transcription
-  - [ ] See tags appear in real-time
-  - [ ] Handle errors/corrections
-  - [ ] Complete and save interests
-- [ ] Test without OpenAI API (mock responses) as fallback
+- [ ] Integrate all components in `src/pages/VoiceInterviewPage.jsx`
+- [ ] Test full flow:
+  - [ ] Start interview -> Speak -> See Transcript
+  - [ ] Finish -> Review Mode -> See Smart Highlights
+  - [ ] Edit Form -> Save
+- [ ] Test Privacy Filter with dummy PII data
 
-**Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile
+**Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile safely
 
 ---
 
