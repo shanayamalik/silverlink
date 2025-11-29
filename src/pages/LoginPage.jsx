@@ -160,7 +160,7 @@ export default function LoginPage() {
         </form>
 
         <div style={{ marginTop: '1rem', fontSize: '13px', color: '#666', textAlign: 'left' }}>
-          Don't have an account? <button onClick={() => navigate('/preferences')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Sign Up</button>
+          Don't have an account? <button onClick={() => navigate('/signup')} style={{ background: 'none', border: 'none', color: '#0056b3', fontWeight: '600', cursor: 'pointer', padding: 0, textDecoration: 'none' }}>Sign Up</button>
         </div>
 
       </div>
