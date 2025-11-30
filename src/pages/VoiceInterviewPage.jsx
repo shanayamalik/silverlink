@@ -21,33 +21,68 @@ export default function VoiceInterviewPage() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [transcript, interimText]);
 
-  // Simulation Logic
+  // Real Speech Recognition Logic
+  const recognitionRef = useRef(null);
+
   useEffect(() => {
-    let timeout;
-    if (isListening) {
-      setInterimText("I really enjoy...");
-      timeout = setTimeout(() => {
-        setInterimText("I really enjoy gardening and reading books.");
-        setTimeout(() => {
-          setTranscript(prev => [...prev, { 
-            text: "I really enjoy gardening and reading books.", 
-            speaker: 'user', 
-            timestamp: new Date().toISOString(),
-            highlights: ['gardening', 'reading']
-          }]);
-          setInterimText('');
-          setIsListening(false);
-        }, 1500);
-      }, 1000);
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        let currentInterim = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const transcriptPart = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            setTranscript(prev => [...prev, { 
+              text: transcriptPart, 
+              speaker: 'user', 
+              timestamp: new Date().toISOString(),
+              highlights: [] 
+            }]);
+          } else {
+            currentInterim += transcriptPart;
+          }
+        }
+        setInterimText(currentInterim);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognitionRef.current = recognition;
     }
-    return () => clearTimeout(timeout);
-  }, [isListening]);
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      alert("Speech Recognition not supported in this browser.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error("Error starting recognition:", error);
+      }
+    }
+  };
 
   // --- Shared Components ---
 
   const MicButton = ({ size = 'large', floating = false }) => (
     <button 
-      onClick={() => setIsListening(!isListening)}
+      onClick={toggleListening}
       style={{
         width: size === 'large' ? '64px' : '48px',
         height: size === 'large' ? '64px' : '48px',
@@ -118,7 +153,7 @@ export default function VoiceInterviewPage() {
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
             }}>
-              {t.speaker === 'ai' ? 'AI' : 'You'}
+              {t.speaker === 'ai' ? 'SilverGuide AI' : 'You'}
             </div>
             <div style={{ fontSize: '15px', marginTop: '6px', lineHeight: '1.5', color: '#333' }}>
               <HighlightText text={t.text} highlights={t.highlights} />
