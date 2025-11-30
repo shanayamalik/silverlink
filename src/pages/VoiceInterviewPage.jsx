@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/common/Header';
+import { jsPDF } from "jspdf";
 
 export default function VoiceInterviewPage() {
   /* 
@@ -14,6 +15,7 @@ export default function VoiceInterviewPage() {
   const [interimText, setInterimText] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const endRef = useRef(null);
   const interimTextRef = useRef('');
   const silenceTimerRef = useRef(null);
@@ -22,6 +24,113 @@ export default function VoiceInterviewPage() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [transcript, interimText, isProcessing]);
+
+  // --- Analysis & Finish ---
+  const handleFinishInterview = async () => {
+    if (transcript.length < 2) {
+      alert("Please have a short conversation first!");
+      return;
+    }
+    
+    setIsAnalyzing(true);
+    try {
+      const response = await fetch('/api/analyze-interview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript })
+      });
+      
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Server error: ${response.status} ${response.statusText}. Make sure the backend is running.`);
+      }
+
+      const data = await response.json();
+      
+      if (data.summaryMarkdown) {
+        // Generate PDF with basic Markdown formatting
+        const doc = new jsPDF();
+        
+        // Title
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text("Volunteer Profile Summary", 20, 20);
+        
+        let yPos = 40;
+        const lineHeight = 7;
+        const pageWidth = 170; // mm
+        
+        // Split by lines to parse markdown headers
+        const lines = data.summaryMarkdown.split('\n');
+        
+        lines.forEach(line => {
+          // Check for page break
+          if (yPos > 280) {
+            doc.addPage();
+            yPos = 20;
+          }
+
+          if (line.startsWith('# ')) {
+            // H1
+            doc.setFontSize(18);
+            doc.setFont("helvetica", "bold");
+            doc.text(line.replace('# ', ''), 20, yPos);
+            yPos += 10;
+          } else if (line.startsWith('## ')) {
+            // H2
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text(line.replace('## ', ''), 20, yPos);
+            yPos += 8;
+          } else if (line.startsWith('### ')) {
+            // H3
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text(line.replace('### ', ''), 20, yPos);
+            yPos += 7;
+          } else if (line.trim() === '') {
+            // Empty line
+            yPos += 4;
+          } else {
+            // Body text
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            
+            // Clean up bold markers for PDF (simple removal, real bolding is hard)
+            const cleanLine = line.replace(/\*\*/g, '').replace(/__/g, '');
+            
+            const splitLines = doc.splitTextToSize(cleanLine, pageWidth);
+            doc.text(splitLines, 20, yPos);
+            yPos += (splitLines.length * 5);
+          }
+        });
+        
+        doc.save('interview_summary.pdf');
+        
+        // Small delay to allow the download to start before showing the alert
+        setTimeout(() => {
+          alert("Interview saved! PDF summary downloaded.");
+        }, 500);
+      } else if (data.summaryText) {
+        // Fallback for plain text prompt
+        const doc = new jsPDF();
+        doc.setFontSize(20);
+        doc.text("Volunteer Profile Summary", 20, 20);
+        doc.setFontSize(12);
+        const splitText = doc.splitTextToSize(data.summaryText, 170);
+        doc.text(splitText, 20, 40);
+        doc.save('interview_summary.pdf');
+        alert("Interview saved! PDF summary downloaded.");
+      } else {
+        throw new Error(data.message || "No summary returned");
+      }
+    } catch (error) {
+      console.error("Analysis failed:", error);
+      alert(`Failed to analyze interview: ${error.message}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
 
   // --- AI Integration ---
   useEffect(() => {
@@ -239,6 +348,33 @@ export default function VoiceInterviewPage() {
             <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1s infinite 0.2s' }}></div>
             <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1s infinite 0.4s' }}></div>
             <span style={{ fontSize: '12px', color: '#999', marginLeft: '0.5rem' }}>SilverGuide is thinking...</span>
+          </div>
+        )}
+
+        {/* Finish Button (Bottom Placement) */}
+        {transcript.length > 2 && (
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
+            <button 
+              onClick={handleFinishInterview}
+              disabled={isAnalyzing || isProcessing || isListening}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '30px',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                opacity: (isAnalyzing || isProcessing || isListening) ? 0.6 : 1,
+                display: 'flex', alignItems: 'center', gap: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                transition: 'transform 0.2s'
+              }}
+            >
+              {isAnalyzing ? 'Analyzing Interview...' : 'Finish & Save Interview'}
+              {!isAnalyzing && <span>💾</span>}
+            </button>
           </div>
         )}
 

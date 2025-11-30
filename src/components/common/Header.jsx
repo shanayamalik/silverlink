@@ -62,6 +62,7 @@ export default function Header({ title, showBack, showHome }) {
       <h1 style={{ fontSize: '20px', margin: 0, color: '#333', fontWeight: '600' }}>{title}</h1>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px', justifyContent: 'flex-end' }}>
+        {/* TODO: Add a "Sign Out" button here and ensure the user's name is displayed correctly when logged in. Currently, it might be missing or hard to see. */}
         {user && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ 

@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { INTERVIEW_SYSTEM_PROMPT, ANALYSIS_SYSTEM_PROMPT } from './systemPrompts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -88,7 +89,7 @@ app.post('/api/chat', async (req, res) => {
       messages: [
         { 
           role: "system", 
-          content: "You are SilverGuide, a friendly and empathetic volunteer coordinator for seniors. Your goal is to interview the user to find out their hobbies, skills, and availability. Keep your responses short (1-2 sentences max), warm, and encouraging. Ask one question at a time. Do not be pushy. IMPORTANT: If the user shares personal identifiable information (like home address, phone number, or full financial info), you MUST address this FIRST. Kindly remind them not to share private details with you or potential matches, and reassure them that you do not record or store this information privately. Only after this warning should you briefly acknowledge their other input." 
+          content: INTERVIEW_SYSTEM_PROMPT 
         },
         ...messages
       ],
@@ -102,6 +103,61 @@ app.post('/api/chat', async (req, res) => {
   } catch (error) {
     console.error('OpenAI API Error:', error);
     res.status(500).json({ message: 'Error generating AI response' });
+  }
+});
+
+// --- Analyze Interview Route ---
+app.post('/api/analyze-interview', async (req, res) => {
+  if (!openai) {
+    return res.status(503).json({ message: 'AI service not configured' });
+  }
+
+  const { transcript } = req.body;
+  if (!transcript || !Array.isArray(transcript)) {
+    return res.status(400).json({ message: 'Invalid transcript format' });
+  }
+
+  try {
+    // Convert transcript to a readable string
+    const conversationText = transcript
+      .map(t => `${t.speaker === 'user' ? 'User' : 'SilverGuide'}: ${t.text}`)
+      .join('\n');
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: ANALYSIS_SYSTEM_PROMPT
+        },
+        {
+          role: "user",
+          content: conversationText
+        }
+      ],
+      temperature: 0.5,
+    });
+
+    const rawContent = completion.choices[0].message.content;
+    let result;
+    try {
+      // Try to parse the JSON. Sometimes models add markdown blocks despite instructions.
+      const jsonString = rawContent.replace(/```json\n?|```/g, '').trim();
+      result = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Failed to parse AI analysis result:", rawContent);
+      // Fallback if JSON parsing fails
+      result = {
+        summaryMarkdown: "# Interview Summary\n\n(Analysis failed to parse correctly)\n\n" + rawContent,
+        structuredData: { skills: [], interests: [], availability: "" }
+      };
+    }
+
+    res.json(result);
+
+  } catch (error) {
+    console.error('OpenAI Analysis Error:', error);
+    res.status(500).json({ message: 'Error analyzing interview' });
   }
 });
 
