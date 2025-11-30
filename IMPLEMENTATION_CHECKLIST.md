@@ -89,6 +89,7 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Implement `src/pages/SignUpPage.jsx`
   - [x] Multi-step wizard (Name/Email/Password -> Security Question)
   - [x] Auto-redirect if already logged in
+  - [ ] **TODO:** Add User Role selection (Volunteer / Senior / Both)
 - [x] Implement `src/pages/ForgotPasswordPage.jsx`
   - [x] Email lookup
   - [x] Security question verification
@@ -123,13 +124,13 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 3: Medium Task - VolunteersPage 
 
 ### Person 1: Volunteer Display Components
-- [ ] Implement `src/components/VolunteerCard.jsx`
-  - [ ] Props: volunteer, onClick, selected, compact
-  - [ ] Display photo/icon, name, verified badge
-  - [ ] Display profession/role tag (instead of location)
-  - [ ] "Can help with" section
-  - [ ] Dynamic button text ("Chat with..." vs "Request Help") based on context
-  - [ ] Large, tap-friendly card (Border variant)
+- [x] Implement `src/components/VolunteerCard.jsx`
+  - [x] Props: volunteer, onClick, selected, compact
+  - [x] Display photo/icon, name, verified badge
+  - [x] Display profession/role tag (instead of location)
+  - [x] "Can help with" section
+  - [x] Dynamic button text ("Chat with..." vs "Request Help") based on context
+  - [x] Large, tap-friendly card (Border variant)
 - [ ] Implement `src/components/VolunteerComparison.jsx`
   - [ ] Props: volunteers (2-3), onSelect, selectedId
   - [ ] Side-by-side layout (responsive: stack on mobile)

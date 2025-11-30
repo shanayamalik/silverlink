@@ -6,6 +6,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import PreferencesPage from './pages/PreferencesPage';
 import VolunteersPage from './pages/VolunteersPage';
 import DesignPreviewPage from './pages/DesignPreviewPage';
+import ProfileDesignPreview from './pages/ProfileDesignPreview';
 import './styles/global.css';
 import './App.css';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/preferences" element={<PreferencesPage />} />
           <Route path="/volunteers" element={<VolunteersPage />} />
           <Route path="/design-preview" element={<DesignPreviewPage />} />
+          <Route path="/profile-design" element={<ProfileDesignPreview />} />
         </Routes>
       </div>
     </BrowserRouter>
