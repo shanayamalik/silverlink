@@ -167,42 +167,43 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 4: Difficult Task - AI Voice Interview 
 
 ### Step 1: The Conversation (Focus Mode)
-- [ ] Implement `src/components/VoiceInterview/FocusMode.jsx`
-  - [ ] Minimalist UI: AI Avatar/Icon + Current Question
-  - [ ] Large Microphone Button (Start/Stop)
-  - [ ] Live Transcript Display (Large, readable text)
-  - [ ] Hidden background state for profile accumulation
+- [x] Implement `src/pages/VoiceInterviewPage.jsx`
+  - [x] Minimalist UI: AI Avatar/Icon + Current Question
+  - [x] Large Microphone Button (Start/Stop)
+  - [x] Live Transcript Display (Large, readable text)
+  - [x] Real-time Speech-to-Text using Web Speech API
 
-### Step 2: AI Intelligence & Privacy
-- [ ] **TODO: MINGHUI & CARRIE** - Create your own OpenAI API Key and add it to your local `.env` file (`OPENAI_API_KEY=sk-...`)
-- [ ] Implement `server/services/openai.js`
-  - [ ] Conversation Logic: Generate next question based on user input
-  - [ ] Extraction Logic: Extract profile data (Interests, Bio, Availability) from transcript
-  - [ ] **Privacy Filter**: Detect and redact PII (Phone, Address) before processing
-- [ ] Create Backend Endpoints
-  - [ ] `POST /api/ai/chat`: Handles conversation turn
-  - [ ] `POST /api/ai/extract`: Generates profile JSON from full transcript
+### Step 2: AI Intelligence & Backend
+- [x] **TODO: MINGHUI & CARRIE** - Create your own OpenAI API Key and add it to your local `.env` file (`OPENAI_API_KEY=sk-...`)
+- [x] Implement `server/index.js` endpoints
+  - [x] `POST /api/chat`: Handles conversation turn with OpenAI
+  - [x] `POST /api/analyze-interview`: Generates profile JSON and Markdown summary
+- [x] **Privacy Filter**: (Basic implementation via system prompt instructions)
 
-### Step 3: The Review (Verification Mode)
-- [ ] Implement `src/components/VoiceInterview/ReviewMode.jsx`
-  - [ ] **Smart Transcript**: Display full conversation with key terms **bolded/highlighted**
-  - [ ] **Profile Form**: Display extracted data (Bio, Interests, Availability)
-  - [ ] Interaction: Clicking a bold term in transcript highlights the corresponding form field
-  - [ ] Manual Override: User can edit form fields (locks field from future AI updates)
+### Step 3: The Handover & Profile Creation
+- [x] Implement `src/pages/ProfileCreationPage.jsx`
+  - [x] "Subtle Pastel" Design (Option K)
+  - [x] Auto-fill Bio, Interests, and Availability from Interview Data
+  - [x] Editable fields for user refinement
+- [x] Connect Interview to Profile
+  - [x] Auto-navigation after interview finishes
+  - [x] Pass analysis data via React Router state
+- [x] PDF Summary Download
+  - [x] Generate `interview_summary.pdf` on client-side
 
-### Step 4: Hybrid Profile Management
-- [ ] Implement `src/pages/ProfilePage.jsx`
-  - [ ] Display current profile card
-  - [ ] **Option A (Manual):** "Edit" pencil icon for standard form input
-  - [ ] **Option B (Voice):** "Update with Voice" button launches Mini-Interview context
+### Remaining Tasks
+- [ ] **Data Persistence:** Implement "Save Profile" on `ProfileCreationPage.jsx`
+  - [ ] Create backend endpoint `POST /api/users/profile`
+  - [ ] Save final profile data to `users.json` or database
+- [ ] **Optional:** Text-to-Speech (TTS) for AI responses
+- [ ] **Optional:** "Flying Chips" animation for keyword extraction
 
 ### Integration & Testing
-- [ ] Integrate all components in `src/pages/VoiceInterviewPage.jsx`
-- [ ] Test full flow:
-  - [ ] Start interview -> Speak -> See Transcript
-  - [ ] Finish -> Review Mode -> See Smart Highlights
-  - [ ] Edit Form -> Save
-- [ ] Test Privacy Filter with dummy PII data
+- [x] Integrate all components in `src/pages/VoiceInterviewPage.jsx`
+- [x] Test full flow:
+  - [x] Start interview -> Speak -> See Transcript
+  - [x] Finish -> Download PDF -> Auto-redirect to Profile
+  - [x] View pre-filled data on Profile Page
 
 **Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile safely
 
