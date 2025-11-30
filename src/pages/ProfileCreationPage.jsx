@@ -102,8 +102,9 @@ export default function ProfileCreationPage() {
             {/* Bio Section - Soft Blue */}
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#5C9CE6', marginBottom: '12px', fontWeight: '700' }}>
-                <UserIcon /> About Me
+                <UserIcon /> About Me <span style={{ color: 'var(--color-error)', marginLeft: '4px' }}>*</span>
               </label>
+              {/* TODO: Add validation logic to ensure this field is not empty before saving */}
               <textarea 
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -122,8 +123,9 @@ export default function ProfileCreationPage() {
             {/* Interests Section - Soft Purple */}
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#BA68C8', marginBottom: '12px', fontWeight: '700' }}>
-                <HeartIcon /> Interests
+                <HeartIcon /> Interests <span style={{ color: 'var(--color-error)', marginLeft: '4px' }}>*</span>
               </label>
+              {/* TODO: Add validation logic to ensure at least 1 interest is selected */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {interests.map(tag => (
                   <span key={tag} style={{ 
@@ -155,8 +157,9 @@ export default function ProfileCreationPage() {
             {/* Availability Section - Soft Teal */}
             <div>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#4DB6AC', marginBottom: '12px', fontWeight: '700' }}>
-                <CalendarIcon /> Availability
+                <CalendarIcon /> Availability <span style={{ color: 'var(--color-error)', marginLeft: '4px' }}>*</span>
               </label>
+              {/* TODO: Add validation logic to ensure at least 1 availability option is checked */}
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '10px', marginBottom: '1rem' }}>
                 {Object.keys(availabilityChecks).map(opt => (

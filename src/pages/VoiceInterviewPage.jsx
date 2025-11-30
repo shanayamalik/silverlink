@@ -357,29 +357,50 @@ export default function VoiceInterviewPage() {
           </div>
         )}
 
-        {/* Finish Button (Bottom Placement) */}
-        {transcript.length > 2 && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', marginBottom: '1rem' }}>
+        {/* 
+          TODO: IMPROVE BUTTON APPEARANCE LOGIC
+          Currently, this button appears as soon as there is any transcript.
+          
+          Future Requirement:
+          Only show this "Generate My Profile" button after the AI has collected 3 key pieces of info:
+          1. Hobbies / Interests
+          2. Help Type (Volunteer vs. Senior vs. Both)
+          3. Availability
+          
+          We might need a helper function like `checkProfileCompleteness(transcript)` to decide when to reveal this.
+        */}
+        {transcript.length > 0 && (
+          <div style={{ 
+            width: '100%', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            padding: '2rem 0',
+            marginTop: 'auto' /* Pushes button to the bottom if transcript is short */
+          }}>
             <button 
               onClick={handleFinishInterview}
               disabled={isAnalyzing || isProcessing || isListening}
               style={{
-                padding: '12px 24px',
-                backgroundColor: 'var(--color-primary)',
-                color: 'white',
+                padding: '12px 28px',
+                backgroundColor: 'var(--color-secondary)', // Lilac
+                color: '#333',
                 border: 'none',
-                borderRadius: '30px',
+                borderRadius: '50px',
                 fontSize: '16px',
-                fontWeight: '600',
+                fontWeight: '700',
                 cursor: 'pointer',
+                boxShadow: '0 4px 16px rgba(220, 208, 255, 0.6)',
+                display: 'flex', alignItems: 'center', gap: '10px',
+                transition: 'transform 0.2s',
                 opacity: (isAnalyzing || isProcessing || isListening) ? 0.6 : 1,
-                display: 'flex', alignItems: 'center', gap: '8px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                transition: 'transform 0.2s'
               }}
             >
-              {isAnalyzing ? 'Analyzing Interview...' : 'Finish & Save Interview'}
-              {!isAnalyzing && <span>💾</span>}
+              {/* Sparkles Icon SVG */}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3V5m0 14v2M5 12H3m18 0h-2M17.657 6.343l-1.414 1.414M6.343 17.657l-1.414 1.414M17.657 17.657l-1.414-1.414M6.343 6.343L4.929 4.929" />
+              </svg>
+              {isAnalyzing ? 'Generating...' : 'Generate My Profile'}
             </button>
           </div>
         )}
