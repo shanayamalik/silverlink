@@ -7,6 +7,7 @@ import PreferencesPage from './pages/PreferencesPage';
 import VolunteersPage from './pages/VolunteersPage';
 import DesignPreviewPage from './pages/DesignPreviewPage';
 import ProfileDesignPreview from './pages/ProfileDesignPreview';
+import VoiceInterviewPage from './pages/VoiceInterviewPage';
 import './styles/global.css';
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/volunteers" element={<VolunteersPage />} />
           <Route path="/design-preview" element={<DesignPreviewPage />} />
           <Route path="/profile-design" element={<ProfileDesignPreview />} />
+          <Route path="/interview" element={<VoiceInterviewPage />} />
         </Routes>
       </div>
     </BrowserRouter>
@@ -30,4 +32,5 @@ function App() {
 }
 
 export default App;
+
 

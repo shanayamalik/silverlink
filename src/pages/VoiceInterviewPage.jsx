@@ -1,67 +1,142 @@
-// TODO: VoiceInterviewPage - DIFFICULT TASK
-//
-// This page implements the Difficult Task - AI-guided voice interview
-//
-// Components to use:
-// - Header
-// - VoiceInterview (main component with all sub-components)
-// - Or manually compose:
-//   - LiveTranscription
-//   - ProfileTagsLive
-//   - ErrorRecovery
-//
-// Flow:
-// 1. User clicks microphone button to start
-// 2. Web Speech API records and transcribes
-// 3. Send transcript to backend: POST /api/ai/chat
-// 4. Backend calls OpenAI API with conversation context
-// 5. AI asks follow-up questions
-// 6. Display live transcription with color coding
-// 7. Extract interests/preferences → show as live tags
-// 8. Handle errors with ErrorRecovery component
-// 9. At end, save to backend: PUT /api/users/:id/interests
-// 10. Navigate to summary or HomePage
-//
-// State management:
-// - isListening: boolean
-// - transcript: array of transcript lines
-// - extractedTags: array of preference tags
-// - conversationHistory: array for OpenAI context
-//
-// Web Speech API:
-// - const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-// - recognition.continuous = true;
-// - recognition.onresult = (event) => { /* handle transcript */ };
-//
-// Example structure:
-// import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import Header from '../components/common/Header';
-// import VoiceInterview from '../components/VoiceInterview';
-//
-// export default function VoiceInterviewPage() {
-//   const navigate = useNavigate();
-//
-//   const handleComplete = async (profile) => {
-//     // Save extracted interests to backend
-//     await fetch('/api/users/1/interests', {
-//       method: 'PUT',
-//       body: JSON.stringify({ interests: profile.interests })
-//     });
-//     navigate('/home');
-//   };
-//
-//   return (
-//     <div className="voice-interview-page">
-//       <Header title="Tell Us About Yourself" showBack showHome />
-//       <VoiceInterview 
-//         onComplete={handleComplete}
-//         onCancel={() => navigate('/home')}
-//       />
-//     </div>
-//   );
-// }
+import React, { useState, useEffect, useRef } from 'react';
+import Header from '../components/common/Header';
 
 export default function VoiceInterviewPage() {
-  return null;
+  /* 
+    TODO: Finalize Color Scheme & Background
+    - User is undecided between the current Purple/Pastel theme vs. a Blue/Green theme.
+    - Consider changing the background color to plain 'white' instead of 'var(--color-background)'.
+  */
+
+  // Mock state
+  const [transcript, setTranscript] = useState([
+    { text: "Hi! I'm here to help match you with the right volunteer. Tell me a little about what you enjoy doing.", speaker: 'ai', timestamp: new Date().toISOString() }
+  ]);
+  const [interimText, setInterimText] = useState('');
+  const [isListening, setIsListening] = useState(false);
+  const endRef = useRef(null);
+
+  // Auto-scroll
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [transcript, interimText]);
+
+  // Simulation Logic
+  useEffect(() => {
+    let timeout;
+    if (isListening) {
+      setInterimText("I really enjoy...");
+      timeout = setTimeout(() => {
+        setInterimText("I really enjoy gardening and reading books.");
+        setTimeout(() => {
+          setTranscript(prev => [...prev, { 
+            text: "I really enjoy gardening and reading books.", 
+            speaker: 'user', 
+            timestamp: new Date().toISOString(),
+            highlights: ['gardening', 'reading']
+          }]);
+          setInterimText('');
+          setIsListening(false);
+        }, 1500);
+      }, 1000);
+    }
+    return () => clearTimeout(timeout);
+  }, [isListening]);
+
+  // --- Shared Components ---
+
+  const MicButton = ({ size = 'large', floating = false }) => (
+    <button 
+      onClick={() => setIsListening(!isListening)}
+      style={{
+        width: size === 'large' ? '64px' : '48px',
+        height: size === 'large' ? '64px' : '48px',
+        borderRadius: '50%',
+        backgroundColor: isListening ? 'var(--color-error)' : 'var(--color-secondary)',
+        color: isListening ? 'white' : '#333',
+        border: '4px solid white',
+        cursor: 'pointer',
+        boxShadow: floating ? '0 8px 24px rgba(0,0,0,0.15)' : 'none',
+        transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
+        transform: isListening ? 'scale(1.1)' : 'scale(1)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 10
+      }}
+    >
+      {isListening ? (
+        // Stop Icon
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>
+        </svg>
+      ) : (
+        // Mic Icon
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14Z" fill="currentColor"/>
+          <path d="M19 10V11C19 14.53 16.39 17.44 13 17.93V21H11V17.93C7.61 17.44 5 14.53 5 11V10H7V11C7 13.76 9.24 16 12 16C14.76 16 17 13.76 17 11V10H19Z" fill="currentColor"/>
+        </svg>
+      )}
+    </button>
+  );
+
+  const HighlightText = ({ text, highlights = [] }) => {
+    if (!highlights.length) return text;
+    const parts = text.split(new RegExp(`(${highlights.join('|')})`, 'gi'));
+    return parts.map((part, i) => {
+      const isHighlight = highlights.some(h => h.toLowerCase() === part.toLowerCase());
+      return isHighlight ? (
+        <span key={i} style={{ 
+          backgroundColor: 'var(--color-success)', 
+          padding: '0 4px', 
+          borderRadius: '4px',
+          fontWeight: '700' 
+        }}>{part}</span>
+      ) : part;
+    });
+  };
+
+  return (
+    <div className="voice-interview-page" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-background)' }}>
+      <Header title="Voice Interview" showBack showHome />
+      
+      <div style={{ flex: 1, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '480px', margin: '0 auto', width: '100%', overflowY: 'auto', paddingBottom: '120px' }}>
+        {transcript.map((t, i) => (
+          <div key={i} style={{
+            width: '100%',
+            backgroundColor: t.speaker === 'user' ? 'var(--color-primary-light)' : 'white',
+            padding: '1rem 1.25rem',
+            borderRadius: '16px',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+            border: t.speaker === 'ai' ? '1px solid var(--color-border)' : '1px solid var(--color-primary)',
+            position: 'relative'
+          }}>
+            <div style={{ 
+              position: 'absolute', top: '-8px', left: '16px', 
+              backgroundColor: t.speaker === 'user' ? 'var(--color-primary)' : 'var(--color-secondary)',
+              color: t.speaker === 'user' ? '#000' : '#333',
+              fontSize: '10px', fontWeight: '700', 
+              padding: '2px 8px', borderRadius: '8px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              {t.speaker === 'ai' ? 'AI' : 'You'}
+            </div>
+            <div style={{ fontSize: '15px', marginTop: '6px', lineHeight: '1.5', color: '#333' }}>
+              <HighlightText text={t.text} highlights={t.highlights} />
+            </div>
+          </div>
+        ))}
+        {interimText && (
+          <div style={{ width: '100%', padding: '1rem 1.25rem', borderRadius: '16px', border: '1px dashed var(--color-primary)', backgroundColor: 'rgba(255,255,255,0.5)' }}>
+            <div style={{ fontSize: '15px', color: '#666', fontStyle: 'italic' }}>{interimText}</div>
+          </div>
+        )}
+        <div ref={endRef} />
+      </div>
+
+      {/* Fixed Center Placement */}
+      <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
+        <MicButton size="large" floating />
+      </div>
+    </div>
+  );
 }
