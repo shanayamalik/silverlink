@@ -8,7 +8,6 @@ import VolunteersPage from './pages/VolunteersPage';
 import VoiceInterviewPage from './pages/VoiceInterviewPage';
 import ProfileCreationPage from './pages/ProfileCreationPage';
 import './styles/global.css';
-import './App.css';
 
 function App() {
   return (

@@ -8,7 +8,7 @@ export default function ProfileCreationPage() {
   const location = useLocation();
   
   // Default state
-  // TODO: Improve the "About Me" section to have a more robust AI-generated bio, or allow the user to regenerate it here if they are not satisfied.
+  // TODO: Improve the "About Me" section to have a more robust AI-generated bio (in first person??), or allow the user to regenerate it here if they are not satisfied.
   const [bio, setBio] = useState('');
   const [interests, setInterests] = useState([]);
   const [availabilityText, setAvailabilityText] = useState('');
@@ -166,9 +166,15 @@ export default function ProfileCreationPage() {
     setAvailabilityChecks(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // TODO: Add validation logic to ensure required fields (About Me, Interests) are not empty before saving. Disable the button if invalid.
-    // In a real app, this would send data to the backend
+    
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.id) {
+      alert("You must be logged in to save your profile.");
+      return;
+    }
+
     const profileData = {
       bio,
       interests,
@@ -181,14 +187,28 @@ export default function ProfileCreationPage() {
       completedAt: new Date().toISOString()
     };
     
-    console.log("Saving Profile:", profileData);
-    
-    // Save to local storage for demo purposes
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    localStorage.setItem('user', JSON.stringify({ ...user, ...profileData, hasProfile: true }));
+    try {
+      const response = await fetch('/api/users/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, profileData })
+      });
 
-    // Navigate to dashboard
-    navigate('/dashboard');
+      if (!response.ok) {
+        throw new Error('Failed to save profile');
+      }
+
+      const data = await response.json();
+      
+      // Update local storage with the updated user object from server
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      // Navigate to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      alert("Failed to save profile. Please try again.");
+    }
   };
 
   // Icons

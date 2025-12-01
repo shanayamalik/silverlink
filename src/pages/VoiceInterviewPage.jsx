@@ -108,7 +108,7 @@ export default function VoiceInterviewPage() {
             
             // Update progress from backend analysis
             if (typeof data.progress === 'number') {
-              setProgress(data.progress);
+              setProgress(prev => Math.max(prev, data.progress));
             }
 
             // TODO: (optional?) Text-to-Speech (TTS)

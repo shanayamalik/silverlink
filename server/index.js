@@ -248,6 +248,31 @@ app.post('/api/auth/reset-password', (req, res) => {
   res.json({ message: 'Password updated successfully' });
 });
 
+// --- User Profile Route ---
+app.post('/api/users/profile', (req, res) => {
+  const { userId, profileData } = req.body;
+
+  if (!userId || !profileData) {
+    return res.status(400).json({ message: 'User ID and profile data are required' });
+  }
+
+  const userIndex = users.findIndex(u => u.id === userId);
+  if (userIndex === -1) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Update user profile
+  users[userIndex] = {
+    ...users[userIndex],
+    ...profileData,
+    hasProfile: true,
+    updatedAt: new Date().toISOString()
+  };
+
+  writeUsers(users);
+  res.json({ message: 'Profile updated successfully', user: users[userIndex] });
+});
+
 app.listen(PORT, () => {
   console.log(`SilverGuide server running on port ${PORT}`);
 });

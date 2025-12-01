@@ -22,11 +22,6 @@ cs260-final-project/
 │   │   ├── VolunteerCard.jsx                 # MEDIUM TASK: Single volunteer display
 │   │   ├── VolunteerComparison.jsx           # MEDIUM TASK: Side-by-side 2-3 volunteers
 │   │   ├── SchedulingCalendar.jsx            # MEDIUM TASK: Time slot picker
-│   │   │
-│   │   ├── VoiceInterview.jsx                # HARD TASK: Main AI interview component
-│   │   ├── LiveTranscription.jsx             # HARD TASK: Real-time transcript + color coding
-│   │   ├── ProfileTagsLive.jsx               # HARD TASK: Live updating preference tags
-│   │   └── ErrorRecovery.jsx                 # HARD TASK: "Did you mean...?" corrections
 │   │
 │   ├── pages/
 │   │   ├── HomePage.jsx                      # Landing page with main actions
@@ -146,29 +141,12 @@ cs260-final-project/
 
 
 ### Phase 4: Difficult Task (Prerequisites: Phase 1)
-13. **VoiceInterview Component** (Main controller)
+13. **VoiceInterviewPage Integration**
+    - Combine all voice components
     - Microphone button (record/stop)
     - Web Speech API integration
     - Send transcribed text to OpenAI (or mock AI)
     - Orchestrate all sub-components
-
-14. **LiveTranscription Component**
-    - Display real-time speech-to-text
-    - Color coding (green = understood, yellow = unclear)
-    - Scrollable transcript history
-
-15. **ProfileTagsLive Component**
-    - Show preference tags appearing/updating in real-time
-    - Parse AI responses for interests/preferences
-    - Visual animation when tags appear
-
-16. **ErrorRecovery Component**
-    - "Did you mean...?" suggestions
-    - Undo last response button
-    - Text input fallback option
-
-17. **VoiceInterviewPage Integration**
-    - Combine all voice components
     - Save final profile to localStorage
     - Navigate to summary/confirmation
 
