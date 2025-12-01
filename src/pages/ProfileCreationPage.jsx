@@ -1,3 +1,4 @@
+// TODO: include an option for the user to edit profile manually or do so with a voice AI again
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/common/Header';
@@ -67,6 +68,7 @@ export default function ProfileCreationPage() {
         setBio(data.summary);
       }
       
+      // TODO: improve options for availability since weekends/weekdays and afternoons/mornings is vague
       if (data.interests && Array.isArray(data.interests)) setInterests(data.interests);
       if (data.availability) {
         setAvailabilityText(data.availability);
