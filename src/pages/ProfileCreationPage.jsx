@@ -21,6 +21,17 @@ export default function ProfileCreationPage() {
   });
   const [languages, setLanguages] = useState('');
   const [skills, setSkills] = useState('');
+  
+  // --- HELP NEEDED STATE ---
+  // TODO: Add matching logic to pair seniors with volunteers based on helpNeeded categories
+  const [helpNeeded, setHelpNeeded] = useState([]);
+  const HELP_CATEGORIES = [
+    { id: 'companionship', label: 'Companionship', icon: '💬', description: 'Friendly conversation, phone calls, and visits' },
+    { id: 'tech', label: 'Tech Support', icon: '📱', description: 'Help with phones, tablets, computers, and video calls' },
+    { id: 'hobbies', label: 'Hobbies Together', icon: '🎨', description: 'Crafts, puzzles, games, or gardening together' },
+    { id: 'reading', label: 'Reading & Writing', icon: '📖', description: 'Reading aloud, help with letters or paperwork' },
+    { id: 'exercise', label: 'Gentle Exercise', icon: '🚶', description: 'Walking buddy, stretching, or light movement' }
+  ];
 
   // --- INTEREST SELECTION MODAL STATE ---
   const [showInterestModal, setShowInterestModal] = useState(false);
@@ -71,6 +82,7 @@ export default function ProfileCreationPage() {
       }
       if (data.languages && Array.isArray(data.languages)) setLanguages(data.languages.join(', '));
       if (data.skills && Array.isArray(data.skills)) setSkills(data.skills.join(', '));
+      if (data.helpNeeded && Array.isArray(data.helpNeeded)) setHelpNeeded(data.helpNeeded);
     }
   }, [location.state]);
 
@@ -166,6 +178,14 @@ export default function ProfileCreationPage() {
     setAvailabilityChecks(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const toggleHelpNeeded = (category) => {
+    if (helpNeeded.includes(category)) {
+      setHelpNeeded(helpNeeded.filter(c => c !== category));
+    } else {
+      setHelpNeeded([...helpNeeded, category]);
+    }
+  };
+
   const handleSave = async () => {
     // TODO: Add validation logic to ensure required fields (About Me, Interests) are not empty before saving. Disable the button if invalid.
     
@@ -184,6 +204,7 @@ export default function ProfileCreationPage() {
       },
       languages,
       skills,
+      helpNeeded,
       completedAt: new Date().toISOString()
     };
     
@@ -332,7 +353,7 @@ export default function ProfileCreationPage() {
         </div>
       )}
       
-      <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem 1rem' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem' }}>
         <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', position: 'relative' }}>
           
           <h3 style={{ marginBottom: '2rem', fontSize: '18px', color: '#444', textAlign: 'center' }}>
@@ -450,6 +471,53 @@ export default function ProfileCreationPage() {
                 onFocus={(e) => e.target.style.borderBottomColor = '#4DB6AC'}
                 onBlur={(e) => e.target.style.borderBottomColor = '#E0F2F1'}
               />
+            </div>
+
+            {/* Help Needed Section - Option E: 2-Column Grid with Descriptions */}
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#FF7043', marginBottom: '12px', fontWeight: '700' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                What Help Do You Need? <span style={{ color: '#D32F2F', marginLeft: '2px', fontSize: '18px', fontWeight: '900', lineHeight: '1' }}>*</span>
+              </label>
+              <p style={{ fontSize: '12px', color: '#888', marginBottom: '12px', marginTop: 0 }}>
+                Select all that apply. This helps us match you with the right volunteer.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                {HELP_CATEGORIES.map(cat => {
+                  const isSelected = helpNeeded.includes(cat.label);
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => toggleHelpNeeded(cat.label)}
+                      style={{
+                        padding: '12px 14px',
+                        borderRadius: '10px',
+                        border: isSelected ? '2px solid #FF7043' : '1px solid #E8E8E8',
+                        backgroundColor: isSelected ? '#FBE9E7' : 'white',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <div style={{ fontSize: '22px', flexShrink: 0 }}>{cat.icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: isSelected ? '#FF7043' : '#333' }}>{cat.label}</div>
+                        <div style={{ fontSize: '11px', color: '#888', marginTop: '1px' }}>{cat.description}</div>
+                      </div>
+                      {isSelected && (
+                        <div style={{ color: '#FF7043', fontSize: '16px', flexShrink: 0 }}>✓</div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Languages Section - Soft Orange */}
