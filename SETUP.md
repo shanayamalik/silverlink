@@ -18,13 +18,14 @@ cd cs260-final-project
 
 ## 2. Create Environment Variables
 
-The project requires a `.env` file for backend configuration. This file is not shared in the repository for security reasons.
+The project requires a `.env` file for backend configuration. This file is not shared in the repository for security reasons. **Each team member must create this file locally.**
 
 1.  Create a new file named `.env` in the root folder of the project (same level as `package.json`).
 2.  Paste the following content into it:
 
 ```env
-OPENAI_API_KEY=your_api_key_here
+# Get your own API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=sk-your-actual-api-key-here
 PORT=3001
 ```
 

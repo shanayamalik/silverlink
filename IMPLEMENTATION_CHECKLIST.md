@@ -89,6 +89,7 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Implement `src/pages/SignUpPage.jsx`
   - [x] Multi-step wizard (Name/Email/Password -> Security Question)
   - [x] Auto-redirect if already logged in
+  - [ ] **TODO:** Add User Role selection (Volunteer / Senior / Both)
 - [x] Implement `src/pages/ForgotPasswordPage.jsx`
   - [x] Email lookup
   - [x] Security question verification
@@ -109,6 +110,7 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] POST /api/auth/login endpoint
   - [x] GET /api/auth/security-question endpoint
   - [x] POST /api/auth/reset-password endpoint
+  - [x] Persist users to `server/data/users.json`
   - [ ] PUT /api/users/:id/preferences endpoint
   - [ ] GET /api/users/:id endpoint
 - [ ] Test backend with Postman/Thunder Client
@@ -122,13 +124,13 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 3: Medium Task - VolunteersPage 
 
 ### Person 1: Volunteer Display Components
-- [ ] Implement `src/components/VolunteerCard.jsx`
-  - [ ] Props: volunteer, onClick, selected, compact
-  - [ ] Display photo/icon, name, verified badge
-  - [ ] Display profession/role tag (instead of location)
-  - [ ] "Can help with" section
-  - [ ] Dynamic button text ("Chat with..." vs "Request Help") based on context
-  - [ ] Large, tap-friendly card (Border variant)
+- [x] Implement `src/components/VolunteerCard.jsx`
+  - [x] Props: volunteer, onClick, selected, compact
+  - [x] Display photo/icon, name, verified badge
+  - [x] Display profession/role tag (instead of location)
+  - [x] "Can help with" section
+  - [x] Dynamic button text ("Chat with..." vs "Request Help") based on context
+  - [x] Large, tap-friendly card (Border variant)
 - [ ] Implement `src/components/VolunteerComparison.jsx`
   - [ ] Props: volunteers (2-3), onSelect, selectedId
   - [ ] Side-by-side layout (responsive: stack on mobile)
@@ -164,64 +166,46 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ## Phase 4: Difficult Task - AI Voice Interview 
 
-### Voice Recognition Core
-- [ ] Implement `src/components/VoiceInterview.jsx` (main component)
-  - [ ] Large microphone button (use microphone.svg)
-  - [ ] Integrate Web Speech API (SpeechRecognition)
-  - [ ] Start/stop recording functionality
-  - [ ] State: isListening, transcript, conversationHistory
-  - [ ] Text input fallback option
-  - [ ] Progress indicator
-- [ ] Test voice recording and transcription
-- [ ] Handle browser compatibility (webkit prefix)
+### Step 1: The Conversation (Focus Mode)
+- [x] Implement `src/pages/VoiceInterviewPage.jsx`
+  - [x] Minimalist UI: AI Avatar/Icon + Current Question
+  - [x] Large Microphone Button (Start/Stop)
+  - [x] Live Transcript Display (Large, readable text)
+  - [x] Real-time Speech-to-Text using Web Speech API
 
-### Live Display Components
-- [ ] Implement `src/components/LiveTranscription.jsx`
-  - [ ] Props: transcript (array), isListening
-  - [ ] Display real-time speech-to-text
-  - [ ] Color coding by confidence: green (>0.8), yellow (0.5-0.8), red (<0.5)
-  - [ ] Auto-scroll to latest
-  - [ ] Different styling for user vs AI speech
-- [ ] Implement `src/components/ProfileTagsLive.jsx`
-  - [ ] Props: tags (array), onRemove
-  - [ ] Display extracted preferences as tags
-  - [ ] Animate new tags (fade-in)
-  - [ ] Group by category: interests, communication, availability
-  - [ ] Color-code by category
-- [ ] Test live updates and animations
+### Step 2: AI Intelligence & Backend
+- [ ] **TODO: MINGHUI & CARRIE** - Create your own OpenAI API Key and add it to your local `.env` file (`OPENAI_API_KEY=sk-...`)
+- [x] Implement `server/index.js` endpoints
+  - [x] `POST /api/chat`: Handles conversation turn with OpenAI
+  - [x] `POST /api/analyze-interview`: Generates profile JSON and Markdown summary
+- [x] **Privacy Filter**: (Basic implementation via system prompt instructions)
 
-### AI Integration & Error Handling
-- [ ] Implement `src/components/ErrorRecovery.jsx`
-  - [ ] Props: errorType, originalText, suggestions, onCorrect, onSkip
-  - [ ] "Did you mean...?" interface
-  - [ ] Display original text + suggestions
-  - [ ] Undo/retry options
-  - [ ] Text input fallback
-- [ ] Add OpenAI integration in `server/index.js`
-  - [ ] Install openai package
-  - [ ] POST /api/ai/chat endpoint
-  - [ ] Send user message + conversation history to OpenAI
-  - [ ] Extract interests/preferences from AI response
-  - [ ] Return AI question + extracted data
-- [ ] Add backend endpoint: PUT /api/users/:id/interests
-- [ ] Test AI conversation flow
+### Step 3: The Handover & Profile Creation
+- [x] Implement `src/pages/ProfileCreationPage.jsx`
+  - [x] "Subtle Pastel" Design (Option K)
+  - [x] Auto-fill Bio, Interests, and Availability from Interview Data
+  - [x] Editable fields for user refinement
+- [x] Connect Interview to Profile
+  - [x] Auto-navigation after interview finishes
+  - [x] Pass analysis data via React Router state
+- [x] PDF Summary Download
+  - [x] Generate `interview_summary.pdf` on client-side
+
+### Remaining Tasks
+- [ ] **Data Persistence:** Implement "Save Profile" on `ProfileCreationPage.jsx`
+  - [ ] Create backend endpoint `POST /api/users/profile`
+  - [ ] Save final profile data to `users.json` or database
+- [ ] **Optional:** Text-to-Speech (TTS) for AI responses
+- [ ] **Optional:** "Flying Chips" animation for keyword extraction
 
 ### Integration & Testing
-- [ ] Integrate all voice components in VoiceInterviewPage
-- [ ] Implement `src/pages/VoiceInterviewPage.jsx`
-  - [ ] Use VoiceInterview component
-  - [ ] Handle completion (save interests to backend)
-  - [ ] Navigate to /home or summary screen
-- [ ] Test full AI interview flow:
-  - [ ] Start interview
-  - [ ] Speak or type responses
-  - [ ] See live transcription
-  - [ ] See tags appear in real-time
-  - [ ] Handle errors/corrections
-  - [ ] Complete and save interests
-- [ ] Test without OpenAI API (mock responses) as fallback
+- [x] Integrate all components in `src/pages/VoiceInterviewPage.jsx`
+- [x] Test full flow:
+  - [x] Start interview -> Speak -> See Transcript
+  - [x] Finish -> Download PDF -> Auto-redirect to Profile
+  - [x] View pre-filled data on Profile Page
 
-**Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile
+**Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile safely
 
 ---
 

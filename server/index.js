@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { INTERVIEW_SYSTEM_PROMPT, ANALYSIS_SYSTEM_PROMPT } from './systemPrompts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,6 +70,109 @@ try {
 // Routes
 app.get('/', (req, res) => {
   res.send('SilverGuide API is running');
+});
+
+// --- AI Chat Route ---
+app.post('/api/chat', async (req, res) => {
+  if (!openai) {
+    return res.status(503).json({ message: 'AI service not configured (missing API key)' });
+  }
+
+  const { messages } = req.body;
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ message: 'Invalid messages format' });
+  }
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo", // or gpt-4 if available/preferred
+      messages: [
+        { 
+          role: "system", 
+          content: INTERVIEW_SYSTEM_PROMPT 
+        },
+        ...messages
+      ],
+      temperature: 0.7,
+      max_tokens: 250,
+      response_format: { type: "json_object" } // Force JSON mode if using compatible model
+    });
+
+    const rawContent = completion.choices[0].message.content;
+    let parsedResponse;
+    
+    try {
+      parsedResponse = JSON.parse(rawContent);
+    } catch (e) {
+      console.warn("AI failed to return JSON, falling back to text wrapper");
+      parsedResponse = {
+        message: rawContent,
+        progress: 10, // Default low progress if we can't parse
+        missing_fields: []
+      };
+    }
+
+    res.json(parsedResponse);
+
+  } catch (error) {
+    console.error('OpenAI API Error:', error);
+    res.status(500).json({ message: 'Error generating AI response' });
+  }
+});
+
+// --- Analyze Interview Route ---
+app.post('/api/analyze-interview', async (req, res) => {
+  if (!openai) {
+    return res.status(503).json({ message: 'AI service not configured' });
+  }
+
+  const { transcript } = req.body;
+  if (!transcript || !Array.isArray(transcript)) {
+    return res.status(400).json({ message: 'Invalid transcript format' });
+  }
+
+  try {
+    // Convert transcript to a readable string
+    const conversationText = transcript
+      .map(t => `${t.speaker === 'user' ? 'User' : 'SilverGuide'}: ${t.text}`)
+      .join('\n');
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: ANALYSIS_SYSTEM_PROMPT
+        },
+        {
+          role: "user",
+          content: conversationText
+        }
+      ],
+      temperature: 0.5,
+    });
+
+    const rawContent = completion.choices[0].message.content;
+    let result;
+    try {
+      // Try to parse the JSON. Sometimes models add markdown blocks despite instructions.
+      const jsonString = rawContent.replace(/```json\n?|```/g, '').trim();
+      result = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Failed to parse AI analysis result:", rawContent);
+      // Fallback if JSON parsing fails
+      result = {
+        summaryMarkdown: "# Interview Summary\n\n(Analysis failed to parse correctly)\n\n" + rawContent,
+        structuredData: { skills: [], interests: [], availability: "" }
+      };
+    }
+
+    res.json(result);
+
+  } catch (error) {
+    console.error('OpenAI Analysis Error:', error);
+    res.status(500).json({ message: 'Error analyzing interview' });
+  }
 });
 
 // Auth Routes

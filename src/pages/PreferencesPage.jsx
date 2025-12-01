@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/common/Header';
 
 export default function PreferencesPage() {
+  // TODO: Implement logic to ask the user if they are looking to volunteer or need help (Help Type). This was previously part of the Voice Interview.
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC' }}>
       <Header title="What brings you here today?" showBack showHome />
