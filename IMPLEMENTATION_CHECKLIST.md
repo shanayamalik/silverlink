@@ -185,16 +185,22 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] "Subtle Pastel" Design (Option K)
   - [x] Auto-fill Bio, Interests, and Availability from Interview Data
   - [x] Editable fields for user refinement
+  - [x] Categorized Interest Selection Modal
 - [x] Connect Interview to Profile
   - [x] Auto-navigation after interview finishes
   - [x] Pass analysis data via React Router state
 - [x] PDF Summary Download
   - [x] Generate `interview_summary.pdf` on client-side
+  - [x] "Interview Notes" button next to Bio header
 
 ### Remaining Tasks
 - [ ] **Data Persistence:** Implement "Save Profile" on `ProfileCreationPage.jsx`
   - [ ] Create backend endpoint `POST /api/users/profile`
   - [ ] Save final profile data to `users.json` or database
+- [ ] **Validation:** Ensure required fields (About Me, Interests) are filled before saving
+- [ ] **UX Improvements:**
+  - [ ] Add full-screen loading overlay during AI analysis
+  - [ ] Improve "About Me" generation (more robust bio)
 - [ ] **Optional:** Text-to-Speech (TTS) for AI responses
 - [ ] **Optional:** "Flying Chips" animation for keyword extraction
 
@@ -202,8 +208,9 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Integrate all components in `src/pages/VoiceInterviewPage.jsx`
 - [x] Test full flow:
   - [x] Start interview -> Speak -> See Transcript
-  - [x] Finish -> Download PDF -> Auto-redirect to Profile
-  - [x] View pre-filled data on Profile Page
+  - [x] Finish -> Auto-redirect to Profile
+  - [x] View pre-filled data -> Edit -> Download PDF
+  - [x] Save Profile (currently to localStorage)
 
 **Checkpoint:** ✅ AI voice interview works, extracts interests, updates profile safely
 

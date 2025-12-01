@@ -168,6 +168,7 @@ export default function ProfileCreationPage() {
 
   const handleSave = () => {
     // TODO: Add validation logic to ensure required fields (About Me, Interests) are not empty before saving. Disable the button if invalid.
+    // TODO: Implement persistent profile saving (e.g., to a database or backend API) similar to how login information is handled, instead of just localStorage.
     // In a real app, this would send data to the backend
     const profileData = {
       bio,
