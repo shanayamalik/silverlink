@@ -20,6 +20,29 @@ export default function ProfileCreationPage() {
   const [languages, setLanguages] = useState('');
   const [skills, setSkills] = useState('');
 
+  // --- INTEREST SELECTION MODAL STATE ---
+  const [showInterestModal, setShowInterestModal] = useState(false);
+
+  const SUGGESTED_INTERESTS = [
+    "Gardening", "Reading", "Walking", "Cooking", "Baking", 
+    "Chess", "Music", "Art", "History", "Technology", 
+    "Travel", "Pets", "Movies", "Knitting", "Sports"
+  ];
+
+  const CATEGORIZED_INTERESTS = {
+    "Outdoors": ["Gardening", "Walking", "Nature", "Bird Watching"],
+    "Indoors": ["Reading", "Cooking", "Baking", "Knitting"],
+    "Social": ["Chess", "Board Games", "Conversation", "Tea/Coffee"],
+    "Culture": ["Music", "Art", "History", "Movies"]
+  };
+
+  const CATEGORY_COLORS = {
+    "Outdoors": "#4CAF50", // Green
+    "Indoors": "#FF9800",  // Orange
+    "Social": "#2196F3",   // Blue
+    "Culture": "#9C27B0"   // Purple
+  };
+
   // Load data from the Voice Interview analysis if available
   useEffect(() => {
     if (location.state?.analysisData) {
@@ -48,9 +71,20 @@ export default function ProfileCreationPage() {
   };
 
   const handleInterestAdd = () => {
-    const newInterest = prompt("Enter a new interest:");
-    if (newInterest && !interests.includes(newInterest)) {
-      setInterests([...interests, newInterest]);
+    setShowInterestModal(true);
+  };
+
+  const toggleInterest = (interest) => {
+    if (interests.includes(interest)) {
+      setInterests(interests.filter(i => i !== interest));
+    } else {
+      setInterests([...interests, interest]);
+    }
+  };
+
+  const addCustomInterest = (interest) => {
+    if (interest && !interests.includes(interest)) {
+      setInterests([...interests, interest]);
     }
   };
 
@@ -96,6 +130,112 @@ export default function ProfileCreationPage() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC', paddingBottom: '4rem' }}>
       <Header title="Create Your Profile" showBack />
+
+      {/* --- INTEREST SELECTION MODAL --- */}
+      {showInterestModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: '1rem'
+        }} onClick={() => setShowInterestModal(false)}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '16px', padding: '24px',
+            width: '100%', maxWidth: '400px', maxHeight: '80vh', overflowY: 'auto',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+          }} onClick={e => e.stopPropagation()}>
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ margin: 0, fontSize: '18px' }}>Add Interest</h3>
+              <button onClick={() => setShowInterestModal(false)} style={{ border: 'none', background: 'none', fontSize: '20px', cursor: 'pointer' }}>×</button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {Object.entries(CATEGORIZED_INTERESTS).map(([category, items]) => (
+                <div key={category}>
+                  <h4 style={{ 
+                    margin: '0 0 8px 0', fontSize: '13px', 
+                    color: CATEGORY_COLORS[category] || '#888', 
+                    textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.5px'
+                  }}>
+                    {category}
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {items.map(interest => {
+                      const isSelected = interests.includes(interest);
+                      const activeColor = CATEGORY_COLORS[category] || '#333';
+                      return (
+                        <button
+                          key={interest}
+                          onClick={() => toggleInterest(interest)}
+                          style={{
+                            padding: '6px 12px', borderRadius: '6px', 
+                            border: isSelected ? `1px solid ${activeColor}` : '1px solid #E0E0E0',
+                            backgroundColor: isSelected ? activeColor : '#FAFAFA', 
+                            color: isSelected ? 'white' : '#333', 
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            transition: 'all 0.2s ease',
+                            display: 'flex', alignItems: 'center', gap: '6px'
+                          }}
+                        >
+                          {interest} {isSelected && <span>✓</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+              <p style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>Don't see yours?</p>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <input 
+                  type="text" 
+                  placeholder="Type your own..." 
+                  id="customInterestInput"
+                  style={{ flex: 1, padding: '8px', borderRadius: '6px', border: '1px solid #ddd' }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const val = e.target.value;
+                      if(val) {
+                        addCustomInterest(val);
+                        e.target.value = '';
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  onClick={() => {
+                    const input = document.getElementById('customInterestInput');
+                    const val = input.value;
+                    if(val) {
+                      addCustomInterest(val);
+                      input.value = '';
+                    }
+                  }}
+                  style={{ padding: '8px 16px', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                >
+                  Add
+                </button>
+              </div>
+              
+              <button 
+                onClick={() => setShowInterestModal(false)}
+                style={{ 
+                  width: '100%', marginTop: '16px', padding: '12px', 
+                  backgroundColor: '#4CAF50', color: 'white', 
+                  border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' 
+                }}
+              >
+                Done
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
       
       <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem 1rem' }}>
         <div style={{ backgroundColor: 'white', padding: '2rem', borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}>
@@ -107,6 +247,7 @@ export default function ProfileCreationPage() {
             
             {/* Bio Section - Soft Blue */}
             <div>
+              {/* TODO: Consider adding other required or optional sections to the profile (e.g. Location, Availability Preferences) */}
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px', color: '#5C9CE6', marginBottom: '12px', fontWeight: '700' }}>
                 <UserIcon /> About Me <span style={{ color: '#D32F2F', marginLeft: '2px', fontSize: '18px', fontWeight: '900', lineHeight: '1' }}>*</span>
               </label>
