@@ -193,37 +193,69 @@ export default function VolunteersPage() {
   const [showScheduling, setShowScheduling] = useState(false);
 
   const navigate = useNavigate();
+  function computeMatchScore(volunteer, prefs) {
+    let score = 0;
+    const MAX_SCORE = 5;
 
+    // 1) interests / helpType
+    if (prefs?.helpType && Array.isArray(volunteer.interests)) {
+      const keyword = String(prefs.helpType).toLowerCase();
+      const interestMatch = volunteer.interests.some((i) =>
+        String(i).toLowerCase().includes(keyword)
+      );
+      if (interestMatch) {
+        score += 3; // interests 
+      }
+    }
+
+    // 2) communicationStyle if patient
+    if (
+      prefs?.needsPatience &&
+      typeof volunteer.communicationStyle === "string" &&
+      volunteer.communicationStyle.toLowerCase().includes("patient")
+    ) {
+      score += 1;
+    }
+
+    // 3) verified：give a little score
+    if (volunteer.verified) {
+      score += 1;
+    }
+
+    if (score === 0) {
+      return 0.2; // give a default
+    }
+
+    return Math.min(score / MAX_SCORE, 1);
+  }
   useEffect(() => {
-    // 1. Load preferences from localStorage (if they exist)
     const prefsRaw = localStorage.getItem("preferences");
-    let filtered = mockVolunteers;
+    // have a copy
+    let ranked = mockVolunteers.map((v) => ({ ...v }));
 
     if (prefsRaw) {
       try {
         const prefs = JSON.parse(prefsRaw);
 
-        // TODO: Replace with real matching logic.
-        // For now, we do a simple demo filter based on a "helpType" field if present.
-        if (prefs.helpType) {
-          const keyword = String(prefs.helpType).toLowerCase();
-          filtered = mockVolunteers.filter((v) =>
-            Array.isArray(v.interests) &&
-            v.interests.some((i) => i.toLowerCase().includes(keyword))
-          );
-          // Fallback if filter removes everything
-          if (filtered.length === 0) {
-            filtered = mockVolunteers;
-          }
-        }
+        // give every volunteer a match score
+        ranked = ranked.map((v) => {
+          const dynamicScore = computeMatchScore(v, prefs);
+          return {
+            ...v,
+            matchScore: dynamicScore,
+          };
+        });
+
+        // ran highest to lowest rank
+        ranked.sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
       } catch (e) {
-        console.warn("Failed to parse preferences; using all volunteers.", e);
-        filtered = mockVolunteers;
+        console.warn("Failed to parse preferences; using base ordering.", e);
+        // 
       }
     }
 
-    // 2. Take top 2–3 matches
-    setVolunteers(filtered.slice(0, 3));
+    // get top 3
+    setVolunteers(ranked.slice(0, 3));
   }, []);
 
   const handleVolunteerSelect = (id) => {
