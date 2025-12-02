@@ -106,9 +106,24 @@ function ExtendedProfileModal({ volunteer, onClose }) {
           <Button variant="secondary" fullWidth onClick={onClose}>
             Close
           </Button>
-          <Button variant="primary" fullWidth>
-            Request Match
-          </Button>
+          <button
+            style={{
+              flex: 1,
+              padding: '12px 20px',
+              fontSize: '15px',
+              fontWeight: '600',
+              color: 'white',
+              backgroundColor: '#00897B',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
+          >
+            Get in Touch
+          </button>
         </div>
       </div>
     </div>

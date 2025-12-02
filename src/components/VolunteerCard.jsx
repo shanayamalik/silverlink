@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from './common/Card';
-import Button from './common/Button';
 
 /**
  * VolunteerCard Component
@@ -85,17 +84,36 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
         </div>
       )}
 
-      {/* Languages + Availability row */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '12px', color: '#666', flexWrap: 'wrap', gap: '8px' }}>
-        {languages.length > 0 && <span>🗣️ {languages.join(', ')}</span>}
-        {availability && <span>📅 {availability}</span>}
+      {/* Languages + Availability row - fixed positions */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '12px', color: '#666', gap: '8px' }}>
+        <span style={{ minWidth: '40%' }}>
+          {languages.length > 0 ? `🗣️ ${languages.join(', ')}` : '\u00A0'}
+        </span>
+        <span>
+          {availability ? `📅 ${availability}` : '\u00A0'}
+        </span>
       </div>
 
-      {/* View Profile Button */}
-      <div style={{ marginTop: 'auto' }}>
-        <Button size="medium" variant="primary" fullWidth onClick={onViewProfile}>
+      {/* View Profile Button - Small Teal Style */}
+      <div style={{ marginTop: 'auto', textAlign: 'center' }}>
+        <button
+          onClick={onViewProfile}
+          style={{
+            padding: '6px 16px',
+            fontSize: '12px',
+            fontWeight: '600',
+            color: 'white',
+            backgroundColor: '#00897B',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
+        >
           View Profile
-        </Button>
+        </button>
       </div>
     </Card>
   );
