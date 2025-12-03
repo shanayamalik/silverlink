@@ -1,5 +1,6 @@
 // Mock volunteer data for prototype demonstration
 // All profiles are complete for demo purposes
+// TODO: Add more mock volunteers later
 
 export const mockVolunteers = [
   {
