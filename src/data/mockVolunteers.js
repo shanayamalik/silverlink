@@ -1,51 +1,117 @@
-// Mock volunteer data for testing volunteer matching and display
-// Diverse profiles with varying levels of optional information
+// Mock volunteer data for prototype demonstration
+// All profiles are complete for demo purposes
 
 export const mockVolunteers = [
-  // Profile 1: Complete profile (all fields filled)
   {
     id: '1',
     name: 'Maria Santos',
     icon: '👩‍🏫',
     role: 'Retired Librarian',
-    isActive: true,
     bio: 'Books brought me to this country, and now I want to share that love of reading with others.',
     helpsWith: ['Companionship', 'Reading Together', 'Library Help'],
     sharedInterests: ['Reading', 'Gardening'],
     languages: ['Portuguese', 'English', 'Spanish'],
     availability: 'Tue, Thu Mornings',
     skills: ['Book recommendations', 'Reading aloud', 'Organizing', 'Storytelling'],
-    yearsVolunteering: 4,
     ageRange: '60-69',
     about: 'After 25 years as a librarian in São Paulo and later Boston, I retired but couldn\'t stay away from books. I host a small book club and enjoy reading aloud to those who find it difficult. I\'m patient, warm, and always have a good story recommendation.'
   },
-  // Profile 2: Minimal optional info (no skills, languages, years, or age)
   {
     id: '2',
     name: 'Raj Patel',
     icon: '💻',
     role: 'Tech Helper',
-    isActive: true,
     bio: 'Technology should make life easier, not harder. I\'m here to help bridge that gap.',
-    helpsWith: ['Technology Help', 'Video Calls', 'Devices'],
-    sharedInterests: ['Technology'],
-    availability: 'Weekends',
-    about: 'I spent 30 years in IT and now volunteer to help seniors navigate smartphones, tablets, and video calls. No question is too small—I\'ve heard them all!'
+    helpsWith: ['Technology Help', 'Video Calls', 'Phone Setup'],
+    sharedInterests: ['Technology', 'Problem Solving'],
+    languages: ['Hindi', 'English', 'Gujarati'],
+    availability: 'Sat, Sun Afternoons',
+    skills: ['Smartphones', 'Tablets', 'Video calling', 'Email setup'],
+    ageRange: '55-64',
+    about: 'I spent 30 years in IT and now volunteer to help seniors navigate smartphones, tablets, and video calls. No question is too small—I\'ve heard them all! I find joy in seeing someone connect with their grandchildren over FaceTime for the first time.'
   },
-  // Profile 3: Partial info (no about section, not currently active)
   {
     id: '3',
     name: 'Fatima Hassan',
     icon: '🎨',
     role: 'Crafts & Conversation',
-    isActive: false,
     bio: 'I believe everyone has a story worth hearing.',
     helpsWith: ['Companionship', 'Crafts', 'Light Cooking'],
     sharedInterests: ['Crafts', 'Cooking', 'Tea'],
     languages: ['Urdu', 'English'],
     availability: 'Mon, Wed, Fri Afternoons',
-    skills: ['Knitting', 'Painting', 'Baking'],
-    yearsVolunteering: 2,
-    ageRange: '50-59'
+    skills: ['Knitting', 'Painting', 'Baking', 'Embroidery'],
+    ageRange: '50-59',
+    about: 'I grew up in Lahore surrounded by beautiful textiles and home-cooked meals. Now I love sharing those traditions—whether it\'s teaching someone to knit or making chai together. Crafting is better with company!'
+  },
+  {
+    id: '4',
+    name: 'James O\'Connor',
+    icon: '🚗',
+    role: 'Transportation Helper',
+    bio: 'Getting there is half the battle. Let me help with the other half.',
+    helpsWith: ['Transportation', 'Errands', 'Appointments'],
+    sharedInterests: ['Driving', 'Conversation'],
+    languages: ['English', 'Irish'],
+    availability: 'Weekday Mornings',
+    skills: ['Safe driving', 'Navigation', 'Patience', 'Light lifting'],
+    ageRange: '65-74',
+    about: 'After retiring from 35 years as a bus driver in Dublin and later Chicago, I still love being on the road. I help seniors get to doctor appointments, grocery stores, or just out of the house for a change of scenery. The conversations are the best part.'
+  },
+  {
+    id: '5',
+    name: 'Linda Chen',
+    icon: '🍳',
+    role: 'Meal Companion',
+    bio: 'Food tastes better when shared with good company.',
+    helpsWith: ['Meal Preparation', 'Grocery Shopping', 'Companionship'],
+    sharedInterests: ['Cooking', 'Nutrition', 'Asian Cuisine'],
+    languages: ['Mandarin', 'Cantonese', 'English'],
+    availability: 'Tue, Thu, Sat Evenings',
+    skills: ['Healthy cooking', 'Meal planning', 'Dietary accommodations', 'Chinese cuisine'],
+    ageRange: '45-54',
+    about: 'I\'m a retired nutritionist who believes that a home-cooked meal can brighten anyone\'s day. I help with grocery shopping, meal prep, or just keeping you company over dinner. I can accommodate most dietary needs and love teaching simple, healthy recipes.'
+  },
+  {
+    id: '6',
+    name: 'Robert Williams',
+    icon: '🌿',
+    role: 'Garden Helper',
+    bio: 'There\'s nothing like getting your hands in the soil.',
+    helpsWith: ['Gardening', 'Yard Work', 'Plant Care'],
+    sharedInterests: ['Gardening', 'Nature', 'Birds'],
+    languages: ['English'],
+    availability: 'Wed, Fri, Sun Mornings',
+    skills: ['Planting', 'Pruning', 'Lawn care', 'Container gardening'],
+    ageRange: '60-69',
+    about: 'Gardening has been my therapy for 40 years. Now I help others maintain their gardens or start new ones—even if it\'s just a few pots on a balcony. I bring my own tools and love teaching what I know. Watching things grow never gets old.'
+  },
+  {
+    id: '7',
+    name: 'Susan Martinez',
+    icon: '📞',
+    role: 'Friendly Caller',
+    bio: 'Sometimes you just need someone to talk to.',
+    helpsWith: ['Phone Companionship', 'Check-in Calls', 'Emotional Support'],
+    sharedInterests: ['Conversation', 'Current Events', 'Music'],
+    languages: ['Spanish', 'English'],
+    availability: 'Daily, Flexible Hours',
+    skills: ['Active listening', 'Empathy', 'Spanish conversation', 'Reminiscing'],
+    ageRange: '55-64',
+    about: 'I make regular phone calls to seniors who might be feeling isolated or just want someone to chat with. We talk about everything—family, the news, old memories, or nothing in particular. Sometimes the best gift is just knowing someone cares enough to call.'
+  },
+  {
+    id: '8',
+    name: 'David Kim',
+    icon: '📋',
+    role: 'Paperwork Helper',
+    bio: 'Forms and bills don\'t have to be overwhelming.',
+    helpsWith: ['Paperwork', 'Bills', 'Organization'],
+    sharedInterests: ['Organization', 'Problem Solving'],
+    languages: ['Korean', 'English'],
+    availability: 'Mon, Wed Afternoons',
+    skills: ['Document organization', 'Bill management', 'Form filling', 'Filing systems'],
+    ageRange: '50-59',
+    about: 'I worked as an accountant for 25 years and now help seniors sort through mail, organize bills, and tackle confusing paperwork. I won\'t handle your finances directly, but I can help you understand what you\'re looking at and create systems to stay organized.'
   }
 ];

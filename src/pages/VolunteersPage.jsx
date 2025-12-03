@@ -29,30 +29,24 @@ function ExtendedProfileModal({ volunteer, onClose }) {
           </div>
           <div>
             <h2 style={{ margin: '0 0 4px 0', fontSize: '22px' }}>{volunteer.name}</h2>
-            <div style={{ display: 'flex', gap: '8px', fontSize: '13px', color: '#666', alignItems: 'center', flexWrap: 'wrap' }}>
-              {volunteer.isActive && (
-                <span style={{ color: '#2E7D32', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#4CAF50' }}></span>
-                  Active
-                </span>
-              )}
-              {volunteer.isActive && volunteer.yearsVolunteering && <span>•</span>}
-              {volunteer.yearsVolunteering && (
-                <span style={{ color: '#666' }}>
-                  ⭐ {volunteer.yearsVolunteering} {volunteer.yearsVolunteering === 1 ? 'year' : 'years'}
-                </span>
-              )}
-            </div>
+            <span style={{ 
+              fontSize: '0.65rem', 
+              color: '#059669', 
+              background: '#ecfdf5',
+              border: '1px solid #a7f3d0',
+              borderRadius: '4px',
+              padding: '2px 6px',
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '3px',
+              fontWeight: '500'
+            }}>
+              ✓ Verified
+            </span>
           </div>
         </div>
 
-        {/* Age Range (optional) */}
-        {volunteer.ageRange && (
-          <div style={{ marginBottom: '1.25rem' }}>
-            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: '#222', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Age Range</p>
-            <p style={{ margin: 0, fontSize: '14px', color: '#444' }}>🎂 {volunteer.ageRange}</p>
-          </div>
-        )}
+        {/* TODO: Decide whether to include Age Range */}
 
         {/* About Me */}
         {volunteer.about && (
@@ -107,25 +101,39 @@ function ExtendedProfileModal({ volunteer, onClose }) {
         )}
 
         {/* Action buttons */}
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <Button variant="secondary" fullWidth onClick={onClose}>
+        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+          <button
+            onClick={onClose}
+            style={{
+              padding: '8px 20px',
+              fontSize: '13px',
+              fontWeight: '500',
+              color: '#374151',
+              backgroundColor: 'transparent',
+              border: '1px solid #9ca3af',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={(e) => { e.target.style.backgroundColor = '#f3f4f6'; e.target.style.borderColor = '#6b7280'; }}
+            onMouseOut={(e) => { e.target.style.backgroundColor = 'transparent'; e.target.style.borderColor = '#9ca3af'; }}
+          >
             Close
-          </Button>
+          </button>
           <button
             style={{
-              flex: 1,
-              padding: '12px 20px',
-              fontSize: '15px',
+              padding: '8px 20px',
+              fontSize: '13px',
               fontWeight: '600',
               color: 'white',
-              backgroundColor: '#00897B',
+              backgroundColor: '#0d9488',
               border: 'none',
-              borderRadius: '8px',
+              borderRadius: '6px',
               cursor: 'pointer',
               transition: 'background-color 0.2s',
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#0f766e'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#0d9488'}
           >
             Get in Touch
           </button>

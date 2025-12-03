@@ -5,7 +5,7 @@ import Card from './common/Card';
  * VolunteerCard Component
  * Displays volunteer information in the "Compact Row" style.
  * 
- * Shows: Name, icon, active status, experience, shared interests,
+ * Shows: Name, icon, verified badge, shared interests,
  *        "Can help with", languages, and availability.
  * 
  * Extended profile (modal) shows: Full about me, skills list,
@@ -22,8 +22,6 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
   const { 
     name, 
     icon,
-    isActive,
-    yearsVolunteering,
     sharedInterests = [],
     helpsWith = [],
     languages = [],
