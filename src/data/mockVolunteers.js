@@ -1,51 +1,201 @@
-// TODO: Create mock volunteer data for testing and demo
-//
-// Export an array of volunteer objects with the following structure:
-// {
-//   id: string (unique identifier)
-//   name: string
-//   photo: string (URL or path to image, or use placeholder)
-//   age: number
-//   location: string (city or "nearby" / "far")
-//   interests: string[] (e.g., ['gardening', 'reading', 'cooking'])
-//   communicationStyle: 'quiet' | 'chatty'
-//   bio: string (short description, 2-3 sentences)
-//   verified: boolean (background check completed)
-//   availability: object {
-//     days: string[] (e.g., ['Monday', 'Wednesday', 'Friday'])
-//     times: string[] (e.g., ['morning', 'afternoon'])
-//   }
-// }
-//
-// Recommended: Create 15-20 diverse volunteers with varied:
-// - Ages (50-80)
-// - Interests (hobbies, activities, tech skills)
-// - Communication styles (mix of quiet/chatty)
-// - Locations (some nearby, some farther)
-//
-// This data will be used by:
-// - VolunteersPage (Medium Task) for browsing
-// - Matching algorithm to filter based on preferences
-// - SchedulingCalendar to show availability
-//
-// Example:
-// export const mockVolunteers = [
-//   {
-//     id: '1',
-//     name: 'Margaret Chen',
-//     photo: '/images/volunteers/margaret.jpg',
-//     age: 68,
-//     location: 'nearby',
-//     interests: ['gardening', 'cooking', 'bird watching'],
-//     communicationStyle: 'chatty',
-//     bio: 'Retired teacher who loves sharing stories...',
-//     verified: true,
-//     availability: {
-//       days: ['Tuesday', 'Thursday', 'Saturday'],
-//       times: ['morning', 'afternoon']
-//     }
-//   },
-//   // ... more volunteers
-// ];
+// Mock volunteer data for prototype demonstration
+// All profiles are complete for demo purposes
+// TODO: Add more mock volunteers later
 
-export const mockVolunteers = [];
+export const mockVolunteers = [
+  {
+    id: '1',
+    name: 'Maria Santos',
+    icon: '👩‍🏫',
+    role: 'Retired Librarian',
+    bio: 'Books brought me to this country, and now I want to share that love of reading with others.',
+    helpsWith: ['Companionship', 'Reading & Writing', 'Hobbies Together'],
+    interests: ['Reading', 'Gardening', 'Storytelling', 'History', 'Tea'],
+    languages: ['Portuguese', 'English', 'Spanish'],
+    availability: ['Weekdays', 'Mornings', 'Afternoons'],
+    skills: ['Book recommendations', 'Reading aloud', 'Organizing', 'Storytelling'],
+    about: 'After 25 years as a librarian in São Paulo and later Boston, I retired but couldn\'t stay away from books. I host a small book club and enjoy reading aloud to those who find it difficult. I\'m patient, warm, and always have a good story recommendation.'
+  },
+  {
+    id: '2',
+    name: 'Raj Patel',
+    icon: '💻',
+    role: 'Tech Helper',
+    bio: 'Technology should make life easier, not harder. I\'m here to help bridge that gap.',
+    helpsWith: ['Tech Support', 'Companionship'],
+    interests: ['Technology', 'Problem Solving', 'Teaching', 'Cricket', 'Chess'],
+    languages: ['Hindi', 'English', 'Gujarati'],
+    availability: ['Weekends', 'Afternoons', 'Evenings'],
+    skills: ['Smartphones', 'Tablets', 'Video calling', 'Email setup', 'Smart home devices'],
+    about: 'I spent 30 years in IT and now volunteer to help seniors navigate smartphones, tablets, and video calls. No question is too small—I\'ve heard them all! I find joy in seeing someone connect with their grandchildren over FaceTime for the first time.'
+  },
+  {
+    id: '3',
+    name: 'Fatima Hassan',
+    icon: '🎨',
+    role: 'Crafts & Conversation',
+    bio: 'I believe everyone has a story worth hearing.',
+    helpsWith: ['Companionship', 'Hobbies Together'],
+    interests: ['Crafts', 'Cooking', 'Tea', 'Knitting', 'Art', 'Baking'],
+    languages: ['Urdu', 'English', 'Arabic'],
+    availability: ['Weekdays', 'Afternoons', 'Evenings'],
+    skills: ['Knitting', 'Painting', 'Baking', 'Embroidery', 'Chai making'],
+    about: 'I grew up in Lahore surrounded by beautiful textiles and home-cooked meals. Now I love sharing those traditions—whether it\'s teaching someone to knit or making chai together. Crafting is better with company!'
+  },
+  {
+    id: '4',
+    name: 'James O\'Connor',
+    icon: '🚗',
+    role: 'Transportation & Errands',
+    bio: 'Getting there is half the battle. Let me help with the other half.',
+    helpsWith: ['Gentle Exercise', 'Companionship'],
+    interests: ['Driving', 'Conversation', 'Sports', 'History', 'Coffee'],
+    languages: ['English', 'Irish'],
+    availability: ['Weekdays', 'Mornings', 'Afternoons'],
+    skills: ['Safe driving', 'Navigation', 'Patience', 'Light lifting', 'Walking companion'],
+    about: 'After retiring from 35 years as a bus driver in Dublin and later Chicago, I still love being on the road. I help seniors get to doctor appointments, grocery stores, or just out of the house for a change of scenery. The conversations are the best part.'
+  },
+  {
+    id: '5',
+    name: 'Linda Chen',
+    icon: '🍳',
+    role: 'Meal Companion',
+    bio: 'Food tastes better when shared with good company.',
+    helpsWith: ['Companionship', 'Hobbies Together'],
+    interests: ['Cooking', 'Nutrition', 'Asian Cuisine', 'Gardening', 'Walking'],
+    languages: ['Mandarin', 'Cantonese', 'English'],
+    availability: ['Weekdays', 'Weekends', 'Afternoons', 'Evenings'],
+    skills: ['Healthy cooking', 'Meal planning', 'Dietary accommodations', 'Chinese cuisine', 'Grocery shopping'],
+    about: 'I\'m a retired nutritionist who believes that a home-cooked meal can brighten anyone\'s day. I help with grocery shopping, meal prep, or just keeping you company over dinner. I can accommodate most dietary needs and love teaching simple, healthy recipes.'
+  },
+  {
+    id: '6',
+    name: 'Robert Williams',
+    icon: '🌿',
+    role: 'Garden Helper',
+    bio: 'There\'s nothing like getting your hands in the soil.',
+    helpsWith: ['Hobbies Together', 'Gentle Exercise', 'Companionship'],
+    interests: ['Gardening', 'Nature', 'Birds', 'Walking', 'Photography'],
+    languages: ['English'],
+    availability: ['Weekdays', 'Weekends', 'Mornings', 'Afternoons'],
+    skills: ['Planting', 'Pruning', 'Lawn care', 'Container gardening', 'Bird watching'],
+    about: 'Gardening has been my therapy for 40 years. Now I help others maintain their gardens or start new ones—even if it\'s just a few pots on a balcony. I bring my own tools and love teaching what I know. Watching things grow never gets old.'
+  },
+  {
+    id: '7',
+    name: 'Susan Martinez',
+    icon: '📞',
+    role: 'Friendly Caller',
+    bio: 'Sometimes you just need someone to talk to.',
+    helpsWith: ['Companionship'],
+    interests: ['Conversation', 'Current Events', 'Music', 'Movies', 'Family Stories'],
+    languages: ['Spanish', 'English'],
+    availability: ['Weekdays', 'Weekends', 'Mornings', 'Afternoons', 'Evenings'],
+    skills: ['Active listening', 'Empathy', 'Spanish conversation', 'Reminiscing'],
+    about: 'I make regular phone calls to seniors who might be feeling isolated or just want someone to chat with. We talk about everything—family, the news, old memories, or nothing in particular. Sometimes the best gift is just knowing someone cares enough to call.'
+  },
+  {
+    id: '8',
+    name: 'David Kim',
+    icon: '📋',
+    role: 'Paperwork Helper',
+    bio: 'Forms and bills don\'t have to be overwhelming.',
+    helpsWith: ['Reading & Writing', 'Companionship'],
+    interests: ['Organization', 'Problem Solving', 'Chess', 'Classical Music'],
+    languages: ['Korean', 'English'],
+    availability: ['Weekdays', 'Afternoons'],
+    skills: ['Document organization', 'Bill management', 'Form filling', 'Filing systems'],
+    about: 'I worked as an accountant for 25 years and now help seniors sort through mail, organize bills, and tackle confusing paperwork. I won\'t handle your finances directly, but I can help you understand what you\'re looking at and create systems to stay organized.'
+  },
+  {
+    id: '9',
+    name: 'Dorothy Thompson',
+    icon: '🎹',
+    role: 'Music & Arts Companion',
+    bio: 'Music has the power to lift spirits and bring back memories.',
+    helpsWith: ['Companionship', 'Hobbies Together'],
+    interests: ['Music', 'Piano', 'Singing', 'Art', 'Theater', 'Poetry'],
+    languages: ['English', 'French'],
+    availability: ['Weekdays', 'Weekends', 'Mornings', 'Afternoons'],
+    skills: ['Piano playing', 'Singing', 'Music appreciation', 'Art discussion'],
+    about: 'I taught music for 30 years and still play piano daily. I love sharing music with others—whether it\'s playing songs from your youth, singing together, or just listening and chatting about favorite artists. Music connects us all.'
+  },
+  {
+    id: '10',
+    name: 'Michael Brooks',
+    icon: '🚶',
+    role: 'Walking Buddy',
+    bio: 'A short walk can make a big difference in your day.',
+    helpsWith: ['Gentle Exercise', 'Companionship'],
+    interests: ['Walking', 'Nature', 'Sports', 'Photography', 'Dogs'],
+    languages: ['English'],
+    availability: ['Weekdays', 'Weekends', 'Mornings'],
+    skills: ['Steady pace walking', 'Balance support', 'Nature identification', 'Motivation'],
+    about: 'After my knee replacement, I learned how important gentle movement is. Now I accompany seniors on walks—whether it\'s around the block or through a park. We go at your pace, and the fresh air and conversation are good for both of us!'
+  },
+  {
+    id: '11',
+    name: 'Elena Volkov',
+    icon: '📚',
+    role: 'Language & Reading Partner',
+    bio: 'Every language opens a door to a new world.',
+    helpsWith: ['Reading & Writing', 'Companionship', 'Hobbies Together'],
+    interests: ['Reading', 'Languages', 'Poetry', 'History', 'Tea', 'Classical Music'],
+    languages: ['Russian', 'Ukrainian', 'English', 'French'],
+    availability: ['Weekdays', 'Afternoons', 'Evenings'],
+    skills: ['Reading aloud', 'Letter writing', 'Translation help', 'Poetry'],
+    about: 'I immigrated from Kyiv 20 years ago and know how important it is to stay connected to language and culture. I help with reading, writing letters, or just conversing in your preferred language. I also love discussing literature and poetry.'
+  },
+  {
+    id: '12',
+    name: 'Thomas Wright',
+    icon: '🔧',
+    role: 'Handy Helper',
+    bio: 'Small fixes can make a big difference at home.',
+    helpsWith: ['Companionship', 'Hobbies Together'],
+    interests: ['DIY', 'Problem Solving', 'Woodworking', 'Sports', 'Coffee'],
+    languages: ['English'],
+    availability: ['Weekends', 'Mornings', 'Afternoons'],
+    skills: ['Minor repairs', 'Changing bulbs', 'Hanging pictures', 'Basic plumbing', 'Furniture assembly'],
+    about: 'I was an engineer for 35 years and love fixing things. I help with small tasks around the house—changing hard-to-reach bulbs, hanging pictures, minor repairs. Nothing too big, but those little things that can be frustrating when you can\'t do them yourself.'
+  },
+  {
+    id: '13',
+    name: 'Grace Okafor',
+    icon: '🙏',
+    role: 'Spiritual Companion',
+    bio: 'Faith and friendship go hand in hand.',
+    helpsWith: ['Companionship'],
+    interests: ['Spirituality', 'Music', 'Community', 'Cooking', 'Family'],
+    languages: ['English', 'Igbo', 'French'],
+    availability: ['Weekends', 'Mornings', 'Afternoons'],
+    skills: ['Active listening', 'Prayer companionship', 'Hymn singing', 'Emotional support'],
+    about: 'I\'ve been active in my church community for decades and understand how important spiritual connection is. I\'m happy to pray together, discuss faith, sing hymns, or simply be a compassionate presence. All faiths and backgrounds are welcome.'
+  },
+  {
+    id: '14',
+    name: 'Henry Nakamura',
+    icon: '🎮',
+    role: 'Games & Puzzles Partner',
+    bio: 'Keeping the mind sharp is just as important as keeping the body moving.',
+    helpsWith: ['Hobbies Together', 'Companionship', 'Tech Support'],
+    interests: ['Chess', 'Puzzles', 'Board Games', 'Card Games', 'Technology', 'Strategy'],
+    languages: ['Japanese', 'English'],
+    availability: ['Weekdays', 'Weekends', 'Afternoons', 'Evenings'],
+    skills: ['Chess instruction', 'Puzzle solving', 'Card games', 'Video games', 'Brain exercises'],
+    about: 'I\'m a retired math teacher who loves games of all kinds—chess, cards, puzzles, even video games! I believe keeping the mind active is crucial. Whether you want to learn chess, do crosswords together, or try a simple video game, I\'m your guy.'
+  },
+  {
+    id: '15',
+    name: 'Patricia Reyes',
+    icon: '💊',
+    role: 'Health & Wellness Companion',
+    bio: 'Taking care of yourself is easier with support.',
+    helpsWith: ['Gentle Exercise', 'Companionship'],
+    interests: ['Health', 'Walking', 'Nutrition', 'Yoga', 'Meditation', 'Gardening'],
+    languages: ['Spanish', 'English', 'Portuguese'],
+    availability: ['Weekdays', 'Mornings', 'Afternoons'],
+    skills: ['Gentle stretching', 'Meditation guidance', 'Health reminders', 'Walking companion', 'Relaxation techniques'],
+    about: 'As a retired nurse, I understand how important daily wellness habits are. I help with gentle stretching, short walks, medication reminders, or just checking in on how you\'re feeling. I also love teaching simple relaxation and breathing techniques.'
+  }
+];

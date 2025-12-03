@@ -58,7 +58,8 @@ export default function VoiceInterviewPage() {
         interests: data.structuredData?.interests || [],
         availability: data.structuredData?.availability || '',
         languages: data.structuredData?.languages || [],
-        skills: data.structuredData?.skills || []
+        skills: data.structuredData?.skills || [],
+        helpNeeded: data.structuredData?.helpNeeded || []
       };
 
       // Small delay to allow the user to see completion before navigating

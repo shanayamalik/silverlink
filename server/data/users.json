@@ -6,6 +6,31 @@
     "name": "Demo User",
     "securityQuestion": "What city were you born in?",
     "securityAnswer": "berkeley",
-    "preferences": {}
+    "preferences": {},
+    "bio": "This person enjoys watching movies, baking cookies, and reading books. They are looking for companionship and tech support.",
+    "interests": [
+      "Movies",
+      "Baking",
+      "Reading books"
+    ],
+    "availability": {
+      "text": "Saturday afternoon and Sunday afternoon and evening",
+      "checks": {
+        "Weekends": false,
+        "Weekdays": false,
+        "Mornings": false,
+        "Afternoons": true,
+        "Evenings": true
+      }
+    },
+    "languages": "Hindi, English",
+    "skills": "Reading books",
+    "helpNeeded": [
+      "Companionship",
+      "Tech Support"
+    ],
+    "completedAt": "2025-12-03T05:30:57.991Z",
+    "hasProfile": true,
+    "updatedAt": "2025-12-03T05:30:58.024Z"
   }
 ]

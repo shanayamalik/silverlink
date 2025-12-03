@@ -298,25 +298,7 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Optional Enhancements (If Time Permits)
 
 - [ ] Add user profile editing page
-- [ ] Add chat rescheduling/cancellation
 - [ ] Add post-chat feedback/rating
 - [ ] Add volunteer favorites feature
 - [ ] Add tutorial/onboarding for first-time users
-- [ ] Add animations and transitions
-- [ ] Improve error messages with recovery suggestions
 - [ ] Add help tooltips throughout app
-- [ ] Implement actual video/audio call integration
-- [ ] Add email notifications (if using backend service)
-
----
-
-## Notes & Blockers
-
-**Blocked Items:**
-<!-- Use this section to note anything blocking progress -->
-
-**Questions/Decisions:**
-<!-- Use this section for team discussion items -->
-
-**Bugs to Fix:**
-<!-- Track bugs here as you find them -->

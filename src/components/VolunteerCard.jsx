@@ -3,130 +3,123 @@ import Card from './common/Card';
 
 /**
  * VolunteerCard Component
- * Displays volunteer information in a "Soft Neutral" card style.
+ * Displays volunteer information in the "Compact Row" style.
+ * 
+ * Shows: Name, icon, verified badge, shared interests,
+ *        "Can help with", languages, and availability.
+ * 
+ * Extended profile (modal) shows: Full about me, skills list,
+ *        detailed availability, age range.
  * 
  * @param {Object} props
  * @param {Object} props.volunteer - Volunteer data object
- * @param {function} props.onClick - Click handler
+ * @param {function} props.onViewProfile - Handler for "View Profile" button
  * @param {boolean} props.selected - Whether the card is selected
- * @param {boolean} props.compact - Whether to show a compact version
  */
-export default function VolunteerCard({ volunteer, onClick, selected, compact }) {
+export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
   if (!volunteer) return null;
 
   const { 
     name, 
-    photo, 
-    verified, 
-    role = 'Community Volunteer', // Default role
-    bio, 
-    interests = [], 
-    availability 
+    icon,
+    sharedInterests = [],
+    helpsWith = [],
+    languages = [],
+    availability
   } = volunteer;
 
   return (
     <Card 
-      onClick={onClick}
-      variant={selected ? 'border' : 'shadow'}
-      className="volunteer-card"
+      variant="border" 
+      hoverable 
+      hoverEffect="glow"
       style={{ 
-        border: selected ? '2px solid #1565C0' : '1px solid #eee',
-        backgroundColor: selected ? '#F5F9FF' : 'white',
-        padding: compact ? '1rem' : '1.5rem',
-        cursor: onClick ? 'pointer' : 'default',
-        transition: 'all 0.2s ease'
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        border: selected ? '2px solid #1565C0' : undefined,
+        backgroundColor: selected ? '#F5F9FF' : undefined
       }}
     >
-      {/* Header: Photo + Name + Verified */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-        {/* Photo Placeholder */}
+      {/* Header: Icon + Name + Status/Experience */}
+      <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', marginBottom: '1rem' }}>
         <div style={{ 
-          width: compact ? '50px' : '60px', 
-          height: compact ? '50px' : '60px', 
-          borderRadius: '50%', 
-          backgroundColor: '#E0E0E0',
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center',
-          fontSize: compact ? '24px' : '30px',
-          flexShrink: 0
+          width: '60px', height: '60px', borderRadius: '12px', 
+          backgroundColor: '#E0F7FA', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '30px', flexShrink: 0
         }}>
-          {photo || '👤'}
+          {icon || '👤'}
         </div>
-        
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <h3 style={{ margin: 0, fontSize: compact ? '18px' : '20px', color: '#333' }}>{name}</h3>
-            {verified && (
-              <span title="Verified Volunteer" style={{ fontSize: '16px' }}>✅</span>
-            )}
-          </div>
-          <div style={{ fontSize: '14px', color: '#666' }}>{role}</div>
-        </div>
-      </div>
-
-      {/* Bio Section (Soft Neutral Style) */}
-      {bio && !compact && (
-        <div style={{ 
-          marginBottom: '1rem', 
-          backgroundColor: '#F5F7FA', 
-          padding: '0.75rem 1rem', 
-          borderRadius: '8px' 
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '16px' }}>💬</span>
-            <span style={{ fontSize: '13px', fontWeight: '600', color: '#546E7A' }}>About Me</span>
-          </div>
-          <div style={{ paddingLeft: '28px', color: '#000000', fontSize: '14px', fontStyle: 'italic' }}>
-            "{bio}"
-          </div>
-        </div>
-      )}
-
-      {/* Details List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        
-        {/* Interests */}
-        {interests.length > 0 && (
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '16px' }}>🤝</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#333' }}>Can Help With</span>
-            </div>
-            <div style={{ paddingLeft: '28px', color: '#555', fontSize: '14px' }}>
-              {interests.join(', ')}
-            </div>
-          </div>
-        )}
-
-        {/* Availability */}
-        {availability && (
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span style={{ fontSize: '16px' }}>📅</span>
-              <span style={{ fontSize: '13px', fontWeight: '600', color: '#333' }}>Availability</span>
-            </div>
-            <div style={{ paddingLeft: '28px', color: '#555', fontSize: '14px' }}>
-              {availability}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Action Button (if not compact) */}
-      {!compact && onClick && (
-        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+          <h3 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>{name}</h3>
           <span style={{ 
-            color: '#1565C0', 
-            fontWeight: '600', 
-            fontSize: '14px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
+            fontSize: '0.6rem', 
+            color: '#059669', 
+            background: '#ecfdf5',
+            border: '1px solid #a7f3d0',
+            borderRadius: '4px',
+            padding: '2px 6px',
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '3px',
+            fontWeight: '500'
           }}>
-            View Profile & Schedule
+            ✓ Verified
           </span>
         </div>
+      </div>
+
+      {/* Shared interests - small tags */}
+      {sharedInterests.length > 0 && (
+        <div style={{ display: 'flex', gap: '6px', marginBottom: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <span style={{ fontSize: '11px', color: '#888' }}>In common:</span>
+          {sharedInterests.map((interest, i) => (
+            <span key={i} style={{ fontSize: '11px', padding: '3px 8px', backgroundColor: '#F0F0F0', borderRadius: '12px', color: '#555' }}>
+              {interest}
+            </span>
+          ))}
+        </div>
       )}
+      
+      {/* Can Help With */}
+      {helpsWith.length > 0 && (
+        <div style={{ marginBottom: '12px', padding: '10px 12px', backgroundColor: '#F9F9F9', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 4px 0', fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Can help with</p>
+          <p style={{ margin: 0, fontWeight: '600', fontSize: '13px' }}>{helpsWith.join(', ')}</p>
+        </div>
+      )}
+
+      {/* Languages + Availability row - fixed positions */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '12px', color: '#666', gap: '8px' }}>
+        <span style={{ minWidth: '40%' }}>
+          {languages.length > 0 ? `🗣️ ${languages.join(', ')}` : '\u00A0'}
+        </span>
+        <span>
+          {availability ? `📅 ${availability}` : '\u00A0'}
+        </span>
+      </div>
+
+      {/* View Profile Button - Small Teal Style */}
+      <div style={{ marginTop: 'auto', textAlign: 'center' }}>
+        <button
+          onClick={onViewProfile}
+          style={{
+            padding: '6px 16px',
+            fontSize: '12px',
+            fontWeight: '600',
+            color: 'white',
+            backgroundColor: '#00897B',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
+        >
+          View Profile
+        </button>
+      </div>
     </Card>
   );
 }
