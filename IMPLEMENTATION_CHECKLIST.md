@@ -34,27 +34,29 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Build `src/components/common/Card.jsx`
   - [x] Props: children, title, onClick, hoverable
   - [x] Consistent padding, rounded corners, shadow
-- [ ] Build `src/components/common/Header.jsx`
-  - [ ] Props: title, showBack, showHome
-  - [ ] Navigation buttons with icons
-  - [ ] Responsive layout
+- [x] Build `src/components/common/Header.jsx`
+  - [x] Props: title, showBack, showHome
+  - [x] Navigation buttons with icons (← Back, 🏠 Home)
+  - [x] Responsive layout with flexbox
+  - [x] User avatar display when logged in
 
 ### Mock Data & Utilities
-- [ ] Populate `src/data/mockVolunteers.js`
-  - [ ] Create 15-20 diverse volunteer objects
-  - [ ] Include: id, name, photo, age, location, interests, communicationStyle, bio, verified, availability
-  - [ ] Vary interests, ages (50-80), communication styles
+- [x] Populate `src/data/mockVolunteers.js`
+  - [x] Create 15 diverse volunteer objects
+  - [x] Include: id, name, icon, role, interests, helpsWith, bio, availability, languages, skills, about
+  - [x] Culturally diverse profiles with varied backgrounds
 - [ ] Implement `src/utils/localStorage.js`
   - [ ] `saveUser(user)` / `getUser()`
   - [ ] `savePreferences(preferences)` / `getPreferences()`
   - [ ] `saveInterests(interests)` / `getInterests()`
   - [ ] `saveScheduledChat(chat)` / `getScheduledChats()`
   - [ ] `clearAllData()`
-- [ ] Implement `src/utils/matching.js`
-  - [ ] `matchVolunteers(volunteers, preferences)` function
-  - [ ] Score volunteers based on preferences
-  - [ ] Filter and sort by match score
-  - [ ] Return top matches
+- [x] Implement `src/utils/matching.js`
+  - [x] `matchVolunteers(volunteers, preferences)` function
+  - [x] Hard filters: helpNeeded ↔ helpsWith, availability overlap
+  - [x] Soft scoring: shared interests, languages, help depth (0-100)
+  - [x] `matchVolunteersSoft()` fallback function
+  - [x] Filter, sort by score, return top 3 matches
 
 **Checkpoint:** ✅ App runs, pages navigate, components render, mock data loads
 
@@ -125,37 +127,33 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ### Person 1: Volunteer Display Components
 - [x] Implement `src/components/VolunteerCard.jsx`
-  - [x] Props: volunteer, onClick, selected, compact
-  - [x] Display photo/icon, name, verified badge
-  - [x] Display profession/role tag (instead of location)
-  - [x] "Can help with" section
-  - [x] Dynamic button text ("Chat with..." vs "Request Help") based on context
-  - [x] Large, tap-friendly card (Border variant)
-- [ ] Implement `src/components/VolunteerComparison.jsx`
-  - [ ] Props: volunteers (2-3), onSelect, selectedId
-  - [ ] Side-by-side layout (responsive: stack on mobile)
-  - [ ] Use VolunteerCard with compact prop
-  - [ ] "Select" button on each card
+  - [x] Props: volunteer, onClick, selected, onViewProfile
+  - [x] Display icon, name, verified badge (below name)
+  - [x] Display profession/role tag
+  - [x] Short bio snippet
+  - [x] Shared interests as pill tags
+  - [x] Small teal "View Profile" button
+  - [x] Large, tap-friendly card (Compact Row design)
 - [ ] Test with mock volunteer data
 
-### Scheduling Component
+### VolunteersPage Integration
+- [x] Implement `src/pages/VolunteersPage.jsx`
+  - [x] Load user profile from localStorage
+  - [x] Filter volunteers using matching algorithm
+  - [x] Display top 3 matches (ranked by score)
+  - [x] Fall back to soft matching if no hard matches
+  - [x] Extended profile modal with full volunteer details
+  - [x] "Good news!" banner showing match count
+  - [x] Navigate to volunteers after profile confirmation
+- [ ] Implement `src/components/VolunteerComparison.jsx` (Optional - current card grid works well)
+  - [ ] Props: volunteers (2-3), onSelect, selectedId
+  - [ ] Side-by-side layout (responsive: stack on mobile)
 - [ ] Implement `src/components/SchedulingCalendar.jsx`
   - [ ] Props: volunteerId, volunteerName, onSchedule, availableSlots
   - [ ] Simple calendar/date picker (week view)
   - [ ] Large date buttons (min 50x50px)
   - [ ] Time slot options (Morning, Afternoon, Evening)
   - [ ] Confirmation button
-  - [ ] Visual feedback for selected date/time
-- [ ] Test scheduling flow with mock data
-
-### VolunteersPage Integration
-- [ ] Implement `src/pages/VolunteersPage.jsx`
-  - [ ] Load preferences from localStorage
-  - [ ] Filter volunteers using matching algorithm
-  - [ ] Display top 2-3 matches with VolunteerComparison
-  - [ ] Toggle to SchedulingCalendar on volunteer selection
-  - [ ] Save scheduled chat to localStorage and backend
-  - [ ] Navigate to /dashboard after booking
 - [ ] Add backend endpoint: POST /api/chats
 - [ ] Add backend endpoint: GET /api/chats/user/:userId
 - [ ] Test complete Medium Task flow (preferences → volunteers → schedule)
@@ -302,3 +300,85 @@ Track your progress as you build the app! Check off items as you complete them.
 - [ ] Add volunteer favorites feature
 - [ ] Add tutorial/onboarding for first-time users
 - [ ] Add help tooltips throughout app
+
+---
+
+## 🎨 Surprising & Delightful Elements (TA Feedback)
+
+Add unexpected touches that make the app memorable and stand out:
+
+### Micro-interactions & Animations
+- [ ] Confetti or celebration animation when matched with volunteers
+- [ ] Smooth card flip animation when viewing volunteer profiles
+- [ ] Gentle pulse animation on microphone during voice interview
+- [ ] "Typing indicator" dots when AI is processing response
+- [ ] Success checkmark animation after saving profile
+- [ ] Floating hearts/stars when selecting interests
+
+### Personality & Warmth
+- [ ] Personalized greeting using user's name throughout the app
+- [ ] Friendly loading messages ("Finding your perfect match...", "Almost there!")
+- [ ] Encouraging messages during voice interview ("Great answer!", "Tell me more!")
+- [ ] Fun facts or tips while waiting for AI responses
+- [ ] Seasonal themes or greetings (holiday decorations, etc.)
+
+### Unexpected Features
+- [ ] "Meet Your Match" reveal animation (like opening an envelope)
+- [ ] Sound effects (optional, with toggle) for key actions
+- [ ] Easter egg: special response if user says something funny in interview
+- [ ] Daily inspiration quote on dashboard
+- [ ] Progress celebration milestones ("You've completed your profile!")
+
+### Gamification (Light)
+- [ ] Profile completeness meter with encouraging messages
+- [ ] "Badges" for completing different sections
+- [ ] Streak tracking for regular app usage
+
+---
+
+## ♿ Accessibility Enhancements (TA Feedback)
+
+Ensure the app is usable by everyone, especially seniors with varying abilities:
+
+### Visual Accessibility
+- [ ] High contrast mode toggle
+- [ ] Font size adjustment controls (Small / Medium / Large / Extra Large)
+- [ ] Ensure all text meets WCAG AA contrast ratio (4.5:1)
+- [ ] Avoid color-only indicators (add icons/text alongside)
+- [ ] Clear focus indicators on all interactive elements
+- [ ] Reduce motion option for users sensitive to animations
+
+### Screen Reader Support
+- [ ] Add proper ARIA labels to all buttons and interactive elements
+- [ ] Use semantic HTML (header, main, nav, section, article)
+- [ ] Announce dynamic content changes (live regions)
+- [ ] Ensure modals trap focus and are properly labeled
+- [ ] Test with VoiceOver (Mac) and NVDA (Windows)
+
+### Motor Accessibility
+- [ ] Ensure all interactive elements are at least 44x44px
+- [ ] Add keyboard shortcuts for common actions
+- [ ] Full keyboard navigation support (Tab, Enter, Escape)
+- [ ] Skip-to-content link for keyboard users
+- [ ] Avoid time-limited interactions
+
+### Cognitive Accessibility
+- [ ] Simple, clear language throughout
+- [ ] Consistent navigation and layout
+- [ ] Clear error messages with suggestions
+- [ ] Progress indicators for multi-step processes
+- [ ] Undo/back options at every step
+- [ ] Memory aids (show previous answers, recap screens)
+
+### Audio Accessibility
+- [ ] Captions/transcripts for any audio content
+- [ ] Visual feedback for voice recording status
+- [ ] Alternative text input option for voice interview
+- [ ] Volume controls for any sounds/speech
+
+### Testing
+- [ ] Test with actual seniors (user testing)
+- [ ] Use Lighthouse accessibility audit
+- [ ] Test with browser zoom at 200%
+- [ ] Test with system font size increased
+- [ ] Verify color blind friendly (use simulator tools)
