@@ -7,32 +7,6 @@
     "securityQuestion": "What city were you born in?",
     "securityAnswer": "berkeley",
     "preferences": {},
-    "bio": "This person enjoys reading books, sleeping, and baking cupcakes. They are looking for companionship and tech support.",
-    "interests": [
-      "Reading books",
-      "Baking",
-      "Tea/Coffee",
-      "Movies"
-    ],
-    "availability": {
-      "text": "Available on Saturdays, Sundays, and weekday mornings",
-      "checks": {
-        "Weekends": false,
-        "Weekdays": true,
-        "Mornings": true,
-        "Afternoons": false,
-        "Evenings": false
-      }
-    },
-    "languages": "Hindi, Spanish",
-    "skills": "Baking cupcakes",
-    "helpNeeded": [
-      "Companionship",
-      "Tech Support",
-      "Gentle Exercise"
-    ],
-    "completedAt": "2025-12-03T06:06:05.958Z",
-    "hasProfile": true,
-    "updatedAt": "2025-12-03T06:06:05.965Z"
+    "hasProfile": false
   }
 ]
