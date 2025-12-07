@@ -10,8 +10,15 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   React.useEffect(() => {
-    if (localStorage.getItem('user')) {
-      navigate('/volunteers');
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userData = JSON.parse(user);
+      // Redirect based on whether user has completed their profile
+      if (userData.hasProfile) {
+        navigate('/volunteers');
+      } else {
+        navigate('/interview');
+      }
     }
   }, [navigate]);
 
@@ -31,7 +38,12 @@ export default function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/volunteers');
+        // Redirect based on whether user has completed their profile
+        if (data.user.hasProfile) {
+          navigate('/volunteers');
+        } else {
+          navigate('/interview');
+        }
       } else {
         setError(data.message || 'Login failed');
       }
