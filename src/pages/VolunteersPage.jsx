@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/Header';
 import VolunteerCard from '../components/VolunteerCard';
 import Button from '../components/common/Button';
@@ -7,6 +8,7 @@ import { matchVolunteers, matchVolunteersSoft } from '../utils/matching';
 
 // Extended Profile Modal Component
 function ExtendedProfileModal({ volunteer, onClose }) {
+  const navigate = useNavigate();
   if (!volunteer) return null;
 
   return (
@@ -122,6 +124,7 @@ function ExtendedProfileModal({ volunteer, onClose }) {
             Close
           </button>
           <button
+            onClick={() => navigate(`/chat/${volunteer.id}`, { state: { volunteer } })}
             style={{
               padding: '8px 20px',
               fontSize: '13px',
@@ -429,26 +432,37 @@ export default function VolunteersPage() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const profile = user.profile || {};
 
-    // Try hard matching first (requires help + availability overlap)
-    let matches = matchVolunteers(mockVolunteers, profile, {
-      requireHelpMatch: true,
-      requireAvailabilityMatch: true,
-      maxResults: 3
-    });
+    let matches = [];
 
-    // If no hard matches, fall back to soft matching
-    if (matches.length === 0) {
-      matches = matchVolunteersSoft(mockVolunteers, profile, {
+    try {
+      // Try hard matching first (requires help + availability overlap)
+      matches = matchVolunteers(mockVolunteers, profile, {
+        requireHelpMatch: true,
+        requireAvailabilityMatch: true,
         maxResults: 3
       });
-      setMatchType('soft');
-    } else {
-      setMatchType('hard');
+
+      console.log('🎯 Hard matches found:', matches.length, matches.map(m => m.name));
+
+      // If no hard matches, fall back to soft matching
+      if (matches.length === 0) {
+        matches = matchVolunteersSoft(mockVolunteers, profile, {
+          maxResults: 3
+        });
+        setMatchType('soft');
+        console.log('🔄 Soft matches found:', matches.length, matches.map(m => m.name));
+      } else {
+        setMatchType('hard');
+      }
+    } catch (error) {
+      console.error("Error during matching:", error);
+      matches = [];
     }
 
     // If still no matches (shouldn't happen with soft), show top 3
     if (matches.length === 0) {
       matches = mockVolunteers.slice(0, 3);
+      console.log('⚠️ No matches, showing first 3 volunteers');
     }
 
     setMatchedVolunteers(matches);

@@ -15,7 +15,7 @@ export default function SignUpPage() {
 
   React.useEffect(() => {
     if (localStorage.getItem('user')) {
-      navigate('/volunteers');
+      navigate('/dashboard');
     }
   }, [navigate]);
 
@@ -47,7 +47,7 @@ export default function SignUpPage() {
 
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        navigate('/preferences');
+        navigate('/accessibility-setup');
       } else {
         setError(data.message || 'Registration failed');
       }

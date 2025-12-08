@@ -7,6 +7,59 @@
     "securityQuestion": "What city were you born in?",
     "securityAnswer": "berkeley",
     "preferences": {},
-    "hasProfile": false
+    "hasProfile": true,
+    "profile": {
+      "bio": "This person enjoys reading books and is eager to learn how to garden. They speak Hindi and are available on Saturdays.",
+      "interests": [
+        "Reading books",
+        "Gardening"
+      ],
+      "availability": {
+        "text": "Usually free on Saturdays",
+        "checks": {
+          "Weekends": false,
+          "Weekdays": false,
+          "Mornings": false,
+          "Afternoons": false,
+          "Evenings": false
+        }
+      },
+      "languages": "Hindi",
+      "skills": "",
+      "helpNeeded": [
+        "Hobbies Together",
+        "Gentle Exercise"
+      ],
+      "completedAt": "2025-12-08T03:26:31.296Z"
+    },
+    "updatedAt": "2025-12-08T03:26:31.305Z"
+  },
+  {
+    "id": "1765165039762",
+    "email": "shanaya_malik@berkeley.edu",
+    "password": "demo123",
+    "name": "shanaya malik",
+    "securityQuestion": "What city were you born in?",
+    "securityAnswer": "berkeley",
+    "preferences": {},
+    "profile": {
+      "bio": "No bio added yet.",
+      "interests": [],
+      "helpNeeded": [
+        "companionship",
+        "hobbies",
+        "tech"
+      ],
+      "availability": {
+        "text": "",
+        "checks": {
+          "Weekends": true,
+          "Afternoons": true,
+          "Weekdays": true
+        }
+      }
+    },
+    "hasProfile": true,
+    "updatedAt": "2025-12-08T10:44:46.358Z"
   }
 ]

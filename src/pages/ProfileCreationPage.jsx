@@ -57,7 +57,7 @@ export default function ProfileCreationPage() {
     "Culture": "#9C27B0"   // Purple
   };
 
-  // Load data from the Voice Interview analysis if available
+  // Load data from the Voice Interview analysis OR existing profile if available
   useEffect(() => {
     if (location.state?.analysisData) {
       const data = location.state.analysisData;
@@ -85,6 +85,17 @@ export default function ProfileCreationPage() {
       if (data.languages && Array.isArray(data.languages)) setLanguages(data.languages.join(', '));
       if (data.skills && Array.isArray(data.skills)) setSkills(data.skills.join(', '));
       if (data.helpNeeded && Array.isArray(data.helpNeeded)) setHelpNeeded(data.helpNeeded);
+    } else if (location.state?.existingProfile) {
+      const profile = location.state.existingProfile;
+      if (profile.bio) setBio(profile.bio);
+      if (profile.interests) setInterests(profile.interests);
+      if (profile.availability) {
+        if (profile.availability.text) setAvailabilityText(profile.availability.text);
+        if (profile.availability.checks) setAvailabilityChecks(profile.availability.checks);
+      }
+      if (profile.languages) setLanguages(profile.languages);
+      if (profile.skills) setSkills(profile.skills);
+      if (profile.helpNeeded) setHelpNeeded(profile.helpNeeded);
     }
   }, [location.state]);
 

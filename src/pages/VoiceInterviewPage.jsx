@@ -16,6 +16,7 @@ export default function VoiceInterviewPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [ttsGreetingSpoken, setTtsGreetingSpoken] = useState(false);
+  const [showTtsTooltip, setShowTtsTooltip] = useState(true);
   const endRef = useRef(null);
   const interimTextRef = useRef('');
   const silenceTimerRef = useRef(null);
@@ -260,6 +261,13 @@ export default function VoiceInterviewPage() {
       return;
     }
   
+    // On first tap: speak greeting and wait for it to finish before allowing mic
+    if (!ttsGreetingSpoken) {
+      speakGreetingOnce();
+      // Don't start listening yet - user needs to tap again after greeting
+      return;
+    }
+
     if (isListening) {
       // Manual Stop
       recognitionRef.current.stop();
@@ -327,66 +335,155 @@ export default function VoiceInterviewPage() {
     });
   };
 
+  // Speak the initial greeting when user first interacts (for Chrome autoplay policy)
+  const speakGreetingOnce = () => {
+    if (!ttsGreetingSpoken && typeof window !== 'undefined' && 'speechSynthesis' in window && ttsEnabled) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(
+        "Hi! I'm here to help match you with the right volunteer. Tell me a little about what you enjoy doing."
+      );
+      utterance.lang = 'en-US';
+      utterance.rate = 0.92;
+      utterance.pitch = 1.2;
+      utterance.volume = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+    setTtsGreetingSpoken(true);
+    setShowTtsTooltip(false);
+  };
+
   return (
     <div className="voice-interview-page" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-background)' }}>
-      <Header title="Voice Interview" showBack showHome />
-          {/* Accessibility settings for visually impaired users */}
-          {/* --- Start Interview Button (Needed for Chrome TTS Autoplay) --- */}
-        <div style={{ padding: '1rem', textAlign: 'center' }}>
-          <button
-            onClick={() => {
-              // Speak initial greeting inside a user gesture (Chrome allows this)
-              if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-
-                const utterance = new SpeechSynthesisUtterance(
-                  "Hi! I'm here to help match you with the right volunteer. Tell me a little about what you enjoy doing."
-                );
-                utterance.lang = 'en-US';
-                utterance.rate = 0.92;
-                utterance.pitch = 1.2;
-                utterance.volume = 0.9;
-
-                window.speechSynthesis.speak(utterance);
-              }
-
-              // Mark greeting as spoken (so it won't repeat)
-              setTtsGreetingSpoken(true);
-            }}
-            style={{
-              padding: "12px 24px",
-              borderRadius: "8px",
-              backgroundColor: "var(--color-secondary)",
-              fontWeight: "600",
-              border: "none",
-              cursor: "pointer",
-              marginBottom: "1rem"
-            }}
+      {/* Custom Header with TTS Toggle */}
+      <div style={{
+        padding: '12px 16px',
+        backgroundColor: 'white',
+        borderBottom: '1px solid var(--color-border)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position: 'relative',
+        zIndex: 50
+      }}>
+        {/* Left: Back + Title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button 
+            onClick={() => navigate(-1)} 
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', padding: '4px' }}
+            aria-label="Go back"
           >
-            Start Interview (Click to Hear First Question)
+            ←
+          </button>
+          <span style={{ fontWeight: '600', fontSize: '18px', color: '#333' }}>Voice Interview</span>
+        </div>
+
+        {/* Right: TTS Toggle + Home */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* TTS Toggle Button */}
+          <div style={{ position: 'relative' }}>
+            <button
+              onClick={() => {
+                // If turning off, stop any currently playing speech
+                if (ttsEnabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                  window.speechSynthesis.cancel();
+                }
+                setTtsEnabled(!ttsEnabled);
+                setShowTtsTooltip(false);
+              }}
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                border: 'none',
+                backgroundColor: ttsEnabled ? '#E0F2F1' : '#F5F5F5',
+                color: ttsEnabled ? '#0d7d74' : '#999',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px',
+                transition: 'all 0.2s'
+              }}
+              title={ttsEnabled ? 'AI voice is on - click to mute' : 'AI voice is off - click to enable'}
+              aria-label={ttsEnabled ? 'Mute AI voice' : 'Enable AI voice'}
+            >
+              {ttsEnabled ? (
+                // Speaker On Icon
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </svg>
+              ) : (
+                // Speaker Off Icon
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+              )}
+            </button>
+
+            {/* Minimal Onboarding Tooltip */}
+            {showTtsTooltip && (
+              <div 
+                onClick={() => setShowTtsTooltip(false)}
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: '-8px',
+                  marginTop: '8px',
+                  padding: '10px 14px',
+                  backgroundColor: 'rgba(0,0,0,0.85)',
+                  color: 'white',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  lineHeight: '1.4',
+                  width: '180px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                  zIndex: 100,
+                  cursor: 'pointer'
+                }}
+              >
+                {/* Arrow */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-5px',
+                  right: '18px',
+                  width: '10px',
+                  height: '10px',
+                  backgroundColor: 'rgba(0,0,0,0.85)',
+                  transform: 'rotate(45deg)'
+                }} />
+                <div style={{ position: 'relative' }}>
+                  <div style={{ fontWeight: '600', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    AI will read aloud
+                  </div>
+                  <div style={{ color: '#aaa', fontSize: '11px' }}>Tap icon to turn off</div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Home Button */}
+          <button 
+            onClick={() => navigate('/')} 
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            aria-label="Go home"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
           </button>
         </div>
-      <div
-        style={{
-          padding: '0.25rem 1rem 0.5rem',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: '0.5rem',
-          fontSize: '12px',
-          color: '#555'
-        }}
-      >
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={ttsEnabled}
-            onChange={(e) => setTtsEnabled(e.target.checked)}
-          />
-          <span>Enable AI voice playback </span>
-        </label>
       </div>
-      <div style={{ flex: 1, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '800px', margin: '0 auto', width: '100%', overflowY: 'auto', paddingBottom: '120px' }}>
+
+      <div style={{ flex: 1, padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '800px', margin: '0 auto', width: '100%', overflowY: 'auto', paddingBottom: '160px' }}>
         {transcript.map((t, i) => (
           <div key={i} style={{
             width: '100%',
@@ -434,9 +531,75 @@ export default function VoiceInterviewPage() {
 
       {/* Fixed Controls Layer */}
       
-      {/* Mic Button (Center) */}
-      <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
+      {/* Mic Button (Center) with hint */}
+      <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
         <MicButton size="large" floating />
+        {/* Before greeting - show "Tap to start" */}
+        {!isListening && !ttsGreetingSpoken && (
+          <div style={{
+            fontSize: '13px',
+            color: '#555',
+            backgroundColor: 'white',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            textAlign: 'center',
+            lineHeight: '1.4'
+          }}>
+            <span style={{ fontWeight: '600' }}>Tap to start</span>
+            <span style={{ color: '#888' }}> — I'll introduce myself!</span>
+          </div>
+        )}
+        {/* After greeting, before user responds - show "Tap to respond" */}
+        {!isListening && ttsGreetingSpoken && transcript.length <= 1 && (
+          <div style={{
+            fontSize: '13px',
+            color: '#555',
+            backgroundColor: 'white',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            textAlign: 'center'
+          }}>
+            <span style={{ fontWeight: '600' }}>Tap to respond</span>
+          </div>
+        )}
+        {/* After first exchange - show smaller hint */}
+        {!isListening && transcript.length > 1 && (
+          <div style={{
+            fontSize: '12px',
+            color: '#888',
+            backgroundColor: 'white',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}>
+            Tap when ready to respond
+          </div>
+        )}
+        {isListening && (
+          <div style={{
+            fontSize: '13px',
+            color: 'var(--color-error)',
+            fontWeight: '600',
+            backgroundColor: 'white',
+            padding: '8px 16px',
+            borderRadius: '20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <span style={{ 
+              width: '8px', 
+              height: '8px', 
+              backgroundColor: 'var(--color-error)', 
+              borderRadius: '50%',
+              animation: 'pulse 1s infinite'
+            }}></span>
+            Listening... tap to stop
+          </div>
+        )}
       </div>
 
       {/* Generate Button (Right) */}

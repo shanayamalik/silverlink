@@ -1,40 +1,3 @@
-// TODO: Create SchedulingCalendar component for MEDIUM TASK
-//
-// Props to implement:
-// - volunteerId: ID of selected volunteer
-// - volunteerName: name to display
-// - onSchedule: callback with selected date/time
-// - availableSlots: array of available time slots (or mock data)
-//
-// Features:
-// - Simple calendar view (week or 2-week view)
-// - Large, tap-friendly date buttons
-// - Time slot picker after date selection
-// - Common time slots: Morning, Afternoon, Evening (or specific times)
-// - Visual feedback for selected date/time
-// - Confirmation button that passes selection to parent
-//
-// Time slot format:
-// {
-//   date: '2025-11-25',
-//   time: '10:00 AM' | '2:00 PM' | '6:00 PM',
-//   duration: 30 (minutes)
-// }
-//
-// Accessibility:
-// - Large buttons (min 50x50px for dates)
-// - Clear labels for all times
-// - Keyboard navigation support
-//
-// Example usage:
-// <SchedulingCalendar 
-//   volunteerId={volunteer.id}
-//   volunteerName={volunteer.name}
-//   onSchedule={(slot) => handleSchedule(slot)}
-//   availableSlots={mockAvailability}
-// />
-
-
 import React, { useMemo, useState } from "react";
 
 export default function SchedulingCalendar({
@@ -63,7 +26,7 @@ export default function SchedulingCalendar({
     const weekday = d.toLocaleDateString(undefined, { weekday: "short" });
     const month = d.toLocaleDateString(undefined, { month: "numeric" });
     const day = d.toLocaleDateString(undefined, { day: "numeric" });
-    return `${weekday} ${month}/${day}`;
+    return { weekday, date: `${month}/${day}` };
   };
 
   // Generate 7 days starting today if no availableSlots given
@@ -145,91 +108,69 @@ export default function SchedulingCalendar({
     onSchedule?.(slot);
   };
 
-  const handleKeyDown = (e, onActivate) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onActivate();
-    }
-  };
-
   return (
-    <div>
-      {/* go back */}
-      {onBack && (
-        <button
-          type="button"
-          onClick={onBack}
-          style={{
-            position: "absolute",
-            top: 10,
-            left: 10,
-            fontSize: 18,
-            padding: "6px 10px",
-            borderRadius: 8,
-            border: "1px solid #155d27",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
-        >
-          ← Back
-        </button>
-      )}
-
-      <div
-        style={{
-          marginBottom: "1.5rem",
-          fontSize: 14,
-          color: "#555",
-          textAlign: "center",
-        }}
-      >
-        Scheduling with <strong>{volunteerName}</strong>
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      {/* Header with Back Button */}
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '1rem' }}>
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px',
+              color: '#64748b',
+              display: 'flex', alignItems: 'center'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+        )}
+        <div style={{ fontSize: '16px', fontWeight: '600', color: '#334155' }}>
+          Schedule with <span style={{ color: '#0d9488' }}>{volunteerName}</span>
+        </div>
       </div>
 
       {/* Date picker (week view) */}
-      <div style={{ marginBottom: "1.5rem" }}>
-        <p
-          style={{
-            margin: "0 0 0.5rem 0",
-            fontSize: 14,
-            fontWeight: 600,
-          }}
-        >
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ margin: "0 0 0.75rem 0", fontSize: "13px", fontWeight: "600", color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
           1. Choose a day
         </p>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
-            gap: "0.5rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(70px, 1fr))",
+            gap: "0.75rem",
           }}
         >
           {uniqueAvailableDates.map((dateStr) => {
             const isSelected = dateStr === selectedDate;
+            const { weekday, date } = formatDateLabel(dateStr);
             return (
               <button
                 key={dateStr}
                 type="button"
                 onClick={() => handleDateClick(dateStr)}
-                onKeyDown={(e) => handleKeyDown(e, () => handleDateClick(dateStr))}
-                aria-pressed={isSelected}
                 style={{
-                  minHeight: 50,
-                  minWidth: 50,
-                  padding: "0.5rem",
-                  borderRadius: 12,
-                  border: isSelected ? "2px solid #1B5E20" : "1px solid #ccc",
-                  backgroundColor: isSelected ? "#E8F5E9" : "#fff",
+                  padding: "0.75rem 0.5rem",
+                  borderRadius: "12px",
+                  border: isSelected ? "2px solid #0d9488" : "1px solid #e2e8f0",
+                  backgroundColor: isSelected ? "#f0fdfa" : "white",
+                  color: isSelected ? "#0f766e" : "#64748b",
                   cursor: "pointer",
-                  fontSize: 13,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: isSelected ? "0 0 0 2px rgba(25, 118, 210, 0.2)" : "none",
+                  gap: '4px',
+                  transition: 'all 0.2s',
+                  boxShadow: isSelected ? "0 4px 6px -1px rgba(13, 148, 136, 0.1)" : "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
                 }}
               >
-                {formatDateLabel(dateStr)}
+                <span style={{ fontSize: "12px", fontWeight: "500" }}>{weekday}</span>
+                <span style={{ fontSize: "14px", fontWeight: "700" }}>{date}</span>
               </button>
             );
           })}
@@ -237,37 +178,25 @@ export default function SchedulingCalendar({
       </div>
 
       {/* Time slot picker */}
-      <div style={{ marginBottom: "1.5rem" }}>
-        <p
-          style={{
-            margin: "0 0 0.5rem 0",
-            fontSize: 14,
-            fontWeight: 600,
-          }}
-        >
+      <div style={{ marginBottom: "2rem" }}>
+        <p style={{ margin: "0 0 0.75rem 0", fontSize: "13px", fontWeight: "600", color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
           2. Choose a time
         </p>
 
         {!selectedDate && (
-          <p style={{ fontSize: 13, color: "#888" }}>
-            Please pick a day first. Time options will appear here.
-          </p>
+          <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f8fafc', borderRadius: '12px', border: '1px dashed #cbd5e1', color: '#94a3b8', fontSize: '14px' }}>
+            Select a date above to see available times
+          </div>
         )}
 
         {selectedDate && timeOptionsForSelectedDate.length === 0 && (
-          <p style={{ fontSize: 13, color: "#888" }}>
-            No time slots available for this day. Please choose another date.
-          </p>
+          <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#fff1f2', borderRadius: '12px', border: '1px solid #fecaca', color: '#ef4444', fontSize: '14px' }}>
+            No time slots available for this day.
+          </div>
         )}
 
         {selectedDate && timeOptionsForSelectedDate.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "0.5rem",
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: "0.75rem" }}>
             {timeOptionsForSelectedDate.map((slot) => {
               const isSelected = slot.time === selectedTime;
               return (
@@ -275,31 +204,24 @@ export default function SchedulingCalendar({
                   key={slot.time}
                   type="button"
                   onClick={() => handleTimeClick(slot.time)}
-                  onKeyDown={(e) =>
-                    handleKeyDown(e, () => handleTimeClick(slot.time))
-                  }
-                  aria-pressed={isSelected}
                   style={{
-                    minHeight: 50,
-                    minWidth: 90,
-                    padding: "0.5rem 0.75rem",
-                    borderRadius: 999,
-                    border: isSelected ? "2px solid #1B5E20" : "1px solid #ccc",
-                    backgroundColor: isSelected ? "#E8F5E9" : "#fff",
+                    padding: "0.75rem",
+                    borderRadius: "8px",
+                    border: isSelected ? "2px solid #0d9488" : "1px solid #e2e8f0",
+                    backgroundColor: isSelected ? "#f0fdfa" : "white",
+                    color: isSelected ? "#0f766e" : "#334155",
                     cursor: "pointer",
-                    fontSize: 13,
+                    fontSize: "13px",
+                    fontWeight: isSelected ? "600" : "500",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
+                    transition: 'all 0.2s',
+                    boxShadow: isSelected ? "0 2px 4px rgba(13, 148, 136, 0.1)" : "none"
                   }}
                 >
-                  <span>{slot.time}</span>
-                  {slot.label && (
-                    <span style={{ fontSize: 11, color: "#666" }}>
-                      {slot.label}
-                    </span>
-                  )}
+                  {slot.time}
                 </button>
               );
             })}
@@ -309,27 +231,40 @@ export default function SchedulingCalendar({
 
       {/* Error + confirm */}
       {error && (
-        <p style={{ color: "#c62828", fontSize: 13, marginBottom: "0.75rem" }}>
+        <div style={{ 
+          padding: '0.75rem', 
+          backgroundColor: '#fef2f2', 
+          border: '1px solid #fecaca', 
+          borderRadius: '8px', 
+          color: '#dc2626', 
+          fontSize: '13px', 
+          marginBottom: "1rem",
+          display: 'flex', alignItems: 'center', gap: '8px'
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           {error}
-        </p>
+        </div>
       )}
 
       <button
         type="button"
         onClick={handleConfirm}
+        disabled={!selectedDate || !selectedTime}
         style={{
           width: "100%",
-          padding: "0.75rem 1rem",
-          borderRadius: 999,
+          padding: "12px",
+          borderRadius: "8px",
           border: "none",
-          backgroundColor: "#1976d2",
-          color: "#fff",
-          fontSize: 15,
-          fontWeight: 600,
-          cursor: "pointer",
+          backgroundColor: (!selectedDate || !selectedTime) ? '#cbd5e1' : "#0d9488",
+          color: "white",
+          fontSize: "14px",
+          fontWeight: "600",
+          cursor: (!selectedDate || !selectedTime) ? 'not-allowed' : "pointer",
+          transition: 'background-color 0.2s',
+          marginTop: '1rem'
         }}
       >
-        Confirm chat time
+        Confirm Schedule
       </button>
     </div>
   );

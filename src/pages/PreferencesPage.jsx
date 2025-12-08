@@ -9,7 +9,7 @@ export default function PreferencesPage() {
       
       <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>
         <p>This is the Preferences Page (Under Construction)</p>
-        <p>Please proceed to <a href="/volunteers">Volunteers Page</a> to see the welcome message again.</p>
+        <p>Please proceed to <a href="/dashboard">Dashboard</a> to see your matches.</p>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { INTERVIEW_SYSTEM_PROMPT, ANALYSIS_SYSTEM_PROMPT } from './systemPrompts.js';
+import { VOLUNTEER_CHAT_PROMPT } from './volunteerPrompts.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -154,6 +155,56 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
+// --- Volunteer Chat Route ---
+app.post('/api/volunteer-chat', async (req, res) => {
+  const { messages, volunteer } = req.body;
+
+  if (!openai) {
+    // Mock response if no API key
+    const lastUserMessage = messages[messages.length - 1]?.content || "";
+    
+    // Simple mock logic
+    let mockResponse = `Hello! I'm ${volunteer.name}. I'd love to help you with that.`;
+    if (lastUserMessage.toLowerCase().includes('book')) {
+      mockResponse = "That sounds like a wonderful book! I'd love to read it with you.";
+    } else if (lastUserMessage.toLowerCase().includes('hello') || lastUserMessage.toLowerCase().includes('hi')) {
+      mockResponse = `Hi there! It's so nice to meet you. I'm ${volunteer.name}.`;
+    }
+
+    // Simulate delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return res.json({ message: mockResponse });
+  }
+
+  if (!messages || !Array.isArray(messages) || !volunteer) {
+    return res.status(400).json({ message: 'Invalid request format' });
+  }
+
+  try {
+    const systemPrompt = VOLUNTEER_CHAT_PROMPT(volunteer);
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { 
+          role: "system", 
+          content: systemPrompt 
+        },
+        ...messages
+      ],
+      temperature: 0.7,
+      max_tokens: 150,
+    });
+
+    const responseText = completion.choices[0].message.content;
+    res.json({ message: responseText });
+
+  } catch (error) {
+    console.error('OpenAI API Error:', error);
+    res.status(500).json({ message: 'Error generating volunteer response' });
+  }
+});
+
 // --- Analyze Interview Route ---
 app.post('/api/analyze-interview', async (req, res) => {
   if (!openai) {
@@ -295,10 +346,10 @@ app.post('/api/users/profile', (req, res) => {
     return res.status(404).json({ message: 'User not found' });
   }
 
-  // Update user profile
+  // Update user profile - store inside a 'profile' object for matching
   users[userIndex] = {
     ...users[userIndex],
-    ...profileData,
+    profile: profileData,
     hasProfile: true,
     updatedAt: new Date().toISOString()
   };

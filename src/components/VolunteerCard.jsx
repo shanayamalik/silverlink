@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from './common/Card';
 
 // export default function VolunteerCard() {
@@ -299,6 +300,7 @@ export default function VolunteerCard({
  * @param {boolean} props.selected - Whether the card is selected
  */
 export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
+  const navigate = useNavigate();
   if (!volunteer) return null;
 
   const { 
@@ -367,26 +369,50 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
       {helpsWith.length > 0 && (
         <div style={{ marginBottom: '12px', padding: '10px 12px', backgroundColor: '#F9F9F9', borderRadius: '8px' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Can help with</p>
-          <p style={{ margin: 0, fontWeight: '600', fontSize: '13px' }}>{helpsWith.join(', ')}</p>
+          <p style={{ margin: 0, fontWeight: '600', fontSize: '13px', lineHeight: '1.5' }}>{helpsWith.join(', ')}</p>
         </div>
       )}
 
-      {/* Languages + Availability row - fixed positions */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '12px', color: '#666', gap: '8px' }}>
-        <span style={{ minWidth: '40%' }}>
-          {languages.length > 0 ? `🗣️ ${languages.join(', ')}` : '\u00A0'}
-        </span>
-        <span>
-          {availability ? `📅 ${availability}` : '\u00A0'}
-        </span>
+      {/* Languages + Availability - Stacked for better space */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem', fontSize: '12px', color: '#555' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+          <span style={{ fontSize: '14px', lineHeight: '1' }}>🗣️</span>
+          <span style={{ flex: 1, lineHeight: '1.4' }}>
+            {languages.length > 0 ? languages.join(', ') : 'English'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+          <span style={{ fontSize: '14px', lineHeight: '1' }}>📅</span>
+          <span style={{ flex: 1, lineHeight: '1.4' }}>
+            {Array.isArray(availability) ? availability.join(', ') : (availability || 'Flexible availability')}
+          </span>
+        </div>
       </div>
 
-      {/* View Profile Button - Small Teal Style */}
-      <div style={{ marginTop: 'auto', textAlign: 'center' }}>
+      {/* Action Buttons */}
+      <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
         <button
           onClick={onViewProfile}
           style={{
-            padding: '6px 16px',
+            padding: '6px 12px',
+            fontSize: '12px',
+            fontWeight: '600',
+            color: '#00897B',
+            backgroundColor: 'transparent',
+            border: '1px solid #00897B',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#E0F2F1'}
+          onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+        >
+          View Profile
+        </button>
+        <button
+          onClick={() => navigate(`/chat/${volunteer.id}`, { state: { volunteer } })}
+          style={{
+            padding: '6px 12px',
             fontSize: '12px',
             fontWeight: '600',
             color: 'white',
@@ -399,7 +425,7 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
           onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
           onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
         >
-          View Profile
+          Chat
         </button>
       </div>
     </Card>
