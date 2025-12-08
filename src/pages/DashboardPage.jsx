@@ -289,7 +289,7 @@ export default function DashboardPage() {
     <div style={{ height: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', height: '24px' }}>
         <h2 style={{ fontSize: '16px', color: '#334155', fontWeight: '600', margin: 0 }}>Recent Messages</h2>
-        <button style={{ color: '#0d9488', background: 'none', border: 'none', fontWeight: '500', cursor: 'pointer', fontSize: '12px', padding: 0 }}>View All</button>
+        <button onClick={() => setActiveTab('messages')} style={{ color: '#0d9488', background: 'none', border: 'none', fontWeight: '500', cursor: 'pointer', fontSize: '12px', padding: 0 }}>View All</button>
       </div>
       <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
         {recentChats.map((chat, i) => {
@@ -376,39 +376,99 @@ export default function DashboardPage() {
     </div>
   );
 
+  // Messages View Component
+  const MessagesView = () => (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+        <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Your Messages</h2>
+      </div>
+      
+      <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        {recentChats.map((chat, i) => {
+          const isUnread = chat.id === 14 || chat.id === 15;
+          return (
+            <div key={chat.id} 
+              onClick={() => {
+                navigate(`/chat/${chat.id}`, { state: { volunteer: { name: chat.name, avatar: chat.avatar }, history: chat.history } });
+              }}
+              style={{ 
+                padding: '12px 16px', 
+                borderBottom: i !== recentChats.length - 1 ? '1px solid #f1f5f9' : 'none',
+                display: 'flex', gap: '12px', alignItems: 'center', cursor: 'pointer',
+                transition: 'background-color 0.2s',
+                backgroundColor: isUnread ? '#f8fafc' : 'transparent'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = isUnread ? '#f8fafc' : 'white'}
+            >
+              <div style={{ position: 'relative' }}>
+                <div style={{ 
+                  fontSize: '18px', 
+                  width: '40px', 
+                  height: '40px', 
+                  backgroundColor: 'white', 
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  {chat.avatar}
+                </div>
+                {isUnread && (
+                  <div style={{
+                    position: 'absolute', top: -2, right: -2,
+                    width: '10px', height: '10px',
+                    backgroundColor: '#ea580c', borderRadius: '50%',
+                    border: '2px solid white'
+                  }} />
+                )}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                  <span style={{ fontWeight: isUnread ? '700' : '600', color: '#334155', fontSize: '14px' }}>{chat.name}</span>
+                  <span style={{ fontSize: '12px', color: isUnread ? '#ea580c' : '#94a3b8', fontWeight: isUnread ? '600' : '400' }}>{chat.date}</span>
+                </div>
+                <p style={{ margin: 0, fontSize: '13px', color: isUnread ? '#1e293b' : '#64748b', fontWeight: isUnread ? '600' : '400', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{chat.message}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   // Schedule View Component
   const ScheduleView = () => (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Upcoming Visits</h2>
-        <button style={{ backgroundColor: '#0d9488', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '6px', fontWeight: '500', cursor: 'pointer' }}>
+        <button style={{ backgroundColor: '#0d9488', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '500', cursor: 'pointer', fontSize: '13px' }}>
           + Schedule New
         </button>
       </div>
       
-      <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem' }}>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid #f1f5f9' }}>
-          <div style={{ backgroundColor: '#f0fdf4', color: '#16a34a', padding: '10px', borderRadius: '8px', textAlign: 'center', minWidth: '60px' }}>
-            <div style={{ fontSize: '12px', fontWeight: '600', textTransform: 'uppercase' }}>DEC</div>
-            <div style={{ fontSize: '20px', fontWeight: '700' }}>12</div>
+      <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '12px 16px', borderBottom: '1px solid #f1f5f9' }}>
+          <div style={{ backgroundColor: '#f0fdf4', color: '#16a34a', padding: '6px 10px', borderRadius: '8px', textAlign: 'center', minWidth: '50px' }}>
+            <div style={{ fontSize: '11px', fontWeight: '600', textTransform: 'uppercase' }}>DEC</div>
+            <div style={{ fontSize: '16px', fontWeight: '700', lineHeight: 1 }}>12</div>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>Coffee & Chat with Grace</div>
-            <div style={{ fontSize: '14px', color: '#64748b' }}>10:00 AM - 11:00 AM • At Home</div>
+            <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '2px', fontSize: '14px' }}>Coffee & Chat with Grace</div>
+            <div style={{ fontSize: '13px', color: '#64748b' }}>10:00 AM - 11:00 AM • At Home</div>
           </div>
-          <button style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Reschedule</button>
+          <button style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>Reschedule</button>
         </div>
         
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', paddingTop: '1rem' }}>
-          <div style={{ backgroundColor: '#eff6ff', color: '#2563eb', padding: '10px', borderRadius: '8px', textAlign: 'center', minWidth: '60px' }}>
-            <div style={{ fontSize: '12px', fontWeight: '600', textTransform: 'uppercase' }}>DEC</div>
-            <div style={{ fontSize: '20px', fontWeight: '700' }}>15</div>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', padding: '12px 16px' }}>
+          <div style={{ backgroundColor: '#eff6ff', color: '#2563eb', padding: '6px 10px', borderRadius: '8px', textAlign: 'center', minWidth: '50px' }}>
+            <div style={{ fontSize: '11px', fontWeight: '600', textTransform: 'uppercase' }}>DEC</div>
+            <div style={{ fontSize: '16px', fontWeight: '700', lineHeight: 1 }}>15</div>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>Chess Game with Henry</div>
-            <div style={{ fontSize: '14px', color: '#64748b' }}>2:00 PM - 3:30 PM • Community Center</div>
+            <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '2px', fontSize: '14px' }}>Chess Game with Henry</div>
+            <div style={{ fontSize: '13px', color: '#64748b' }}>2:00 PM - 3:30 PM • Community Center</div>
           </div>
-          <button style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer' }}>Reschedule</button>
+          <button style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>Reschedule</button>
         </div>
       </div>
     </div>
@@ -505,8 +565,10 @@ export default function DashboardPage() {
           {/* Matches View */}
           {activeTab === 'matches' && <MatchesView />}
           
+          {/* Messages View */}
+          {activeTab === 'messages' && <MessagesView />}
+          
           {/* Placeholders for other tabs */}
-          {activeTab === 'messages' && <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>Messages View (Use Dashboard for now)</div>}
           {activeTab === 'profile' && <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>Profile View</div>}
         </div>
       </div>
