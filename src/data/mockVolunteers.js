@@ -5,44 +5,6 @@
 // src/data/mockVolunteers.js
 
 export const mockVolunteers = [
-    {
-      id: 1,
-      name: "Sarah Jenkins",
-      photo: "https://via.placeholder.com/80",
-      interests: ["Gardening", "Recipe Swapping", "Walks"],
-      communicationStyle: "Warm, patient, loves to listen",
-      age: 68,
-      verified: true,
-      bio: "Retired nurse who enjoys checking in on neighbors and helping with light activities.",
-      matchScore: 0.87,
-      role: "Retired Nurse"
-    },
-    {
-      id: 2,
-      name: "Robert Chen",
-      photo: "https://via.placeholder.com/80",
-      interests: ["Chess", "Local History", "Storytelling"],
-      communicationStyle: "Chatty, loves sharing stories",
-      age: 72,
-      verified: true,
-      bio: "Retired history teacher who enjoys talking with seniors.",
-      matchScore: 0.82,
-      role: "History Teacher"
-    },
-    {
-      id: 3,
-      name: "Emily Davis",
-      photo: "https://via.placeholder.com/80",
-      interests: ["Tech Help", "Zoom", "iPad"],
-      communicationStyle: "Clear and patient",
-      age: 60,
-      verified: false,
-      bio: "Former IT specialist happy to help with devices.",
-      matchScore: 0.9,
-      role: "Tech Helper"
-    }
-  ];
-export const mockVolunteers = [
   {
     id: '1',
     name: 'Maria Santos',

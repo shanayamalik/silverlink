@@ -19,10 +19,8 @@ import OptionCDemo from './pages/OptionCDemo';
 import CarrieLiveDemo from './pages/CarrieLiveDemo';
 import ProfileWithPreferencesDemo from './pages/ProfileWithPreferencesDemo';
 import AccessibilitySetupPage from './pages/AccessibilitySetupPage';
-import './styles/global.css';
-import './App.css';
-import VolunteersPage from "./pages/VolunteersPage";
 import SchedulingCalendar from "./components/SchedulingCalendar";
+import './styles/global.css';
 
 function App() {
   return (
