@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from './common/Card';
 
 /**
@@ -17,6 +18,7 @@ import Card from './common/Card';
  * @param {boolean} props.selected - Whether the card is selected
  */
 export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
+  const navigate = useNavigate();
   if (!volunteer) return null;
 
   const { 
@@ -105,12 +107,30 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
         </div>
       </div>
 
-      {/* View Profile Button - Small Teal Style */}
-      <div style={{ marginTop: 'auto', textAlign: 'center' }}>
+      {/* Action Buttons */}
+      <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
         <button
           onClick={onViewProfile}
           style={{
-            padding: '6px 16px',
+            padding: '6px 12px',
+            fontSize: '12px',
+            fontWeight: '600',
+            color: '#00897B',
+            backgroundColor: 'transparent',
+            border: '1px solid #00897B',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#E0F2F1'}
+          onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+        >
+          View Profile
+        </button>
+        <button
+          onClick={() => navigate(`/chat/${volunteer.id}`, { state: { volunteer } })}
+          style={{
+            padding: '6px 12px',
             fontSize: '12px',
             fontWeight: '600',
             color: 'white',
@@ -123,7 +143,7 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
           onMouseOver={(e) => e.target.style.backgroundColor = '#00695C'}
           onMouseOut={(e) => e.target.style.backgroundColor = '#00897B'}
         >
-          View Profile
+          Chat
         </button>
       </div>
     </Card>

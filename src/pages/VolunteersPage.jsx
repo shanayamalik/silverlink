@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/common/Header';
 import VolunteerCard from '../components/VolunteerCard';
 import Button from '../components/common/Button';
@@ -7,6 +8,7 @@ import { matchVolunteers, matchVolunteersSoft } from '../utils/matching';
 
 // Extended Profile Modal Component
 function ExtendedProfileModal({ volunteer, onClose }) {
+  const navigate = useNavigate();
   if (!volunteer) return null;
 
   return (
@@ -122,6 +124,7 @@ function ExtendedProfileModal({ volunteer, onClose }) {
             Close
           </button>
           <button
+            onClick={() => navigate(`/chat/${volunteer.id}`, { state: { volunteer } })}
             style={{
               padding: '8px 20px',
               fontSize: '13px',
