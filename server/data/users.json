@@ -7,6 +7,30 @@
     "securityQuestion": "What city were you born in?",
     "securityAnswer": "berkeley",
     "preferences": {},
-    "hasProfile": false
+    "hasProfile": true,
+    "bio": "This person enjoys reading, cooking, and is eager to learn gardening. They speak Hindi.",
+    "interests": [
+      "Reading books",
+      "Watching movies",
+      "Trying new recipes",
+      "Gardening"
+    ],
+    "availability": {
+      "text": "Usually free on Saturday and Sunday afternoons, and Saturday evenings.",
+      "checks": {
+        "Weekends": false,
+        "Weekdays": false,
+        "Mornings": false,
+        "Afternoons": true,
+        "Evenings": true
+      }
+    },
+    "languages": "Hindi",
+    "skills": "",
+    "helpNeeded": [
+      "Hobbies Together"
+    ],
+    "completedAt": "2025-12-08T03:01:29.581Z",
+    "updatedAt": "2025-12-08T03:01:29.592Z"
   }
 ]

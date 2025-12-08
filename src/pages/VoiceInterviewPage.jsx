@@ -383,6 +383,10 @@ export default function VoiceInterviewPage() {
           <div style={{ position: 'relative' }}>
             <button
               onClick={() => {
+                // If turning off, stop any currently playing speech
+                if (ttsEnabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+                  window.speechSynthesis.cancel();
+                }
                 setTtsEnabled(!ttsEnabled);
                 setShowTtsTooltip(false);
               }}
@@ -391,8 +395,8 @@ export default function VoiceInterviewPage() {
                 height: '40px',
                 borderRadius: '10px',
                 border: 'none',
-                backgroundColor: ttsEnabled ? 'var(--color-primary-light)' : '#F5F5F5',
-                color: ttsEnabled ? 'var(--color-primary)' : '#999',
+                backgroundColor: ttsEnabled ? '#E0F2F1' : '#F5F5F5',
+                color: ttsEnabled ? '#0d7d74' : '#999',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -530,7 +534,8 @@ export default function VoiceInterviewPage() {
       {/* Mic Button (Center) with hint */}
       <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
         <MicButton size="large" floating />
-        {!isListening && transcript.length <= 1 && (
+        {/* Before greeting - show "Tap to start" */}
+        {!isListening && !ttsGreetingSpoken && (
           <div style={{
             fontSize: '13px',
             color: '#555',
@@ -545,6 +550,7 @@ export default function VoiceInterviewPage() {
             <span style={{ color: '#888' }}> — I'll introduce myself!</span>
           </div>
         )}
+        {/* After greeting, before user responds - show "Tap to respond" */}
         {!isListening && ttsGreetingSpoken && transcript.length <= 1 && (
           <div style={{
             fontSize: '13px',
@@ -558,6 +564,7 @@ export default function VoiceInterviewPage() {
             <span style={{ fontWeight: '600' }}>Tap to respond</span>
           </div>
         )}
+        {/* After first exchange - show smaller hint */}
         {!isListening && transcript.length > 1 && (
           <div style={{
             fontSize: '12px',
