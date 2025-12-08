@@ -192,13 +192,10 @@ export default function DashboardPage() {
     setMatches(uniqueMatches);
   }, [user, navigate]);
 
-  // Persist unread messages
-  useEffect(() => {
-    localStorage.setItem('unreadMessageIds', JSON.stringify(unreadMessageIds));
-  }, [unreadMessageIds]);
-
   const markAsRead = (id) => {
-    setUnreadMessageIds(prev => prev.filter(msgId => msgId !== id));
+    const newList = unreadMessageIds.filter(msgId => msgId !== id);
+    setUnreadMessageIds(newList);
+    localStorage.setItem('unreadMessageIds', JSON.stringify(newList));
   };
 
   const recentChats = [
