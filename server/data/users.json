@@ -47,16 +47,19 @@
       "interests": [],
       "helpNeeded": [
         "companionship",
-        "hobbies"
+        "hobbies",
+        "tech"
       ],
       "availability": {
         "text": "",
         "checks": {
-          "Weekends": true
+          "Weekends": true,
+          "Afternoons": true,
+          "Weekdays": true
         }
       }
     },
     "hasProfile": true,
-    "updatedAt": "2025-12-08T10:31:31.834Z"
+    "updatedAt": "2025-12-08T10:44:46.358Z"
   }
 ]

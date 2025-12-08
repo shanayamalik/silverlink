@@ -668,8 +668,8 @@ export default function DashboardPage() {
     const [editAvailabilityChecks, setEditAvailabilityChecks] = useState({});
     const [showInterestModal, setShowInterestModal] = useState(false);
     
-    // Helper to get profile data safely
-    const profile = user.profile || {};
+    // Helper to get profile data safely - these will update when user state changes
+    const profile = user?.profile || {};
     const interests = profile.interests || [];
     const helpNeeded = profile.helpNeeded || [];
     const bio = profile.bio || "No bio added yet.";
@@ -737,9 +737,16 @@ export default function DashboardPage() {
         if (!response.ok) throw new Error('Failed to save profile');
 
         const data = await response.json();
+        
+        // Update localStorage and state
         localStorage.setItem('user', JSON.stringify(data.user));
         setUser(data.user);
+        
+        // Exit edit mode
         setIsEditing(false);
+        
+        // Show success message
+        alert('Profile updated successfully! Your matches will be refreshed.');
       } catch (error) {
         console.error("Error saving profile:", error);
         alert("Failed to save profile. Please try again.");
@@ -1053,7 +1060,7 @@ export default function DashboardPage() {
                       fontSize: '13px', border: '1px solid #ddd',
                       borderRadius: '6px', fontFamily: 'inherit'
                     }}
-                    placeholder="e.g., Flexible schedule, weekdays preferred"
+                    placeholder="e.g., Weekdays preferred, mornings work best"
                   />
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {['Weekends', 'Weekdays', 'Mornings', 'Afternoons', 'Evenings'].map(key => (
@@ -1077,9 +1084,11 @@ export default function DashboardPage() {
                 </>
               ) : (
                 <>
-                  <div style={{ fontSize: '13px', color: '#555', marginBottom: '8px', fontWeight: '500' }}>
-                    {availabilityText || 'Flexible'}
-                  </div>
+                  {availabilityText && (
+                    <div style={{ fontSize: '13px', color: '#555', marginBottom: '8px', fontWeight: '500' }}>
+                      {availabilityText}
+                    </div>
+                  )}
                   {activeChecks.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                       {activeChecks.map((check, i) => {
@@ -1098,6 +1107,11 @@ export default function DashboardPage() {
                           </span>
                         );
                       })}
+                    </div>
+                  )}
+                  {!availabilityText && activeChecks.length === 0 && (
+                    <div style={{ fontSize: '13px', color: '#999', fontStyle: 'italic' }}>
+                      No availability specified
                     </div>
                   )}
                 </>

@@ -223,7 +223,11 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] Show empty state if no chats
   - [x] Quick action buttons (Update Preferences, Find Volunteers)
   - [x] Profile completeness indicator (optional)
-  - [x] **Profile Page Polish:** Detailed view with Bio, Interests, Availability, and Edit functionality
+  - [x] **Profile Page Polish:** Minimalist design with colorful tag bubbles
+  - [x] **Inline Profile Editing:** Edit profile directly within dashboard
+  - [x] **Dual Edit Modes:** Manual editing and voice interview re-do option
+  - [x] **Interest Selection Modal:** Categorized interest picker
+  - [x] **Availability Display:** Clean text + checkbox visualization
 - [x] Test dashboard with mock scheduled chats
 - [x] Add navigation from all tasks to dashboard
 
