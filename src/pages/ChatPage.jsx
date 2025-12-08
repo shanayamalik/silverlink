@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import Header from '../components/common/Header';
 
@@ -6,35 +6,100 @@ export default function ChatPage() {
   const { volunteerId } = useParams();
   const location = useLocation();
   const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+  const hasInitialized = useRef(false);
   
   // Mock Volunteer Data (fallback if not passed in state)
   const volunteer = location.state?.volunteer || {
     id: volunteerId || 1,
     name: 'Sarah Jenkins',
     avatar: '👩‍🏫',
-    role: 'Reading Companion'
+    role: 'Reading Companion',
+    interests: ['Reading', 'Teaching', 'History']
   };
 
-  // Mock Chat History
-  const [messages, setMessages] = useState([
-    { id: 1, sender: 'volunteer', text: `Hi there! I saw you're interested in reading together. I'd love to help!`, time: '10:30 AM' },
-    { id: 2, sender: 'user', text: 'Hello Sarah! Yes, I have a few books I need help with.', time: '10:32 AM' },
-    { id: 3, sender: 'volunteer', text: 'That sounds wonderful. What kind of books do you enjoy?', time: '10:33 AM' }
-  ]);
+  // Chat History - Start empty
+  const [messages, setMessages] = useState([]);
+
+  // Auto-scroll to bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
+
+  // Initial Greeting
+  useEffect(() => {
+    if (!hasInitialized.current && messages.length === 0) {
+      hasInitialized.current = true;
+      fetchVolunteerResponse([]);
+    }
+  }, []);
+
+  const fetchVolunteerResponse = async (currentMessages) => {
+    setIsTyping(true);
+    try {
+      // Format messages for API (role: 'user' | 'assistant')
+      const apiMessages = currentMessages.map(msg => ({
+        role: msg.sender === 'user' ? 'user' : 'assistant',
+        content: msg.text
+      }));
+
+      const response = await fetch('http://localhost:3001/api/volunteer-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          messages: apiMessages,
+          volunteer: volunteer
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.message) {
+        const botMessage = {
+          id: Date.now(),
+          sender: 'volunteer',
+          text: data.message,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, botMessage]);
+      }
+    } catch (error) {
+      console.error('Error fetching response:', error);
+      // Fallback error message
+      const errorMessage = {
+        id: Date.now(),
+        sender: 'volunteer',
+        text: "I'm having a little trouble connecting right now. Can we try again in a moment?",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  };
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
     const newMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       sender: 'user',
       text: inputMessage,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setMessages([...messages, newMessage]);
+    const updatedMessages = [...messages, newMessage];
+    setMessages(updatedMessages);
     setInputMessage('');
+    
+    // Trigger AI response
+    fetchVolunteerResponse(updatedMessages);
   };
 
   // Minimalist Styles
@@ -81,7 +146,7 @@ export default function ChatPage() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '18px'
                     }}>
-                      {volunteer.avatar}
+                      {volunteer.avatar || '👤'}
                     </div>
                   )}
                   
@@ -101,6 +166,30 @@ export default function ChatPage() {
                 </div>
               );
             })}
+            
+            {isTyping && (
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                 <div style={{ 
+                    width: '32px', height: '32px', 
+                    backgroundColor: '#e0f2f1', borderRadius: '50%', 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '18px'
+                  }}>
+                    {volunteer.avatar || '👤'}
+                  </div>
+                  <div style={{ 
+                    backgroundColor: '#f3f4f6', 
+                    padding: '10px 16px', 
+                    borderRadius: '12px',
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    fontStyle: 'italic'
+                  }}>
+                    Typing...
+                  </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input Area */}
@@ -112,9 +201,11 @@ export default function ChatPage() {
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Type a message..."
                 style={{ flex: 1, outline: 'none', ...styles.input }}
+                disabled={isTyping}
               />
               <button 
                 type="submit"
+                disabled={isTyping}
                 style={{ 
                   color: 'white', 
                   border: 'none', 
@@ -122,6 +213,7 @@ export default function ChatPage() {
                   cursor: 'pointer',
                   fontWeight: '600',
                   transition: 'opacity 0.2s',
+                  opacity: isTyping ? 0.7 : 1,
                   ...styles.sendButton
                 }}
               >

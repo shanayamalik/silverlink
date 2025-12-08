@@ -43,30 +43,30 @@
     "securityAnswer": "berkeley",
     "preferences": {},
     "profile": {
-      "bio": "This person enjoys reading books and is eager to learn how to garden. They speak Hindi and are available on weekends.",
+      "bio": "This person enjoys reading books and gardening. They are looking for a volunteer to share their gardening hobby with.",
       "interests": [
         "Reading books",
         "Gardening"
       ],
       "availability": {
-        "text": "Saturdays and Sundays",
+        "text": "Weekends",
         "checks": {
-          "Weekends": false,
+          "Weekends": true,
           "Weekdays": false,
           "Mornings": false,
           "Afternoons": false,
           "Evenings": false
         }
       },
-      "languages": "Hindi",
+      "languages": "Hindi ",
       "skills": "",
       "helpNeeded": [
         "Hobbies Together",
-        "Language Support (Hindi)"
+        "Gentle Exercise"
       ],
-      "completedAt": "2025-12-08T03:41:29.410Z"
+      "completedAt": "2025-12-08T04:40:23.007Z"
     },
     "hasProfile": true,
-    "updatedAt": "2025-12-08T03:41:29.445Z"
+    "updatedAt": "2025-12-08T04:40:23.016Z"
   }
 ]
