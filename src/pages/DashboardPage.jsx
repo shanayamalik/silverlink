@@ -144,21 +144,30 @@ function ExtendedProfileModal({ volunteer, onClose }) {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  // Initialize user from localStorage to prevent flash of null/crash
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [matches, setMatches] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [profileVolunteer, setProfileVolunteer] = useState(null);
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      if (parsedUser.profile) {
-        setMatches(matchVolunteers(mockVolunteers, parsedUser.profile, { maxResults: 3 }));
-      }
+    if (!user) {
+      navigate('/login');
+      return;
     }
-  }, []);
+
+    if (user.profile) {
+      setMatches(matchVolunteers(mockVolunteers, user.profile, { maxResults: 3 }));
+    }
+  }, [user, navigate]);
 
   const recentChats = [
     { 
@@ -474,6 +483,53 @@ export default function DashboardPage() {
     </div>
   );
 
+  // Profile View Component
+  const ProfileView = () => (
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', marginBottom: '1.5rem' }}>My Profile</h2>
+      
+      <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '2rem', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+        <div style={{ 
+          width: '80px', height: '80px', backgroundColor: '#f1f5f9', borderRadius: '50%', 
+          margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '32px'
+        }}>
+          👤
+        </div>
+        
+        <h3 style={{ fontSize: '18px', color: '#1e293b', margin: '0 0 0.5rem', fontWeight: '600' }}>{user.name}</h3>
+        <p style={{ color: '#64748b', margin: '0 0 2rem', fontSize: '14px' }}>{user.role === 'senior' ? 'Senior Member' : 'Volunteer'}</p>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
+          <button style={{ 
+            width: '100%', maxWidth: '280px', padding: '8px 16px', 
+            backgroundColor: 'white', border: '1px solid #cbd5e1', borderRadius: '6px',
+            color: '#334155', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          }}>
+            Edit Profile
+          </button>
+          <button style={{ 
+            width: '100%', maxWidth: '280px', padding: '8px 16px', 
+            backgroundColor: 'white', border: '1px solid #cbd5e1', borderRadius: '6px',
+            color: '#334155', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          }}>
+            Notification Settings
+          </button>
+          <button 
+            onClick={handleLogout}
+            style={{ 
+              width: '100%', maxWidth: '280px', padding: '8px 16px', 
+              backgroundColor: '#fee2e2', border: '1px solid #fecaca', borderRadius: '6px',
+              color: '#dc2626', fontWeight: '600', cursor: 'pointer', marginTop: '0.5rem', fontSize: '14px'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
   // --- Sidebar Styles (Classic Dark) ---
   const sidebarStyles = {
     width: '260px',
@@ -492,6 +548,8 @@ export default function DashboardPage() {
     schedule: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>,
     profile: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
   };
+
+  if (!user) return null;
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
@@ -538,10 +596,61 @@ export default function DashboardPage() {
         </nav>
 
         <div style={{ marginTop: 'auto' }}>
-          <div style={{ padding: '1rem', borderRadius: '8px', backgroundColor: '#334155' }}>
-            <div style={{ fontSize: '12px', marginBottom: '4px', color: '#94a3b8' }}>Signed in as</div>
-            <div style={{ fontWeight: '600', fontSize: '14px' }}>{user.name}</div>
+          
+          <div style={{ 
+            padding: '16px', 
+            borderRadius: '12px', 
+            backgroundColor: 'rgba(15, 23, 42, 0.6)', 
+            border: '1px solid rgba(255,255,255,0.08)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ 
+                width: '40px', height: '40px', borderRadius: '50%', 
+                backgroundColor: '#0d9488', 
+                color: 'white', 
+                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                fontWeight: '600', fontSize: '16px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}>
+                {user.name ? user.name.charAt(0) : 'U'}
+              </div>
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontWeight: '600', fontSize: '14px', color: 'white' }}>{user.name}</div>
+                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Volunteer</div>
+              </div>
+            </div>
+            
+            <button 
+              onClick={handleLogout}
+              style={{ 
+                width: '100%',
+                padding: '10px',
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '8px',
+                color: '#e2e8f0', 
+                cursor: 'pointer',
+                fontSize: '13px',
+                fontWeight: '500',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                transition: 'all 0.2s'
+              }}
+              onMouseOver={(e) => { 
+                e.currentTarget.style.backgroundColor = '#ef4444'; 
+                e.currentTarget.style.borderColor = '#ef4444';
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseOut={(e) => { 
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; 
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.color = '#e2e8f0';
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Log Out
+            </button>
           </div>
+
         </div>
       </div>
 
@@ -562,14 +671,15 @@ export default function DashboardPage() {
           {/* Schedule View */}
           {activeTab === 'schedule' && <ScheduleView />}
           
+          
           {/* Matches View */}
           {activeTab === 'matches' && <MatchesView />}
           
           {/* Messages View */}
           {activeTab === 'messages' && <MessagesView />}
           
-          {/* Placeholders for other tabs */}
-          {activeTab === 'profile' && <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>Profile View</div>}
+          {/* Profile View */}
+          {activeTab === 'profile' && <ProfileView />}
         </div>
       </div>
 
