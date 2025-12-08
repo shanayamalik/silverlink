@@ -155,26 +155,37 @@ export default function VolunteersPage() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const profile = user.profile || {};
 
-    // Try hard matching first (requires help + availability overlap)
-    let matches = matchVolunteers(mockVolunteers, profile, {
-      requireHelpMatch: true,
-      requireAvailabilityMatch: true,
-      maxResults: 3
-    });
+    let matches = [];
 
-    // If no hard matches, fall back to soft matching
-    if (matches.length === 0) {
-      matches = matchVolunteersSoft(mockVolunteers, profile, {
+    try {
+      // Try hard matching first (requires help + availability overlap)
+      matches = matchVolunteers(mockVolunteers, profile, {
+        requireHelpMatch: true,
+        requireAvailabilityMatch: true,
         maxResults: 3
       });
-      setMatchType('soft');
-    } else {
-      setMatchType('hard');
+
+      console.log('🎯 Hard matches found:', matches.length, matches.map(m => m.name));
+
+      // If no hard matches, fall back to soft matching
+      if (matches.length === 0) {
+        matches = matchVolunteersSoft(mockVolunteers, profile, {
+          maxResults: 3
+        });
+        setMatchType('soft');
+        console.log('🔄 Soft matches found:', matches.length, matches.map(m => m.name));
+      } else {
+        setMatchType('hard');
+      }
+    } catch (error) {
+      console.error("Error during matching:", error);
+      matches = [];
     }
 
     // If still no matches (shouldn't happen with soft), show top 3
     if (matches.length === 0) {
       matches = mockVolunteers.slice(0, 3);
+      console.log('⚠️ No matches, showing first 3 volunteers');
     }
 
     setMatchedVolunteers(matches);

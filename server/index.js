@@ -261,10 +261,10 @@ app.post('/api/users/profile', (req, res) => {
     return res.status(404).json({ message: 'User not found' });
   }
 
-  // Update user profile
+  // Update user profile - store inside a 'profile' object for matching
   users[userIndex] = {
     ...users[userIndex],
-    ...profileData,
+    profile: profileData,
     hasProfile: true,
     updatedAt: new Date().toISOString()
   };

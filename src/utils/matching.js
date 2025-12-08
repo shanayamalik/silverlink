@@ -21,8 +21,11 @@
  * @returns {string[]} Array of shared interests
  */
 function getSharedInterests(userInterests = [], volunteerInterests = []) {
-  const userSet = new Set(userInterests.map(i => i.toLowerCase().trim()));
-  return volunteerInterests.filter(vi => userSet.has(vi.toLowerCase().trim()));
+  const safeUserInterests = Array.isArray(userInterests) ? userInterests : [];
+  const safeVolunteerInterests = Array.isArray(volunteerInterests) ? volunteerInterests : [];
+  
+  const userSet = new Set(safeUserInterests.map(i => i.toLowerCase().trim()));
+  return safeVolunteerInterests.filter(vi => userSet.has(vi.toLowerCase().trim()));
 }
 
 /**
@@ -32,8 +35,17 @@ function getSharedInterests(userInterests = [], volunteerInterests = []) {
  * @returns {boolean}
  */
 function hasAvailabilityOverlap(userAvailability = {}, volunteerAvailability = []) {
-  const checks = userAvailability.checks || {};
-  const volAvail = new Set(volunteerAvailability.map(a => a.toLowerCase()));
+  const safeUserAvailability = userAvailability || {};
+  const safeVolunteerAvailability = Array.isArray(volunteerAvailability) ? volunteerAvailability : [];
+
+  const rawChecks = safeUserAvailability.checks || {};
+  // Normalize keys to lowercase to handle potential casing issues
+  const checks = {};
+  Object.keys(rawChecks).forEach(key => {
+    checks[key.toLowerCase()] = rawChecks[key];
+  });
+
+  const volAvail = new Set(safeVolunteerAvailability.map(a => a.toLowerCase()));
   
   // Check each user availability preference against volunteer
   if (checks.weekdays && volAvail.has('weekdays')) return true;
@@ -56,8 +68,11 @@ function hasAvailabilityOverlap(userAvailability = {}, volunteerAvailability = [
  * @returns {string[]} Array of matching help categories
  */
 function getHelpOverlap(userHelpNeeded = [], volunteerHelpsWith = []) {
-  const userSet = new Set(userHelpNeeded.map(h => h.toLowerCase().trim()));
-  return volunteerHelpsWith.filter(vh => userSet.has(vh.toLowerCase().trim()));
+  const safeUserHelpNeeded = Array.isArray(userHelpNeeded) ? userHelpNeeded : [];
+  const safeVolunteerHelpsWith = Array.isArray(volunteerHelpsWith) ? volunteerHelpsWith : [];
+
+  const userSet = new Set(safeUserHelpNeeded.map(h => h.toLowerCase().trim()));
+  return safeVolunteerHelpsWith.filter(vh => userSet.has(vh.toLowerCase().trim()));
 }
 
 /**
@@ -67,8 +82,18 @@ function getHelpOverlap(userHelpNeeded = [], volunteerHelpsWith = []) {
  * @returns {string[]} Array of shared languages
  */
 function getSharedLanguages(userLanguages = [], volunteerLanguages = []) {
-  const userSet = new Set(userLanguages.map(l => l.toLowerCase().trim()));
-  return volunteerLanguages.filter(vl => userSet.has(vl.toLowerCase().trim()));
+  // Handle string input (e.g. "English, Spanish") or array input
+  let safeUserLanguages = [];
+  if (Array.isArray(userLanguages)) {
+    safeUserLanguages = userLanguages;
+  } else if (typeof userLanguages === 'string') {
+    safeUserLanguages = userLanguages.split(',').map(l => l.trim()).filter(Boolean);
+  }
+
+  const safeVolunteerLanguages = Array.isArray(volunteerLanguages) ? volunteerLanguages : [];
+
+  const userSet = new Set(safeUserLanguages.map(l => l.toLowerCase().trim()));
+  return safeVolunteerLanguages.filter(vl => userSet.has(vl.toLowerCase().trim()));
 }
 
 /**
