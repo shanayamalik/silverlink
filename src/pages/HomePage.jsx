@@ -1,6 +1,27 @@
 import React from 'react';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
+import VolunteerCard from "../components/VolunteerCard";
+import VolunteerComparison from "../components/VolunteerComparison";
+
+export default function HomePage() {
+  // test volunteer... 
+  // const testVolunteer = {
+  //   id: 1,
+  //   name: 'Sarah Jenkins',
+  //   photo: 'https://via.placeholder.com/80',
+  //   interests: ['Gardening', 'Recipe Swapping', 'Walks'],
+  //   communicationStyle: 'Warm, patient, loves to listen',
+  //   location: 'Berkeley, CA',
+  //   age: 68,
+  //   verified: true,
+  //   bio: 'Retired nurse who enjoys checking in on neighbors and helping with light activities.',
+  //   matchScore: 0.87,
+  //   role: 'Retired Nurse'
+  // };
+
+
+
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
@@ -224,6 +245,36 @@ export function DesignPreview() {
 
         </div>
       </section>
+
+
+      {/* <section style={{ marginBottom: '4rem', textAlign: 'left' }}>
+        <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+          Interactive VolunteerCard (Medium Task)
+        </h2>
+        <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#666' }}>
+          This section uses the reusable VolunteerCard component driven by real props.
+        </p>
+
+        <div style={{ maxWidth: '420px', margin: '0 auto 2rem' }}>
+          <VolunteerCard
+            volunteer={testVolunteer}
+            onClick={() => alert('Clicked full VolunteerCard')}
+            selected={false}
+            compact={false}
+          />
+        </div>
+
+        <div style={{ maxWidth: '420px', margin: '0 auto' }}>
+          <VolunteerCard
+            volunteer={testVolunteer}
+            onClick={() => alert('Clicked compact VolunteerCard')}
+            selected={false}
+            compact={true}
+          />
+        </div>
+      </section> */}
+
+      
     </div>
   );
 }
