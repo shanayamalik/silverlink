@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function AccessibilitySetupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const analysisData = location.state?.analysisData || null;
   const [step, setStep] = useState(1); // 1: Font Size, 2: Color Theme, 3: Input Method, 4: Other Options
   const [settings, setSettings] = useState({
     fontSize: 'Medium',
@@ -16,11 +18,23 @@ export default function AccessibilitySetupPage() {
 
   const handleSave = () => {
     localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-    navigate('/dashboard');
+    // If coming from interview (has analysisData), go to profile creation
+    // Otherwise, go to interview (coming from signup)
+    if (analysisData) {
+      navigate('/profile-creation', { state: { analysisData } });
+    } else {
+      navigate('/interview');
+    }
   };
 
   const handleSkip = () => {
-    navigate('/dashboard');
+    // If coming from interview, pass data to profile creation
+    // Otherwise, go to interview (coming from signup)
+    if (analysisData) {
+      navigate('/profile-creation', { state: { analysisData } });
+    } else {
+      navigate('/interview');
+    }
   };
 
   const handleNext = () => {

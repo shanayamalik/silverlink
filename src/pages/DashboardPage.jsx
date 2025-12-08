@@ -161,6 +161,19 @@ export default function DashboardPage() {
     return saved ? JSON.parse(saved) : [14, 15, 101, 13];
   });
 
+  // Welcome modal for first-time users
+  // TODO: Design a better first-time user onboarding experience that's more minimalist and less intrusive
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false); // Disabled for now
+  // const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
+  //   const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+  //   return !hasSeenWelcome;
+  // });
+
+  const closeWelcomeModal = () => {
+    localStorage.setItem('hasSeenWelcome', 'true');
+    setShowWelcomeModal(false);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('user');
     navigate('/login');
@@ -1202,6 +1215,28 @@ export default function DashboardPage() {
                       </svg>
                       Update via Voice
                     </button>
+                    <button 
+                      onClick={() => navigate('/accessibility-setup')}
+                      style={{ 
+                        padding: '10px 20px', 
+                        backgroundColor: 'transparent', 
+                        color: '#666',
+                        border: '1px solid #ddd', 
+                        borderRadius: '6px', 
+                        fontSize: '13px', 
+                        fontWeight: '500', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+                      </svg>
+                      Accessibility
+                    </button>
                   </div>
                   <div style={{ 
                     fontSize: '12px', 
@@ -1382,6 +1417,85 @@ export default function DashboardPage() {
           volunteer={profileVolunteer} 
           onClose={() => setProfileVolunteer(null)} 
         />
+      )}
+
+      {/* Welcome Banner for First-Time Users */}
+      {showWelcomeModal && (
+        <div style={{
+          position: 'fixed', top: '80px', left: '50%', transform: 'translateX(-50%)',
+          maxWidth: '600px', width: 'calc(100% - 2rem)', zIndex: 2000,
+          backgroundColor: 'white', border: '1px solid #e2e8f0',
+          borderRadius: '12px', padding: '1.25rem 1.5rem',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+          display: 'flex', alignItems: 'center', gap: '1rem'
+        }}>
+          <div style={{ flex: 1 }}>
+            <p style={{
+              margin: '0 0 0.5rem 0', fontSize: '15px', color: '#1e293b',
+              fontWeight: '500', lineHeight: '1.4'
+            }}>
+              {user?.name ? `Welcome, ${user.name}. ` : 'Welcome. '}Ready to get started?
+            </p>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => {
+                  closeWelcomeModal();
+                  setActiveTab('matches');
+                }}
+                style={{
+                  padding: '6px 12px', backgroundColor: '#0d9488', color: 'white',
+                  border: 'none', borderRadius: '6px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0f766e'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#0d9488'}
+              >
+                Browse Matches
+              </button>
+              <button
+                onClick={() => {
+                  closeWelcomeModal();
+                  setActiveTab('profile');
+                }}
+                style={{
+                  padding: '6px 12px', backgroundColor: 'transparent', color: '#64748b',
+                  border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.borderColor = '#94a3b8'}
+                onMouseOut={(e) => e.currentTarget.style.borderColor = '#cbd5e1'}
+              >
+                View Profile
+              </button>
+              <button
+                onClick={() => {
+                  closeWelcomeModal();
+                  navigate('/accessibility-setup');
+                }}
+                style={{
+                  padding: '6px 12px', backgroundColor: 'transparent', color: '#64748b',
+                  border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.borderColor = '#94a3b8'}
+                onMouseOut={(e) => e.currentTarget.style.borderColor = '#cbd5e1'}
+              >
+                Accessibility
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={closeWelcomeModal}
+            style={{
+              background: 'none', border: 'none', color: '#94a3b8',
+              fontSize: '20px', cursor: 'pointer', padding: '4px',
+              lineHeight: 1, flexShrink: 0
+            }}
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
       )}
     </div>
   );
