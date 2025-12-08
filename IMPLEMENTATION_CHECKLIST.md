@@ -65,20 +65,22 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 2: Easy Task + Authentication 
 
 ### Easy Task - PreferencesPage
-- [ ] Implement `src/components/HelpTypeTiles.jsx`
-  - [ ] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
-  - [ ] Use icons from `public/icons/`
-  - [ ] Highlight selected tile
-  - [ ] Props: onSelect, selectedType
-- [ ] Implement `src/components/PreferenceSelector.jsx`
-  - [ ] 3 preference options: Communication Style, Location, Age
-  - [ ] Large toggles or sliders
-  - [ ] Props: onPreferencesChange, initialPreferences
-- [ ] Implement `src/pages/PreferencesPage.jsx`
-  - [ ] Use Header, HelpTypeTiles, PreferenceSelector, Button
-  - [ ] Save selections to localStorage
-  - [ ] Navigate to /volunteers on Continue
-- [ ] Test complete Easy Task flow
+- [x] ~~Implement `src/components/HelpTypeTiles.jsx`~~ (DEPRECATED - replaced by AccessibilitySetupPage)
+  - [x] Display 3 large tiles: Conversation, Hobby Buddy, Tech Help
+  - [x] Use icons from `public/icons/`
+  - [x] Highlight selected tile
+  - [x] Props: onSelect, selectedType
+- [x] ~~Implement `src/components/PreferenceSelector.jsx`~~ (DEPRECATED - replaced by AccessibilitySetupPage)
+  - [x] 3 preference options: Communication Style, Location, Age
+  - [x] Large toggles or sliders
+  - [x] Props: onPreferencesChange, initialPreferences
+- [x] **NEW:** Implement `src/pages/AccessibilitySetupPage.jsx` (replaces PreferencesPage)
+  - [x] 4-step wizard: Font Size, Color Theme, Input Method, Additional Options
+  - [x] Live preview panel showing real-time updates
+  - [x] Dark mode support with instant preview
+  - [x] Save settings to localStorage
+  - [x] Integrated into signup flow: SignUp → Accessibility → Interview → Profile → Dashboard
+- [x] Test complete flow with accessibility setup
 
 ### Authentication & Home
 - [x] Implement `src/pages/LoginPage.jsx`
@@ -91,6 +93,7 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] Implement `src/pages/SignUpPage.jsx`
   - [x] Multi-step wizard (Name/Email/Password -> Security Question)
   - [x] Auto-redirect if already logged in
+  - [x] Navigate to accessibility setup after signup
   - [ ] **TODO:** Add User Role selection (Volunteer / Senior / Both)
 - [x] Implement `src/pages/ForgotPasswordPage.jsx`
   - [x] Email lookup
@@ -198,7 +201,7 @@ Track your progress as you build the app! Check off items as you complete them.
 - [ ] **UX Improvements:**
   - [ ] Add full-screen loading overlay during AI analysis
   - [ ] Improve "About Me" generation (more robust bio)
-- [ ] **Optional:** Text-to-Speech (TTS) for AI responses
+- [x] **Optional:** Text-to-Speech (TTS) for AI responses (with on/off toggle)
 - [ ] **Optional:** "Flying Chips" animation for keyword extraction
 
 ### Integration & Testing
@@ -228,6 +231,8 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] **Dual Edit Modes:** Manual editing and voice interview re-do option
   - [x] **Interest Selection Modal:** Categorized interest picker
   - [x] **Availability Display:** Clean text + checkbox visualization
+  - [x] **Accessibility Button:** Quick access to accessibility settings from profile
+  - [ ] **TODO:** First-time user onboarding (minimalist banner/modal design needed)
 - [x] Test dashboard with mock scheduled chats
 - [x] Add navigation from all tasks to dashboard
 
@@ -345,12 +350,12 @@ Add unexpected touches that make the app memorable and stand out:
 Ensure the app is usable by everyone, especially seniors with varying abilities:
 
 ### Visual Accessibility
-- [ ] High contrast mode toggle
-- [ ] Font size adjustment controls (Small / Medium / Large / Extra Large)
+- [x] High contrast mode toggle (AccessibilitySetupPage)
+- [x] Font size adjustment controls (Small / Medium / Large / Extra Large)
 - [ ] Ensure all text meets WCAG AA contrast ratio (4.5:1)
 - [ ] Avoid color-only indicators (add icons/text alongside)
 - [ ] Clear focus indicators on all interactive elements
-- [ ] Reduce motion option for users sensitive to animations
+- [x] Reduce motion option for users sensitive to animations (AccessibilitySetupPage)
 
 ### Screen Reader Support
 - [ ] Add proper ARIA labels to all buttons and interactive elements
@@ -360,25 +365,25 @@ Ensure the app is usable by everyone, especially seniors with varying abilities:
 - [ ] Test with VoiceOver (Mac) and NVDA (Windows)
 
 ### Motor Accessibility
-- [ ] Ensure all interactive elements are at least 44x44px
+- [x] Ensure all interactive elements are at least 44x44px (large buttons option in AccessibilitySetupPage)
 - [ ] Add keyboard shortcuts for common actions
 - [ ] Full keyboard navigation support (Tab, Enter, Escape)
 - [ ] Skip-to-content link for keyboard users
 - [ ] Avoid time-limited interactions
 
 ### Cognitive Accessibility
-- [ ] Simple, clear language throughout
-- [ ] Consistent navigation and layout
+- [x] Simple, clear language throughout
+- [x] Consistent navigation and layout
 - [ ] Clear error messages with suggestions
-- [ ] Progress indicators for multi-step processes
-- [ ] Undo/back options at every step
+- [x] Progress indicators for multi-step processes (AccessibilitySetupPage step counter)
+- [x] Undo/back options at every step (AccessibilitySetupPage back button)
 - [ ] Memory aids (show previous answers, recap screens)
 
 ### Audio Accessibility
-- [ ] Captions/transcripts for any audio content
-- [ ] Visual feedback for voice recording status
-- [ ] Alternative text input option for voice interview
-- [ ] Volume controls for any sounds/speech
+- [x] Captions/transcripts for any audio content (live transcript in VoiceInterviewPage)
+- [x] Visual feedback for voice recording status (mic button animations)
+- [x] Alternative text input option for voice interview (Input Method selector in AccessibilitySetupPage)
+- [x] Text-to-Speech toggle (VoiceInterviewPage TTS on/off button)
 
 ### Testing
 - [ ] Test with actual seniors (user testing)
