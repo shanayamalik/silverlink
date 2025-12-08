@@ -149,14 +149,14 @@ Track your progress as you build the app! Check off items as you complete them.
   - [ ] Props: volunteers (2-3), onSelect, selectedId
   - [ ] Side-by-side layout (responsive: stack on mobile)
 - [x] Implement `src/components/SchedulingCalendar.jsx`
-  - [ ] Props: volunteerId, volunteerName, onSchedule, availableSlots
-  - [ ] Simple calendar/date picker (week view)
-  - [ ] Large date buttons (min 50x50px)
-  - [ ] Time slot options (Morning, Afternoon, Evening)
-  - [ ] Confirmation button
+  - [x] Props: volunteerId, volunteerName, onSchedule, availableSlots
+  - [x] Simple calendar/date picker (week view)
+  - [x] Large date buttons (min 50x50px)
+  - [x] Time slot options (Morning, Afternoon, Evening)
+  - [x] Confirmation button
 - [ ] Add backend endpoint: POST /api/chats
 - [ ] Add backend endpoint: GET /api/chats/user/:userId
-- [ ] Test complete Medium Task flow (preferences → volunteers → schedule)
+- [x] Test complete Medium Task flow (preferences → volunteers → schedule)
 
 **Checkpoint:** ✅ User can browse volunteers, compare, and schedule a chat
 
@@ -216,15 +216,16 @@ Track your progress as you build the app! Check off items as you complete them.
 ## Phase 5: Dashboard & Polish (Days 11-12)
 
 ### Dashboard
-- [ ] Implement `src/pages/DashboardPage.jsx`
-  - [ ] Load scheduled chats from backend/localStorage
-  - [ ] Display upcoming chats with volunteer name, date, time
-  - [ ] Use Card component for each chat
-  - [ ] Show empty state if no chats
-  - [ ] Quick action buttons (Update Preferences, Find Volunteers)
-  - [ ] Profile completeness indicator (optional)
-- [ ] Test dashboard with mock scheduled chats
-- [ ] Add navigation from all tasks to dashboard
+- [x] Implement `src/pages/DashboardPage.jsx`
+  - [x] Load scheduled chats from backend/localStorage
+  - [x] Display upcoming chats with volunteer name, date, time
+  - [x] Use Card component for each chat
+  - [x] Show empty state if no chats
+  - [x] Quick action buttons (Update Preferences, Find Volunteers)
+  - [x] Profile completeness indicator (optional)
+  - [x] **Profile Page Polish:** Detailed view with Bio, Interests, Availability, and Edit functionality
+- [x] Test dashboard with mock scheduled chats
+- [x] Add navigation from all tasks to dashboard
 
 ### Error States & Edge Cases
 - [ ] Add loading states

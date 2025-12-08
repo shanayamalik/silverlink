@@ -43,30 +43,20 @@
     "securityAnswer": "berkeley",
     "preferences": {},
     "profile": {
-      "bio": "This person enjoys reading books and gardening. They are looking for a volunteer to share their gardening hobby with.",
-      "interests": [
-        "Reading books",
-        "Gardening"
+      "bio": "No bio added yet.",
+      "interests": [],
+      "helpNeeded": [
+        "companionship",
+        "hobbies"
       ],
       "availability": {
-        "text": "Weekends",
+        "text": "",
         "checks": {
-          "Weekends": true,
-          "Weekdays": false,
-          "Mornings": false,
-          "Afternoons": false,
-          "Evenings": false
+          "Weekends": true
         }
-      },
-      "languages": "Hindi ",
-      "skills": "",
-      "helpNeeded": [
-        "Hobbies Together",
-        "Gentle Exercise"
-      ],
-      "completedAt": "2025-12-08T04:40:23.007Z"
+      }
     },
     "hasProfile": true,
-    "updatedAt": "2025-12-08T04:40:23.016Z"
+    "updatedAt": "2025-12-08T10:31:31.834Z"
   }
 ]

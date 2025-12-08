@@ -13,6 +13,7 @@ import ButtonDesignOptions from './pages/ButtonDesignOptions';
 import CardLayoutOptions from './pages/CardLayoutOptions';
 import BannerDesignOptions from './pages/BannerDesignOptions';
 import BadgeDesignOptions from './pages/BadgeDesignOptions';
+import ProfileDesignOptions2 from './pages/ProfileDesignOptions2';
 import './styles/global.css';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/card-layouts" element={<CardLayoutOptions />} />
           <Route path="/banner-designs" element={<BannerDesignOptions />} />
           <Route path="/badge-designs" element={<BadgeDesignOptions />} />
+          <Route path="/profile-designs" element={<ProfileDesignOptions2 />} />
         </Routes>
       </div>
     </BrowserRouter>

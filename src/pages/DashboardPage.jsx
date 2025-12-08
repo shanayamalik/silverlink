@@ -656,51 +656,558 @@ export default function DashboardPage() {
   };
 
   // Profile View Component
-  const ProfileView = () => (
-    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', marginBottom: '1.5rem' }}>My Profile</h2>
-      
-      <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '2rem', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+  const ProfileView = () => {
+    const navigate = useNavigate();
+    
+    // Edit mode state
+    const [isEditing, setIsEditing] = useState(false);
+    const [editBio, setEditBio] = useState('');
+    const [editInterests, setEditInterests] = useState([]);
+    const [editHelpNeeded, setEditHelpNeeded] = useState([]);
+    const [editAvailabilityText, setEditAvailabilityText] = useState('');
+    const [editAvailabilityChecks, setEditAvailabilityChecks] = useState({});
+    const [showInterestModal, setShowInterestModal] = useState(false);
+    
+    // Helper to get profile data safely
+    const profile = user.profile || {};
+    const interests = profile.interests || [];
+    const helpNeeded = profile.helpNeeded || [];
+    const bio = profile.bio || "No bio added yet.";
+    
+    // Handle availability object
+    const availability = profile.availability || {};
+    const availabilityText = availability.text || "";
+    const availabilityChecks = availability.checks || {};
+    const activeChecks = Object.keys(availabilityChecks).filter(k => availabilityChecks[k]);
+
+    // Color palette for bubbles
+    const interestColors = [
+      { bg: '#E0F2FE', text: '#0369A1', border: '#BAE6FD' },
+      { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0' },
+      { bg: '#FEF3C7', text: '#A16207', border: '#FDE68A' },
+      { bg: '#FCE7F3', text: '#BE185D', border: '#FBCFE8' },
+      { bg: '#EDE9FE', text: '#6D28D9', border: '#DDD6FE' },
+      { bg: '#FFE4E6', text: '#BE123C', border: '#FECDD3' }
+    ];
+
+    const CATEGORIZED_INTERESTS = {
+      "Outdoors": ["Gardening", "Walking", "Nature", "Bird Watching"],
+      "Indoors": ["Reading", "Cooking", "Baking", "Knitting"],
+      "Social": ["Chess", "Board Games", "Conversation", "Tea/Coffee"],
+      "Culture": ["Music", "Art", "History", "Movies"]
+    };
+
+    const HELP_CATEGORIES = [
+      { id: 'companionship', label: 'Companionship', icon: '💬' },
+      { id: 'tech', label: 'Tech Support', icon: '📱' },
+      { id: 'hobbies', label: 'Hobbies Together', icon: '🎨' },
+      { id: 'reading', label: 'Reading & Writing', icon: '📖' },
+      { id: 'exercise', label: 'Gentle Exercise', icon: '🚶' }
+    ];
+
+    // Initialize edit state when entering edit mode
+    const handleEditMode = () => {
+      setEditBio(bio);
+      setEditInterests([...interests]);
+      setEditHelpNeeded([...helpNeeded]);
+      setEditAvailabilityText(availabilityText);
+      setEditAvailabilityChecks({...availabilityChecks});
+      setIsEditing(true);
+    };
+
+    // Save changes
+    const handleSaveProfile = async () => {
+      const profileData = {
+        bio: editBio,
+        interests: editInterests,
+        helpNeeded: editHelpNeeded,
+        availability: {
+          text: editAvailabilityText,
+          checks: editAvailabilityChecks
+        }
+      };
+
+      try {
+        const response = await fetch('/api/users/profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, profileData })
+        });
+
+        if (!response.ok) throw new Error('Failed to save profile');
+
+        const data = await response.json();
+        localStorage.setItem('user', JSON.stringify(data.user));
+        setUser(data.user);
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Error saving profile:", error);
+        alert("Failed to save profile. Please try again.");
+      }
+    };
+
+    const toggleInterest = (interest) => {
+      if (editInterests.includes(interest)) {
+        setEditInterests(editInterests.filter(i => i !== interest));
+      } else {
+        setEditInterests([...editInterests, interest]);
+      }
+    };
+
+    const toggleHelpNeeded = (category) => {
+      if (editHelpNeeded.includes(category)) {
+        setEditHelpNeeded(editHelpNeeded.filter(c => c !== category));
+      } else {
+        setEditHelpNeeded([...editHelpNeeded, category]);
+      }
+    };
+
+    const toggleAvailability = (key) => {
+      setEditAvailabilityChecks(prev => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    return (
+      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '40px 20px' }}>
+        {/* Interest Selection Modal */}
+        {showInterestModal && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '1rem'
+          }} onClick={() => setShowInterestModal(false)}>
+            <div style={{
+              backgroundColor: 'white', borderRadius: '12px', padding: '24px',
+              width: '100%', maxWidth: '400px', maxHeight: '80vh', overflowY: 'auto',
+              boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+            }} onClick={e => e.stopPropagation()}>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>Add Interests</h3>
+                <button onClick={() => setShowInterestModal(false)} style={{ 
+                  border: 'none', background: 'none', fontSize: '24px', cursor: 'pointer', color: '#999' 
+                }}>×</button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {Object.entries(CATEGORIZED_INTERESTS).map(([category, items]) => (
+                  <div key={category}>
+                    <h4 style={{ 
+                      margin: '0 0 8px 0', fontSize: '11px', 
+                      color: '#999', 
+                      textTransform: 'uppercase', fontWeight: '600', letterSpacing: '1px'
+                    }}>
+                      {category}
+                    </h4>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {items.map(interest => {
+                        const isSelected = editInterests.includes(interest);
+                        return (
+                          <button
+                            key={interest}
+                            onClick={() => toggleInterest(interest)}
+                            style={{
+                              padding: '6px 12px', borderRadius: '20px',
+                              border: isSelected ? '2px solid #1a1a1a' : '1px solid #ddd',
+                              background: isSelected ? '#f0f0f0' : 'white',
+                              fontSize: '13px', cursor: 'pointer',
+                              fontWeight: isSelected ? '600' : '400'
+                            }}
+                          >
+                            {interest}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button 
+                onClick={() => setShowInterestModal(false)}
+                style={{
+                  marginTop: '20px', width: '100%', padding: '10px',
+                  background: '#1a1a1a', color: 'white', border: 'none',
+                  borderRadius: '6px', fontSize: '13px', fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+
         <div style={{ 
-          width: '80px', height: '80px', backgroundColor: '#f1f5f9', borderRadius: '50%', 
-          margin: '0 auto 1rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '32px'
+          background: '#fff', 
+          border: '1px solid #e0e0e0',
+          padding: '40px'
         }}>
-          👤
-        </div>
-        
-        <h3 style={{ fontSize: '18px', color: '#1e293b', margin: '0 0 0.5rem', fontWeight: '600' }}>{user.name}</h3>
-        <p style={{ color: '#64748b', margin: '0 0 2rem', fontSize: '14px' }}>{user.role === 'senior' ? 'Senior Member' : 'Volunteer'}</p>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
-          <button style={{ 
-            width: '100%', maxWidth: '280px', padding: '8px 16px', 
-            backgroundColor: 'white', border: '1px solid #cbd5e1', borderRadius: '6px',
-            color: '#334155', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
+          {/* Name */}
+          <h1 style={{ 
+            fontSize: '26px', 
+            fontWeight: '300', 
+            margin: '0 0 32px 0',
+            color: '#1a1a1a',
+            letterSpacing: '-0.5px'
           }}>
-            Edit Profile
-          </button>
-          <button style={{ 
-            width: '100%', maxWidth: '280px', padding: '8px 16px', 
-            backgroundColor: 'white', border: '1px solid #cbd5e1', borderRadius: '6px',
-            color: '#334155', fontWeight: '500', cursor: 'pointer', fontSize: '14px'
-          }}>
-            Notification Settings
-          </button>
-          <button 
-            onClick={handleLogout}
-            style={{ 
-              width: '100%', maxWidth: '280px', padding: '8px 16px', 
-              backgroundColor: '#fee2e2', border: '1px solid #fecaca', borderRadius: '6px',
-              color: '#dc2626', fontWeight: '600', cursor: 'pointer', marginTop: '0.5rem', fontSize: '14px'
-            }}
-          >
-            Sign Out
-          </button>
+            {user.name}
+          </h1>
+
+          {/* Sections */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+            
+            {/* Contact */}
+            <div>
+              <div style={{ 
+                fontSize: '10px', 
+                color: '#999', 
+                marginBottom: '10px', 
+                textTransform: 'uppercase', 
+                letterSpacing: '1.5px',
+                fontWeight: '600'
+              }}>
+                Contact
+              </div>
+              <div style={{ fontSize: '13px', color: '#555', lineHeight: '1.7' }}>
+                <div>{user.email || 'No email provided'}</div>
+                <div>{user.phone || 'No phone provided'}</div>
+                <div>{user.location || 'Location not specified'}</div>
+              </div>
+            </div>
+
+            {/* About */}
+            <div>
+              <div style={{ 
+                fontSize: '10px', 
+                color: '#999', 
+                marginBottom: '10px', 
+                textTransform: 'uppercase', 
+                letterSpacing: '1.5px',
+                fontWeight: '600'
+              }}>
+                About
+              </div>
+              {isEditing ? (
+                <textarea
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                  style={{
+                    width: '100%', minHeight: '100px', padding: '12px',
+                    fontSize: '14px', lineHeight: '1.6', color: '#333',
+                    border: '1px solid #ddd', borderRadius: '6px',
+                    fontFamily: 'inherit', resize: 'vertical'
+                  }}
+                  placeholder="Tell us about yourself..."
+                />
+              ) : (
+                <p style={{ 
+                  fontSize: '14px', 
+                  lineHeight: '1.6',
+                  color: '#333',
+                  margin: 0
+                }}>
+                  {bio}
+                </p>
+              )}
+            </div>
+
+            {/* Interests */}
+            <div>
+              <div style={{ 
+                fontSize: '10px', 
+                color: '#999', 
+                marginBottom: '10px', 
+                textTransform: 'uppercase', 
+                letterSpacing: '1.5px',
+                fontWeight: '600',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <span>Interests</span>
+                {isEditing && (
+                  <button
+                    onClick={() => setShowInterestModal(true)}
+                    style={{
+                      background: 'none', border: 'none', color: '#1a1a1a',
+                      fontSize: '11px', cursor: 'pointer', fontWeight: '600',
+                      textTransform: 'uppercase', letterSpacing: '1px'
+                    }}
+                  >
+                    + Add
+                  </button>
+                )}
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {(isEditing ? editInterests : interests).length > 0 ? (isEditing ? editInterests : interests).map((tag, i) => {
+                  const colorScheme = interestColors[i % interestColors.length];
+                  return (
+                    <span key={i} style={{
+                      fontSize: '13px',
+                      color: colorScheme.text,
+                      padding: '6px 14px',
+                      background: colorScheme.bg,
+                      borderRadius: '20px',
+                      border: `1px solid ${colorScheme.border}`,
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      {tag}
+                      {isEditing && (
+                        <button
+                          onClick={() => setEditInterests(editInterests.filter(t => t !== tag))}
+                          style={{
+                            background: 'none', border: 'none', color: colorScheme.text,
+                            fontSize: '14px', cursor: 'pointer', padding: 0, lineHeight: 1
+                          }}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </span>
+                  );
+                }) : <span style={{ fontSize: '13px', color: '#999', fontStyle: 'italic' }}>No interests listed</span>}
+              </div>
+            </div>
+
+            {/* Help Needed */}
+            {(isEditing || helpNeeded.length > 0) && (
+              <div>
+                <div style={{ 
+                  fontSize: '10px', 
+                  color: '#999', 
+                  marginBottom: '10px', 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '1.5px',
+                  fontWeight: '600'
+                }}>
+                  Looking For Help With
+                </div>
+                {isEditing ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {HELP_CATEGORIES.map(cat => (
+                      <label key={cat.id} style={{
+                        display: 'flex', alignItems: 'center', gap: '10px',
+                        padding: '10px', border: '1px solid #e0e0e0',
+                        borderRadius: '6px', cursor: 'pointer',
+                        background: editHelpNeeded.includes(cat.id) ? '#f8f8f8' : 'white'
+                      }}>
+                        <input
+                          type="checkbox"
+                          checked={editHelpNeeded.includes(cat.id)}
+                          onChange={() => toggleHelpNeeded(cat.id)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                        <span style={{ fontSize: '18px' }}>{cat.icon}</span>
+                        <span style={{ fontSize: '13px', fontWeight: '500' }}>{cat.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {helpNeeded.map((help, i) => {
+                      const colorScheme = interestColors[i % interestColors.length];
+                      const category = HELP_CATEGORIES.find(c => c.id === help);
+                      return (
+                        <span key={i} style={{
+                          fontSize: '13px',
+                          color: colorScheme.text,
+                          padding: '6px 14px',
+                          background: colorScheme.bg,
+                          borderRadius: '20px',
+                          border: `1px solid ${colorScheme.border}`,
+                          fontWeight: '500'
+                        }}>
+                          {category ? `${category.icon} ${category.label}` : help}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Availability */}
+            <div>
+              <div style={{ 
+                fontSize: '10px', 
+                color: '#999', 
+                marginBottom: '10px', 
+                textTransform: 'uppercase', 
+                letterSpacing: '1.5px',
+                fontWeight: '600'
+              }}>
+                Availability
+              </div>
+              {isEditing ? (
+                <>
+                  <input
+                    type="text"
+                    value={editAvailabilityText}
+                    onChange={(e) => setEditAvailabilityText(e.target.value)}
+                    style={{
+                      width: '100%', padding: '10px', marginBottom: '12px',
+                      fontSize: '13px', border: '1px solid #ddd',
+                      borderRadius: '6px', fontFamily: 'inherit'
+                    }}
+                    placeholder="e.g., Flexible schedule, weekdays preferred"
+                  />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {['Weekends', 'Weekdays', 'Mornings', 'Afternoons', 'Evenings'].map(key => (
+                      <label key={key} style={{
+                        display: 'flex', alignItems: 'center', gap: '6px',
+                        padding: '6px 12px', border: '1px solid #ddd',
+                        borderRadius: '16px', cursor: 'pointer', fontSize: '12px',
+                        background: editAvailabilityChecks[key] ? '#f0f0f0' : 'white',
+                        fontWeight: editAvailabilityChecks[key] ? '600' : '400'
+                      }}>
+                        <input
+                          type="checkbox"
+                          checked={editAvailabilityChecks[key] || false}
+                          onChange={() => toggleAvailability(key)}
+                          style={{ cursor: 'pointer' }}
+                        />
+                        {key}
+                      </label>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ fontSize: '13px', color: '#555', marginBottom: '8px', fontWeight: '500' }}>
+                    {availabilityText || 'Flexible'}
+                  </div>
+                  {activeChecks.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      {activeChecks.map((check, i) => {
+                        const colorScheme = interestColors[i % interestColors.length];
+                        return (
+                          <span key={check} style={{
+                            fontSize: '12px',
+                            color: colorScheme.text,
+                            padding: '4px 10px',
+                            background: colorScheme.bg,
+                            borderRadius: '16px',
+                            border: `1px solid ${colorScheme.border}`,
+                            fontWeight: '500'
+                          }}>
+                            {check}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ marginTop: '8px', paddingTop: '20px', borderTop: '1px solid #f0f0f0' }}>
+              {isEditing ? (
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button 
+                    onClick={handleSaveProfile}
+                    style={{ 
+                      padding: '10px 20px', 
+                      backgroundColor: '#1a1a1a', 
+                      color: 'white',
+                      border: 'none', 
+                      borderRadius: '6px', 
+                      fontSize: '13px', 
+                      fontWeight: '500', 
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Save Changes
+                  </button>
+                  <button 
+                    onClick={() => setIsEditing(false)}
+                    style={{ 
+                      padding: '10px 20px', 
+                      backgroundColor: 'transparent', 
+                      color: '#666',
+                      border: '1px solid #ddd', 
+                      borderRadius: '6px', 
+                      fontSize: '13px', 
+                      fontWeight: '500', 
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <button 
+                      onClick={handleEditMode}
+                      style={{ 
+                        padding: '10px 20px', 
+                        backgroundColor: '#1a1a1a', 
+                        color: 'white',
+                        border: 'none', 
+                        borderRadius: '6px', 
+                        fontSize: '13px', 
+                        fontWeight: '500', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                      Edit Manually
+                    </button>
+                    <button 
+                      onClick={() => navigate('/interview')}
+                      style={{ 
+                        padding: '10px 20px', 
+                        backgroundColor: '#0d9488', 
+                        color: 'white',
+                        border: 'none', 
+                        borderRadius: '6px', 
+                        fontSize: '13px', 
+                        fontWeight: '500', 
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                      </svg>
+                      Update via Voice
+                    </button>
+                  </div>
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: '#999', 
+                    fontStyle: 'italic',
+                    padding: '8px 12px',
+                    background: '#f8f8f8',
+                    borderRadius: '6px',
+                    border: '1px solid #f0f0f0'
+                  }}>
+                    💡 Tip: Updating your profile will refresh your volunteer matches to find better connections
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // --- Sidebar Styles (Classic Dark) ---
   const sidebarStyles = {
