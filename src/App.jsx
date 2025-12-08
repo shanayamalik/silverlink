@@ -14,6 +14,11 @@ import CardLayoutOptions from './pages/CardLayoutOptions';
 import BannerDesignOptions from './pages/BannerDesignOptions';
 import BadgeDesignOptions from './pages/BadgeDesignOptions';
 import ProfileDesignOptions2 from './pages/ProfileDesignOptions2';
+import MergeDecisionPage from './pages/MergeDecisionPage';
+import OptionCDemo from './pages/OptionCDemo';
+import CarrieLiveDemo from './pages/CarrieLiveDemo';
+import ProfileWithPreferencesDemo from './pages/ProfileWithPreferencesDemo';
+import AccessibilitySetupPage from './pages/AccessibilitySetupPage';
 import './styles/global.css';
 
 function App() {
@@ -36,6 +41,11 @@ function App() {
           <Route path="/banner-designs" element={<BannerDesignOptions />} />
           <Route path="/badge-designs" element={<BadgeDesignOptions />} />
           <Route path="/profile-designs" element={<ProfileDesignOptions2 />} />
+          <Route path="/merge-decision" element={<MergeDecisionPage />} />
+          <Route path="/option-c-demo" element={<OptionCDemo />} />
+          <Route path="/carrie-demo" element={<CarrieLiveDemo />} />
+          <Route path="/preferences-demo" element={<ProfileWithPreferencesDemo />} />
+          <Route path="/accessibility-setup" element={<AccessibilitySetupPage />} />
         </Routes>
       </div>
     </BrowserRouter>
