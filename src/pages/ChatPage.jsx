@@ -19,8 +19,8 @@ export default function ChatPage() {
     interests: ['Reading', 'Teaching', 'History']
   };
 
-  // Chat History - Start empty
-  const [messages, setMessages] = useState([]);
+  // Chat History - Start empty or with passed history
+  const [messages, setMessages] = useState(location.state?.history || []);
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
