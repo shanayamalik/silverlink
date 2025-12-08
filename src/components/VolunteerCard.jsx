@@ -85,18 +85,24 @@ export default function VolunteerCard({ volunteer, onViewProfile, selected }) {
       {helpsWith.length > 0 && (
         <div style={{ marginBottom: '12px', padding: '10px 12px', backgroundColor: '#F9F9F9', borderRadius: '8px' }}>
           <p style={{ margin: '0 0 4px 0', fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Can help with</p>
-          <p style={{ margin: 0, fontWeight: '600', fontSize: '13px' }}>{helpsWith.join(', ')}</p>
+          <p style={{ margin: 0, fontWeight: '600', fontSize: '13px', lineHeight: '1.5' }}>{helpsWith.join(', ')}</p>
         </div>
       )}
 
-      {/* Languages + Availability row - fixed positions */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '12px', color: '#666', gap: '8px' }}>
-        <span style={{ minWidth: '40%' }}>
-          {languages.length > 0 ? `🗣️ ${languages.join(', ')}` : '\u00A0'}
-        </span>
-        <span>
-          {availability ? `📅 ${availability}` : '\u00A0'}
-        </span>
+      {/* Languages + Availability - Stacked for better space */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem', fontSize: '12px', color: '#555' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+          <span style={{ fontSize: '14px', lineHeight: '1' }}>🗣️</span>
+          <span style={{ flex: 1, lineHeight: '1.4' }}>
+            {languages.length > 0 ? languages.join(', ') : 'English'}
+          </span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+          <span style={{ fontSize: '14px', lineHeight: '1' }}>📅</span>
+          <span style={{ flex: 1, lineHeight: '1.4' }}>
+            {Array.isArray(availability) ? availability.join(', ') : (availability || 'Flexible availability')}
+          </span>
+        </div>
       </div>
 
       {/* View Profile Button - Small Teal Style */}
