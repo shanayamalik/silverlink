@@ -12,13 +12,7 @@ export default function LoginPage() {
   React.useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      const userData = JSON.parse(user);
-      // Redirect based on whether user has completed their profile
-      if (userData.hasProfile) {
-        navigate('/volunteers');
-      } else {
-        navigate('/interview');
-      }
+      navigate('/dashboard');
     }
   }, [navigate]);
 
@@ -38,12 +32,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem('user', JSON.stringify(data.user));
-        // Redirect based on whether user has completed their profile
-        if (data.user.hasProfile) {
-          navigate('/volunteers');
-        } else {
-          navigate('/interview');
-        }
+        navigate('/dashboard');
       } else {
         setError(data.message || 'Login failed');
       }

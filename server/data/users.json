@@ -8,29 +8,65 @@
     "securityAnswer": "berkeley",
     "preferences": {},
     "hasProfile": true,
-    "bio": "This person enjoys reading, cooking, and is eager to learn gardening. They speak Hindi.",
-    "interests": [
-      "Reading books",
-      "Watching movies",
-      "Trying new recipes",
-      "Gardening"
-    ],
-    "availability": {
-      "text": "Usually free on Saturday and Sunday afternoons, and Saturday evenings.",
-      "checks": {
-        "Weekends": false,
-        "Weekdays": false,
-        "Mornings": false,
-        "Afternoons": true,
-        "Evenings": true
-      }
+    "profile": {
+      "bio": "This person enjoys reading books and is eager to learn how to garden. They speak Hindi and are available on Saturdays.",
+      "interests": [
+        "Reading books",
+        "Gardening"
+      ],
+      "availability": {
+        "text": "Usually free on Saturdays",
+        "checks": {
+          "Weekends": false,
+          "Weekdays": false,
+          "Mornings": false,
+          "Afternoons": false,
+          "Evenings": false
+        }
+      },
+      "languages": "Hindi",
+      "skills": "",
+      "helpNeeded": [
+        "Hobbies Together",
+        "Gentle Exercise"
+      ],
+      "completedAt": "2025-12-08T03:26:31.296Z"
     },
-    "languages": "Hindi",
-    "skills": "",
-    "helpNeeded": [
-      "Hobbies Together"
-    ],
-    "completedAt": "2025-12-08T03:01:29.581Z",
-    "updatedAt": "2025-12-08T03:01:29.592Z"
+    "updatedAt": "2025-12-08T03:26:31.305Z"
+  },
+  {
+    "id": "1765165039762",
+    "email": "shanaya_malik@berkeley.edu",
+    "password": "demo123",
+    "name": "shanaya malik",
+    "securityQuestion": "What city were you born in?",
+    "securityAnswer": "berkeley",
+    "preferences": {},
+    "profile": {
+      "bio": "This person enjoys reading books and is eager to learn how to garden. They speak Hindi and are available on weekends.",
+      "interests": [
+        "Reading books",
+        "Gardening"
+      ],
+      "availability": {
+        "text": "Saturdays and Sundays",
+        "checks": {
+          "Weekends": false,
+          "Weekdays": false,
+          "Mornings": false,
+          "Afternoons": false,
+          "Evenings": false
+        }
+      },
+      "languages": "Hindi",
+      "skills": "",
+      "helpNeeded": [
+        "Hobbies Together",
+        "Language Support (Hindi)"
+      ],
+      "completedAt": "2025-12-08T03:41:29.410Z"
+    },
+    "hasProfile": true,
+    "updatedAt": "2025-12-08T03:41:29.445Z"
   }
 ]

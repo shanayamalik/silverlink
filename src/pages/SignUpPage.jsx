@@ -15,7 +15,7 @@ export default function SignUpPage() {
 
   React.useEffect(() => {
     if (localStorage.getItem('user')) {
-      navigate('/volunteers');
+      navigate('/dashboard');
     }
   }, [navigate]);
 
