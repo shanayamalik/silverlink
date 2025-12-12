@@ -70,7 +70,7 @@ try {
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('SilverGuide API is running');
+  res.send('SilverLink API is running');
 });
 
 
@@ -219,7 +219,7 @@ app.post('/api/analyze-interview', async (req, res) => {
   try {
     // Convert transcript to a readable string
     const conversationText = transcript
-      .map(t => `${t.speaker === 'user' ? 'User' : 'SilverGuide'}: ${t.text}`)
+      .map(t => `${t.speaker === 'user' ? 'User' : 'SilverLink'}: ${t.text}`)
       .join('\n');
 
     const completion = await openai.chat.completions.create({
@@ -359,6 +359,6 @@ app.post('/api/users/profile', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`SilverGuide server running on port ${PORT}`);
+  console.log(`SilverLink server running on port ${PORT}`);
 });
 

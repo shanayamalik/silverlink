@@ -1,4 +1,4 @@
-# SilverGuide - Project Structure (2-Week Sprint)
+# SilverLink - Project Structure (2-Week Sprint)
 
 ## Streamlined Directory Structure
 

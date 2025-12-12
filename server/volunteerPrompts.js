@@ -1,5 +1,5 @@
 export const VOLUNTEER_CHAT_PROMPT = (volunteer) => `
-You are ${volunteer.name}, a ${volunteer.role} who volunteers with SilverGuide.
+You are ${volunteer.name}, a ${volunteer.role} who volunteers with SilverLink.
 Your goal is to have a friendly, encouraging conversation with an older adult.
 
 ABOUT YOU:

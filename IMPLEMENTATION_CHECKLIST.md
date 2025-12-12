@@ -1,4 +1,4 @@
-# SilverGuide - Implementation Checklist
+# SilverLink - Implementation Checklist
 
 Track your progress as you build the app! Check off items as you complete them.
 
@@ -336,13 +336,36 @@ Track your progress as you build the app! Check off items as you complete them.
 
 ---
 
-## Optional Enhancements (If Time Permits)
+## Refinements & Polish (User Feedback)
 
-- [ ] Add user profile editing page
-- [ ] Add post-chat feedback/rating
-- [ ] Add volunteer favorites feature
-- [ ] Add tutorial/onboarding for first-time users
-- [ ] Add help tooltips throughout app
+### Profile & Dashboard Improvements
+- [ ] **Profile Page Design:**
+  - [ ] Color code interests for better visual separation
+  - [ ] Increase vertical spacing (reduce density)
+  - [ ] Ensure "About Me" is generated in the first person
+- [ ] **Dashboard Logic:**
+  - [ ] Show hardcoded "2 recommended volunteers" initially
+  - [ ] Show "3 recommended volunteers" AFTER profile update
+- [ ] **Navigation & Auth:**
+  - [ ] Add Logout button to all main pages (Interview, etc.)
+  - [ ] Implement global navigation menu (connect Home, Dashboard, Interview)
+  - [ ] Ensure pages are interconnected (no dead ends)
+
+### Features & Functionality
+- [ ] **Privacy:** Remove all contact info fields except Email
+- [ ] **Scheduling:** Add more control (Location, Event Name, etc.)
+- [ ] **AI Capabilities:**
+  - [ ] Support for other languages (AI speaks/understands)
+- [ ] **Accessibility:**
+  - [ ] Add accessibility options directly to Dashboard/Profile
+  - [x] Maintain "SilverLink" aesthetic (teal/minimalist)
+  - [x] Add TODOs for complex features (e.g., button resizing) instead of partial implementation
+
+### Branding & Surprise
+- [ ] **Rebranding:** Change app name to **SilverLink** everywhere
+- [x] **Process:** Merge into main (Completed)
+- [ ] **Surprise Elements:**
+  - [ ] Add more delightful/surprising interactions (animations, personalized touches)
 
 ---
 
@@ -390,6 +413,7 @@ Ensure the app is usable by everyone, especially seniors with varying abilities:
 - [ ] Avoid color-only indicators (add icons/text alongside)
 - [ ] Clear focus indicators on all interactive elements
 - [x] Reduce motion option for users sensitive to animations (AccessibilitySetupPage)
+- [x] **Accessibility Aesthetic:** Compact, minimalist, tile-based design with teal accents
 
 ### Screen Reader Support
 - [ ] Add proper ARIA labels to all buttons and interactive elements
@@ -404,6 +428,7 @@ Ensure the app is usable by everyone, especially seniors with varying abilities:
 - [ ] Full keyboard navigation support (Tab, Enter, Escape)
 - [ ] Skip-to-content link for keyboard users
 - [ ] Avoid time-limited interactions
+- [ ] **Note:** For additional options (e.g., button resizing), leave as TODO if not easily implementable.
 
 ### Cognitive Accessibility
 - [x] Simple, clear language throughout

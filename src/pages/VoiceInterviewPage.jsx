@@ -61,7 +61,7 @@ export default function VoiceInterviewPage() {
     }
     
     setIsAnalyzing(true);
-    // TODO: Implement a full-screen loading overlay with a friendly message (e.g., "SilverGuide is writing your profile...") to improve user experience during the 5-10s wait.
+    // TODO: Implement a full-screen loading overlay with a friendly message (e.g., "SilverLink is writing your profile...") to improve user experience during the 5-10s wait.
     try {
       const response = await fetch('/api/analyze-interview', {
         method: 'POST',
@@ -503,7 +503,7 @@ export default function VoiceInterviewPage() {
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
             }}>
-              {t.speaker === 'ai' ? 'SilverGuide AI' : 'You'}
+              {t.speaker === 'ai' ? 'SilverLink AI' : 'You'}
             </div>
             <div style={{ fontSize: '15px', marginTop: '6px', lineHeight: '1.5', color: '#333' }}>
               <HighlightText text={t.text} highlights={t.highlights} />
@@ -522,7 +522,7 @@ export default function VoiceInterviewPage() {
             <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1s infinite' }}></div>
             <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1s infinite 0.2s' }}></div>
             <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1s infinite 0.4s' }}></div>
-            <span style={{ fontSize: '12px', color: '#999', marginLeft: '0.5rem' }}>SilverGuide is thinking...</span>
+            <span style={{ fontSize: '12px', color: '#999', marginLeft: '0.5rem' }}>SilverLink is thinking...</span>
           </div>
         )}
 

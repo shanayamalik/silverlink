@@ -2,7 +2,7 @@ import React from 'react';
 import './Button.css';
 
 /**
- * Reusable Button component for SilverGuide
+ * Reusable Button component for SilverLink
  * 
  * @param {Object} props
  * @param {React.ReactNode} props.children - Button content

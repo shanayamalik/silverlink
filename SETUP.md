@@ -1,6 +1,6 @@
 # Project Setup Guide
 
-Follow these steps to get the SilverGuide project running on your local machine.
+Follow these steps to get the SilverLink project running on your local machine.
 
 ## Prerequisites
 

@@ -1,5 +1,5 @@
 /**
- * Matching Algorithm for SilverGuide
+ * Matching Algorithm for SilverLink
  * 
  * Matches seniors with volunteers based on:
  * 1. HARD FILTERS (must match at least one):

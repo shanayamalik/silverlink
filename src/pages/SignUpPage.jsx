@@ -90,7 +90,7 @@ export default function SignUpPage() {
           fontSize: '15px',
           textAlign: 'left'
         }}>
-          {step === 1 ? 'Join SilverGuide today.' : 'This helps you recover your account if you forget your password.'}
+          {step === 1 ? 'Join SilverLink today.' : 'This helps you recover your account if you forget your password.'}
         </p>
 
         {error && (

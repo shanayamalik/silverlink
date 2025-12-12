@@ -1293,7 +1293,7 @@ export default function DashboardPage() {
         transition: 'all 0.3s ease'
       }}>
         <div style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          SilverGuide
+          SilverLink
         </div>
         
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
