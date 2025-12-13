@@ -545,9 +545,10 @@ export default function DashboardPage() {
 
   // Schedule View Component
   const ScheduleView = () => {
-    const [schedulingStep, setSchedulingStep] = useState('list'); // 'list', 'select-volunteer', 'calendar'
+    const [schedulingStep, setSchedulingStep] = useState('list'); // 'list', 'select-volunteer', 'calendar', 'edit-details'
     const [selectedVolunteerForSchedule, setSelectedVolunteerForSchedule] = useState(null);
     const [editingVisitId, setEditingVisitId] = useState(null);
+    const [editingVisit, setEditingVisit] = useState(null);
 
     // Mock initial visits
     const [visits, setVisits] = useState([
@@ -579,6 +580,7 @@ export default function DashboardPage() {
         setSchedulingStep('list');
         setSelectedVolunteerForSchedule(null);
         setEditingVisitId(null);
+        setEditingVisit(null);
       }
     }, [activeTab]);
 
@@ -611,7 +613,224 @@ export default function DashboardPage() {
       setSchedulingStep('list');
       setSelectedVolunteerForSchedule(null);
       setEditingVisitId(null);
+      setEditingVisit(null);
     };
+
+    const handleSaveVisitDetails = () => {
+      if (!editingVisit) return;
+      
+      setVisits(prev => prev.map(v => {
+        if (v.id === editingVisit.id) {
+          return editingVisit;
+        }
+        return v;
+      }));
+      
+      alert('Visit details updated successfully!');
+      setSchedulingStep('list');
+      setEditingVisit(null);
+      setEditingVisitId(null);
+    };
+
+    const handleDeleteVisit = (visitId) => {
+      if (confirm('Are you sure you want to delete this visit?')) {
+        setVisits(prev => prev.filter(v => v.id !== visitId));
+        setSchedulingStep('list');
+        setEditingVisit(null);
+        setEditingVisitId(null);
+      }
+    };
+
+    if (schedulingStep === 'edit-details' && editingVisit) {
+      return (
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '1rem' }}>
+            <button
+              onClick={() => {
+                setSchedulingStep('list');
+                setEditingVisit(null);
+                setEditingVisitId(null);
+              }}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#64748b', display: 'flex', alignItems: 'center'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Edit Visit Details</h2>
+          </div>
+
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '2rem', maxWidth: '600px' }}>
+            {/* Activity Title */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
+                Activity Title
+              </label>
+              <input
+                type="text"
+                value={editingVisit.activity}
+                onChange={(e) => setEditingVisit({ ...editingVisit, activity: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'inherit'
+                }}
+                placeholder="e.g., Coffee & Chat, Chess Game"
+              />
+            </div>
+
+            {/* Location */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
+                Location
+              </label>
+              <input
+                type="text"
+                value={editingVisit.location}
+                onChange={(e) => setEditingVisit({ ...editingVisit, location: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'inherit'
+                }}
+                placeholder="e.g., At Home, Community Center"
+              />
+            </div>
+
+            {/* Date */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
+                Date
+              </label>
+              <input
+                type="date"
+                value={editingVisit.date}
+                onChange={(e) => setEditingVisit({ ...editingVisit, date: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'inherit'
+                }}
+              />
+            </div>
+
+            {/* Time */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
+                Time
+              </label>
+              <input
+                type="text"
+                value={editingVisit.time}
+                onChange={(e) => setEditingVisit({ ...editingVisit, time: e.target.value })}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'inherit'
+                }}
+                placeholder="e.g., 10:00 AM"
+              />
+            </div>
+
+            {/* Volunteer Name (read-only) */}
+            <div style={{ marginBottom: '2rem' }}>
+              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
+                Volunteer
+              </label>
+              <div style={{
+                padding: '10px 12px',
+                backgroundColor: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                fontSize: '14px',
+                color: '#64748b'
+              }}>
+                {editingVisit.volunteerName}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
+              <button
+                onClick={() => handleDeleteVisit(editingVisit.id)}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: 'transparent',
+                  color: '#dc2626',
+                  border: '1px solid #dc2626',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = '#dc2626';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = '#dc2626';
+                }}
+              >
+                Delete Visit
+              </button>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    setSchedulingStep('list');
+                    setEditingVisit(null);
+                    setEditingVisitId(null);
+                  }}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: 'transparent',
+                    color: '#64748b',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveVisitDetails}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#0d9488',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0f766e'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#0d9488'}
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     if (schedulingStep === 'calendar' && selectedVolunteerForSchedule) {
       return (
@@ -704,17 +923,47 @@ export default function DashboardPage() {
                   <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '2px', fontSize: '14px' }}>{visit.activity} with {visit.volunteerName.split(' ')[0]}</div>
                   <div style={{ fontSize: '13px', color: '#64748b' }}>{visit.time} • {visit.location}</div>
                 </div>
-                <button 
-                  onClick={() => {
-                    // Find volunteer object to pass to calendar
-                    const vol = matches.find(m => m.id === visit.volunteerId) || { id: visit.volunteerId, name: visit.volunteerName };
-                    setSelectedVolunteerForSchedule(vol);
-                    setEditingVisitId(visit.id);
-                    setSchedulingStep('calendar');
-                  }}
-                  style={{ color: 'black', background: 'none', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>
-                  Reschedule
-                </button>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    onClick={() => {
+                      setEditingVisit({ ...visit });
+                      setEditingVisitId(visit.id);
+                      setSchedulingStep('edit-details');
+                    }}
+                    style={{ 
+                      color: '#0d9488', 
+                      background: 'none', 
+                      border: '1px solid #0d9488', 
+                      padding: '4px 10px', 
+                      borderRadius: '6px', 
+                      cursor: 'pointer', 
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = '#0d9488';
+                      e.currentTarget.style.color = 'white';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = '#0d9488';
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    onClick={() => {
+                      // Find volunteer object to pass to calendar
+                      const vol = matches.find(m => m.id === visit.volunteerId) || { id: visit.volunteerId, name: visit.volunteerName };
+                      setSelectedVolunteerForSchedule(vol);
+                      setEditingVisitId(visit.id);
+                      setSchedulingStep('calendar');
+                    }}
+                    style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>
+                    Reschedule
+                  </button>
+                </div>
               </div>
             );
           })}
