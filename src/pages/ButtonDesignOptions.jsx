@@ -307,7 +307,7 @@ export default function ButtonDesignOptions() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC', paddingBottom: '2rem' }}>
-      <Header title="Badge Design Options" showBack showHome />
+      <Header title="Badge Design Options" showHome />
       
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '1.5rem' }}>
         

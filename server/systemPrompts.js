@@ -181,7 +181,7 @@ Return a single JSON object with exactly these keys:
 
 1. "summaryMarkdown": A warm, professional summary of the user's profile in Markdown format.
    - Include the sections:
-     - **About Me**
+     - **About Me** (Write this section in the FIRST PERSON, e.g., "I am a retired teacher who loves...")
      - **Interests**
      - **Availability**
      - **Help Needed** (what kind of assistance they're looking for)
@@ -189,7 +189,7 @@ Return a single JSON object with exactly these keys:
    - Do NOT include any directly identifying information (name, address, phone, email, etc.).
 
 2. "structuredData": An object with:
-   - "shortBio": A friendly 2-3 sentence description of the user based on their "about_me" and general personality.
+   - "shortBio": A friendly 2-3 sentence description of the user written in the FIRST PERSON (e.g., "I enjoy gardening and would love to meet someone who shares my passion for nature.").
    - "skills": array of strings (include only if clearly mentioned)
    - "languages": array of strings (include only if clearly mentioned)
    - "interests": array of strings

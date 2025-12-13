@@ -195,7 +195,7 @@ export default function VolunteersPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC', paddingBottom: '2rem' }}>
-      <Header title="Your Volunteer Matches" showBack showHome />
+      <Header title="Your Volunteer Matches" showHome />
       
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.5rem' }}>
         

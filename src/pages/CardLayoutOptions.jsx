@@ -439,7 +439,7 @@ export default function CardLayoutOptions() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC', paddingBottom: '2rem' }}>
-      <Header title="Card Layout Options" showBack showHome />
+      <Header title="Card Layout Options" showHome />
       
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.5rem' }}>
         

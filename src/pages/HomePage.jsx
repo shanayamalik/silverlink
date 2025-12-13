@@ -31,16 +31,15 @@ export default function HomePage() {
         }}>
           {user ? (
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              {/* TODO: Implement welcome message later */}
-              <button 
+              {/* TODO: Consider other design options for the Sign Out button (e.g. icon only, different placement) */}
+              <Button 
+                variant="outline" 
+                size="small" 
                 onClick={handleLogout}
-                style={{ 
-                  background: 'none', border: 'none', fontSize: '13px', fontWeight: '600', 
-                  color: '#666', cursor: 'pointer', padding: '0.4rem 0.8rem'
-                }}
+                style={{ fontSize: '13px', padding: '0.4rem 1rem', minHeight: '32px' }}
               >
                 Sign Out
-              </button>
+              </Button>
             </div>
           ) : (
             <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -73,18 +72,82 @@ export default function HomePage() {
             }}>
               👋
           </div>
-                    <h1 style={{ 
-            fontSize: '3.5rem', 
-            fontWeight: '800', 
-            marginBottom: '1.5rem',
-            lineHeight: '1.2',
-            color: '#111827'
-          }}>
-            Welcome to <span style={{ color: 'var(--color-primary)' }}>SilverLink</span>
-          </h1>
-          <p style={{ fontSize: '16px', color: '#333', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
-            A safe, friendly space where seniors can connect with trusted volunteers for companionship, conversation, and everyday support.
-          </p>
+          
+          {user ? (
+            <>
+              <h1 style={{ 
+                fontSize: '3.5rem', 
+                fontWeight: '800', 
+                marginBottom: '1rem',
+                lineHeight: '1.2',
+                color: '#111827'
+              }}>
+                Welcome back, {user.name}
+              </h1>
+              <p style={{ fontSize: '16px', color: '#333', maxWidth: '600px', margin: '0 auto 2.5rem auto', lineHeight: '1.6' }}>
+                Your community is waiting. Pick up where you left off.
+              </p>
+              <button 
+                onClick={() => navigate('/dashboard')}
+                style={{
+                  backgroundColor: '#1e293b', // Slate 800
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '12px 24px',
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                Go to Dashboard <span style={{ fontSize: '1.1rem' }}>→</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <h1 style={{ 
+                fontSize: '3.5rem', 
+                fontWeight: '800', 
+                marginBottom: '1.5rem',
+                lineHeight: '1.2',
+                color: '#111827'
+              }}>
+                Welcome to <span style={{ color: 'var(--color-primary)' }}>SilverLink</span>
+              </h1>
+              <p style={{ fontSize: '16px', color: '#333', maxWidth: '600px', margin: '0 auto 2.5rem auto', lineHeight: '1.6' }}>
+                A safe, friendly space where seniors can connect with trusted volunteers for companionship, conversation, and everyday support.
+              </p>
+              <button 
+                onClick={() => navigate('/login')}
+                style={{
+                  backgroundColor: '#1e293b', // Slate 800
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  padding: '12px 24px',
+                  fontSize: '0.95rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                Get Started <span style={{ fontSize: '1.1rem' }}>→</span>
+              </button>
+            </>
+          )}
         </header>
 
         {/* --- PROCESS: How it Works --- */}

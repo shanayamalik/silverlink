@@ -115,7 +115,7 @@ export default function ChatPage() {
 
   return (
     <div style={styles.container}>
-      <Header title={`Chat with ${volunteer.name}`} showBack />
+      <Header title={`Chat with ${volunteer.name}`} showHome />
 
       <div style={{ maxWidth: '800px', margin: '0 auto', padding: '1.5rem' }}>
         

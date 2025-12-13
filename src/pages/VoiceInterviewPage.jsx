@@ -5,6 +5,14 @@ import { jsPDF } from "jspdf";
 
 export default function VoiceInterviewPage() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   
   // Mock state
   const [transcript, setTranscript] = useState([
@@ -356,29 +364,58 @@ export default function VoiceInterviewPage() {
     <div className="voice-interview-page" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-background)' }}>
       {/* Custom Header with TTS Toggle */}
       <div style={{
-        padding: '12px 16px',
+        padding: '12px 24px',
         backgroundColor: 'white',
         borderBottom: '1px solid var(--color-border)',
-        display: 'flex',
+        display: 'grid',
+        gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center',
-        justifyContent: 'space-between',
         position: 'relative',
         zIndex: 50
       }}>
-        {/* Left: Back + Title */}
+        {/* Left: Navigation Group */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button 
-            onClick={() => navigate(-1)} 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', padding: '4px' }}
-            aria-label="Go back"
+            onClick={() => navigate(user ? '/dashboard' : '/')} 
+            style={{
+              backgroundColor: 'transparent',
+              color: '#1f2937',
+              border: '1px solid #374151',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = '#374151';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#1f2937';
+            }}
           >
-            ←
+            Home
           </button>
-          <span style={{ fontWeight: '600', fontSize: '18px', color: '#333' }}>Voice Interview</span>
         </div>
 
-        {/* Right: TTS Toggle + Home */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* Center: Title */}
+        <div style={{ textAlign: 'center' }}>
+          <span style={{ 
+            fontFamily: 'var(--font-family-heading)',
+            fontWeight: '700', 
+            fontSize: '18px', 
+            color: 'var(--color-text-main)',
+            letterSpacing: '0.5px'
+          }}>
+            Conversation
+          </span>
+        </div>
+
+        {/* Right: TTS Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px' }}>
           {/* TTS Toggle Button */}
           <div style={{ position: 'relative' }}>
             <button
@@ -468,18 +505,6 @@ export default function VoiceInterviewPage() {
               </div>
             )}
           </div>
-
-          {/* Home Button */}
-          <button 
-            onClick={() => navigate('/')} 
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            aria-label="Go home"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </button>
         </div>
       </div>
 

@@ -186,23 +186,20 @@ export default function DashboardPage() {
     }
 
     let computedMatches = [];
-    if (user.profile) {
+    // Check if user has a profile (interview completed)
+    const hasProfile = user.profile && Object.keys(user.profile).length > 0;
+
+    if (hasProfile) {
+      // If profile exists, show ONLY the computed matches
       computedMatches = matchVolunteers(mockVolunteers, user.profile, { maxResults: 3 });
+      setMatches(computedMatches);
+    } else {
+      // If no profile, show ONLY the hardcoded volunteers (Grace and Henry)
+      // and show a CTA to encourage profile creation
+      const hardcodedIds = ['13', '14'];
+      const hardcodedVolunteers = mockVolunteers.filter(v => hardcodedIds.includes(v.id));
+      setMatches(hardcodedVolunteers);
     }
-
-    // PROTOTYPE: Hardcode Grace (13) and Henry (14) to ensure matches exist for demo
-    const hardcodedIds = ['13', '14'];
-    const hardcodedVolunteers = mockVolunteers.filter(v => hardcodedIds.includes(v.id));
-    
-    // Merge hardcoded with computed, avoiding duplicates
-    const uniqueMatches = [...hardcodedVolunteers];
-    computedMatches.forEach(m => {
-      if (!uniqueMatches.find(existing => existing.id === m.id)) {
-        uniqueMatches.push(m);
-      }
-    });
-
-    setMatches(uniqueMatches);
   }, [user, navigate]);
 
   const markAsRead = (id) => {
@@ -321,10 +318,68 @@ export default function DashboardPage() {
   const MatchesSection = () => (
     <div style={{ height: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem', height: '24px' }}>
-        <h2 style={{ fontSize: '16px', color: '#334155', fontWeight: '600', margin: 0 }}>Your Top Matches</h2>
+        <h2 style={{ fontSize: '16px', color: '#334155', fontWeight: '600', margin: 0 }}>
+          {(!user.profile || Object.keys(user.profile).length === 0) ? 'Suggested Volunteers' : 'Your Top Matches'}
+        </h2>
         <button onClick={() => setActiveTab('matches')} style={{ color: '#0d9488', background: 'none', border: 'none', fontWeight: '500', cursor: 'pointer', fontSize: '12px', padding: 0 }}>View All</button>
       </div>
       
+      {/* CTA for new users without a profile - Friendly Starter Design */}
+      {(!user.profile || Object.keys(user.profile).length === 0) && (
+        <div style={{ 
+          backgroundColor: '#f0fdfa', // Teal 50 - A bit of color
+          border: '1px solid #ccfbf1', // Teal 100
+          borderRadius: '8px', 
+          padding: '20px', 
+          marginBottom: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '20px',
+          boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+        }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ 
+              width: '48px', height: '48px', borderRadius: '50%', 
+              backgroundColor: 'white', color: '#0d9488', // Teal 600
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <div>
+              <h3 style={{ margin: '0 0 4px 0', fontSize: '15px', fontWeight: '600', color: '#115e59' }}>
+                Meet your community starters
+              </h3>
+              <p style={{ margin: 0, fontSize: '13px', color: '#334155', lineHeight: '1.4' }}>
+                These volunteers are ready to help you get settled. <br/>
+                <span style={{ opacity: 0.8 }}>Looking for shared interests? Complete your profile to find them.</span>
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={() => navigate('/interview')}
+            style={{
+              backgroundColor: '#0f766e', // Teal 700
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '10px 20px',
+              fontSize: '13px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 2px 4px rgba(15, 118, 110, 0.2)',
+              transition: 'all 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#115e59'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#0f766e'}
+          >
+            Find a Volunteer
+          </button>
+        </div>
+      )}
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         {matches.map((volunteer, i) => (
           <div key={volunteer.id} style={{ height: '100%' }}>
@@ -891,8 +946,9 @@ export default function DashboardPage() {
               </div>
               <div style={{ fontSize: '13px', color: '#555', lineHeight: '1.7' }}>
                 <div>{user.email || 'No email provided'}</div>
-                <div>{user.phone || 'No phone provided'}</div>
-                <div>{user.location || 'Location not specified'}</div>
+                {/* TODO: Add phone and location fields in future iteration */}
+                {/* <div>{user.phone || 'No phone provided'}</div> */}
+                {/* <div>{user.location || 'Location not specified'}</div> */}
               </div>
             </div>
 

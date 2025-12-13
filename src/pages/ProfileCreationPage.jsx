@@ -258,7 +258,7 @@ export default function ProfileCreationPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F7F9FC', paddingBottom: '4rem' }}>
-      <Header title="Create Your Profile" showBack />
+      <Header title="Create Your Profile" showHome />
 
       {/* --- INTEREST SELECTION MODAL --- */}
       {showInterestModal && (

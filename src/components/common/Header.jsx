@@ -42,19 +42,28 @@ export default function Header({ title, showBack, showHome }) {
         )}
         {showHome && (
           <button 
-            onClick={() => navigate('/')} 
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              fontSize: '16px', 
+            onClick={() => navigate(user ? '/dashboard' : '/')} 
+            style={{
+              backgroundColor: 'transparent',
+              color: '#1f2937',
+              border: '1px solid #374151',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: '600',
               cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              color: '#555'
+              transition: 'all 0.2s'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = '#374151';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#1f2937';
             }}
           >
-            <span>🏠</span> Home
+            Home
           </button>
         )}
       </div>
