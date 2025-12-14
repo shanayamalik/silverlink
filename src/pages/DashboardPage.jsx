@@ -678,31 +678,41 @@ export default function DashboardPage() {
       '5:00 PM'
     ];
 
-    if (schedulingStep === 'edit-details' && editingVisit) {
-      return (
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '1rem' }}>
-            <button
-              onClick={() => {
-                setSchedulingStep('list');
-                setEditingVisit(null);
-                setEditingVisitId(null);
-                setShowCustomLocation(false);
-                setCustomLocation('');
-              }}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#64748b', display: 'flex', alignItems: 'center'
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            </button>
-            <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Edit Visit</h2>
-          </div>
+    // Render edit modal as overlay instead of replacing the view
+    const renderEditModal = () => {
+      if (!editingVisit) return null;
 
-          <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', maxWidth: '700px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1e293b', marginBottom: '1rem' }}>
-              Edit Visit
-            </h3>
+      return (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '1rem'
+        }}>
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', maxWidth: '700px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e293b', margin: 0 }}>
+                Edit Visit
+              </h3>
+              <button
+                onClick={() => {
+                  setEditingVisit(null);
+                  setEditingVisitId(null);
+                  setShowCustomLocation(false);
+                  setCustomLocation('');
+                }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', color: '#64748b', padding: '0', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem', marginBottom: '1.5rem' }}>
               <div>
@@ -790,10 +800,9 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
               <button
                 onClick={() => {
-                  setSchedulingStep('list');
                   setEditingVisit(null);
                   setEditingVisitId(null);
                   setShowCustomLocation(false);
@@ -849,7 +858,7 @@ export default function DashboardPage() {
           </div>
         </div>
       );
-    }
+    };
 
     if (schedulingStep === 'calendar' && selectedVolunteerForSchedule) {
       return (
@@ -942,51 +951,38 @@ export default function DashboardPage() {
                   <div style={{ fontWeight: '600', color: '#1e293b', marginBottom: '2px', fontSize: '14px' }}>{visit.activity} with {visit.volunteerName.split(' ')[0]}</div>
                   <div style={{ fontSize: '13px', color: '#64748b' }}>{visit.time} • {visit.location}</div>
                 </div>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button 
-                    onClick={() => {
-                      setEditingVisit({ ...visit });
-                      setEditingVisitId(visit.id);
-                      setSchedulingStep('edit-details');
-                    }}
-                    style={{ 
-                      color: '#0d9488', 
-                      background: 'none', 
-                      border: '1px solid #0d9488', 
-                      padding: '4px 10px', 
-                      borderRadius: '6px', 
-                      cursor: 'pointer', 
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = '#0d9488';
-                      e.currentTarget.style.color = 'white';
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = 'transparent';
-                      e.currentTarget.style.color = '#0d9488';
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    onClick={() => {
-                      // Find volunteer object to pass to calendar
-                      const vol = matches.find(m => m.id === visit.volunteerId) || { id: visit.volunteerId, name: visit.volunteerName };
-                      setSelectedVolunteerForSchedule(vol);
-                      setEditingVisitId(visit.id);
-                      setSchedulingStep('calendar');
-                    }}
-                    style={{ color: '#64748b', background: 'none', border: '1px solid #e2e8f0', padding: '4px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}>
-                    Reschedule
-                  </button>
-                </div>
+                <button 
+                  onClick={() => {
+                    setEditingVisit({ ...visit });
+                    setEditingVisitId(visit.id);
+                  }}
+                  style={{ 
+                    color: '#0d9488', 
+                    background: 'none', 
+                    border: '1px solid #0d9488', 
+                    padding: '4px 10px', 
+                    borderRadius: '6px', 
+                    cursor: 'pointer', 
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = '#0d9488';
+                    e.currentTarget.style.color = 'white';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#0d9488';
+                  }}
+                >
+                  Edit
+                </button>
               </div>
             );
           })}
         </div>
+        {renderEditModal()}
       </div>
     );
   };
