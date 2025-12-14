@@ -641,6 +641,43 @@ export default function DashboardPage() {
       }
     };
 
+    // State for custom location input
+    const [showCustomLocation, setShowCustomLocation] = useState(false);
+    const [customLocation, setCustomLocation] = useState('');
+
+    // Dropdown options for scheduling
+    const activityOptions = [
+      'Coffee & Chat',
+      'Walk in the Park',
+      'Board Game',
+      'Arts & Crafts',
+      'Reading Together',
+      'Grocery Shopping',
+      'Virtual Call',
+      'Cooking Together'
+    ];
+
+    const virtualLocationOptions = [
+      'Zoom',
+      'Phone Call',
+      'FaceTime',
+      'Google Meet',
+      'WhatsApp Video',
+      'In-Person'
+    ];
+
+    const timeOptions = [
+      '9:00 AM',
+      '10:00 AM',
+      '11:00 AM',
+      '12:00 PM',
+      '1:00 PM',
+      '2:00 PM',
+      '3:00 PM',
+      '4:00 PM',
+      '5:00 PM'
+    ];
+
     if (schedulingStep === 'edit-details' && editingVisit) {
       return (
         <div>
@@ -650,6 +687,8 @@ export default function DashboardPage() {
                 setSchedulingStep('list');
                 setEditingVisit(null);
                 setEditingVisitId(null);
+                setShowCustomLocation(false);
+                setCustomLocation('');
               }}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#64748b', display: 'flex', alignItems: 'center'
@@ -657,176 +696,156 @@ export default function DashboardPage() {
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             </button>
-            <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Edit Visit Details</h2>
+            <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Edit Visit</h2>
           </div>
 
-          <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '2rem', maxWidth: '600px' }}>
-            {/* Activity Title */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
-                Activity Title
-              </label>
-              <input
-                type="text"
-                value={editingVisit.activity}
-                onChange={(e) => setEditingVisit({ ...editingVisit, activity: e.target.value })}
-                style={{
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', padding: '1.5rem', maxWidth: '700px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1e293b', marginBottom: '1rem' }}>
+              Edit Visit
+            </h3>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem', marginBottom: '1.5rem' }}>
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Volunteer</label>
+                <div style={{
                   width: '100%',
-                  padding: '10px 12px',
+                  padding: '8px 10px',
+                  backgroundColor: '#f8fafc',
                   border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontFamily: 'inherit'
-                }}
-                placeholder="e.g., Coffee & Chat, Chess Game"
-              />
-            </div>
-
-            {/* Location */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
-                Location
-              </label>
-              <input
-                type="text"
-                value={editingVisit.location}
-                onChange={(e) => setEditingVisit({ ...editingVisit, location: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontFamily: 'inherit'
-                }}
-                placeholder="e.g., At Home, Community Center"
-              />
-            </div>
-
-            {/* Date */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
-                Date
-              </label>
-              <input
-                type="date"
-                value={editingVisit.date}
-                onChange={(e) => setEditingVisit({ ...editingVisit, date: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontFamily: 'inherit'
-                }}
-              />
-            </div>
-
-            {/* Time */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
-                Time
-              </label>
-              <input
-                type="text"
-                value={editingVisit.time}
-                onChange={(e) => setEditingVisit({ ...editingVisit, time: e.target.value })}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontFamily: 'inherit'
-                }}
-                placeholder="e.g., 10:00 AM"
-              />
-            </div>
-
-            {/* Volunteer Name (read-only) */}
-            <div style={{ marginBottom: '2rem' }}>
-              <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>
-                Volunteer
-              </label>
-              <div style={{
-                padding: '10px 12px',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px',
-                fontSize: '14px',
-                color: '#64748b'
-              }}>
-                {editingVisit.volunteerName}
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  color: '#64748b'
+                }}>
+                  {editingVisit.volunteerName}
+                </div>
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Activity</label>
+                <select
+                  value={editingVisit.activity}
+                  onChange={(e) => setEditingVisit({ ...editingVisit, activity: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {activityOptions.map(act => (
+                    <option key={act} value={act}>{act}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Meeting Type</label>
+                <select
+                  value={showCustomLocation ? 'custom' : editingVisit.location}
+                  onChange={(e) => {
+                    if (e.target.value === 'custom') {
+                      setShowCustomLocation(true);
+                    } else {
+                      setShowCustomLocation(false);
+                      setEditingVisit({ ...editingVisit, location: e.target.value });
+                    }
+                  }}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {virtualLocationOptions.map(loc => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))}
+                  <option value="custom">Custom location...</option>
+                </select>
+                {showCustomLocation && (
+                  <input
+                    type="text"
+                    value={customLocation}
+                    onChange={(e) => {
+                      setCustomLocation(e.target.value);
+                      setEditingVisit({ ...editingVisit, location: e.target.value });
+                    }}
+                    placeholder="Enter specific location or meeting link"
+                    style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', marginTop: '8px' }}
+                  />
+                )}
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Date</label>
+                <input
+                  type="date"
+                  value={editingVisit.date}
+                  onChange={(e) => setEditingVisit({ ...editingVisit, date: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px' }}
+                />
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Time</label>
+                <select
+                  value={editingVisit.time}
+                  onChange={(e) => setEditingVisit({ ...editingVisit, time: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {timeOptions.map(time => (
+                    <option key={time} value={time}>{time}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', alignItems: 'center' }}>
               <button
-                onClick={() => handleDeleteVisit(editingVisit.id)}
+                onClick={() => {
+                  setSchedulingStep('list');
+                  setEditingVisit(null);
+                  setEditingVisitId(null);
+                  setShowCustomLocation(false);
+                  setCustomLocation('');
+                }}
                 style={{
-                  padding: '10px 20px',
+                  padding: '8px 14px',
                   backgroundColor: 'transparent',
-                  color: '#dc2626',
-                  border: '1px solid #dc2626',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = '#dc2626';
-                  e.currentTarget.style.color = 'white';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#dc2626';
+                  color: '#64748b',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
                 }}
               >
-                Delete Visit
+                Cancel
               </button>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button
-                  onClick={() => {
-                    setSchedulingStep('list');
-                    setEditingVisit(null);
-                    setEditingVisitId(null);
-                  }}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: 'transparent',
-                    color: '#64748b',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSaveVisitDetails}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#0d9488',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0f766e'}
-                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#0d9488'}
-                >
-                  Save Changes
-                </button>
-              </div>
+              <button
+                onClick={handleSaveVisitDetails}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#0d9488',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Save
+              </button>
             </div>
+            
+            <button
+              onClick={() => handleDeleteVisit(editingVisit.id)}
+              style={{
+                width: '100%',
+                marginTop: '12px',
+                padding: '10px',
+                backgroundColor: 'transparent',
+                color: '#dc2626',
+                border: 'none',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              Delete this visit
+            </button>
           </div>
         </div>
       );
