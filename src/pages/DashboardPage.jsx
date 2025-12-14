@@ -453,34 +453,191 @@ export default function DashboardPage() {
   );
 
   // Matches View Component
-  const MatchesView = () => (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Your Volunteer Matches</h2>
-      </div>
-      
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-        gap: '1.5rem' 
-      }}>
-        {matches.map(volunteer => (
-          <VolunteerCard
-            key={volunteer.id}
-            volunteer={volunteer}
-            onViewProfile={() => setProfileVolunteer(volunteer)}
-          />
-        ))}
-      </div>
-      
-      {matches.length === 0 && (
-        <div style={{ textAlign: 'center', color: '#666', padding: '3rem' }}>
-          <p style={{ fontSize: '48px', marginBottom: '1rem' }}>🔍</p>
-          <p>No volunteers found. Complete your profile to see matches!</p>
+  const MatchesView = () => {
+    const [selectedVolunteer, setSelectedVolunteer] = useState(null);
+    
+    return (
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Your Volunteer Matches</h2>
         </div>
-      )}
-    </div>
-  );
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+          {matches.map(volunteer => (
+            <div key={volunteer.id} style={{
+              backgroundColor: 'white',
+              border: '1px solid #e2e8f0',
+              borderRadius: '12px',
+              padding: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{
+                  fontSize: '42px',
+                  width: '56px',
+                  height: '56px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#f0fdfa',
+                  borderRadius: '10px',
+                  flexShrink: 0
+                }}>
+                  {volunteer.icon}
+                </div>
+                
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                    <h3 style={{ fontSize: '15px', fontWeight: '600', color: '#1e293b', margin: 0 }}>{volunteer.name}</h3>
+                    {volunteer.verified && (
+                      <span style={{ fontSize: '10px', color: '#059669', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '3px', padding: '2px 5px', fontWeight: '500' }}>
+                        ✓
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontSize: '12px', color: '#64748b', margin: 0 }}>{volunteer.role}</p>
+                </div>
+              </div>
+              
+              <p style={{ fontSize: '12px', color: '#475569', lineHeight: '1.5', margin: 0 }}>
+                {volunteer.bio?.substring(0, 90)}...
+              </p>
+              
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                {volunteer.interests?.slice(0, 2).map((interest, idx) => (
+                  <span key={idx} style={{ fontSize: '10px', padding: '3px 7px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '10px' }}>
+                    {interest}
+                  </span>
+                ))}
+                {volunteer.interests?.length > 2 && (
+                  <span style={{ fontSize: '10px', padding: '3px 7px', color: '#64748b' }}>
+                    +{volunteer.interests.length - 2}
+                  </span>
+                )}
+              </div>
+              
+              <button
+                onClick={() => setSelectedVolunteer(volunteer)}
+                style={{
+                  padding: '7px 12px',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  color: '#0d9488',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #0d9488',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  marginTop: '4px'
+                }}
+              >
+                View Profile
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {matches.length === 0 && (
+          <div style={{ textAlign: 'center', color: '#666', padding: '3rem' }}>
+            <p style={{ fontSize: '48px', marginBottom: '1rem' }}>🔍</p>
+            <p>No volunteers found. Complete your profile to see matches!</p>
+          </div>
+        )}
+
+        {/* Modal */}
+        {selectedVolunteer && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '1rem'
+          }}
+          onClick={() => setSelectedVolunteer(null)}
+          >
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              padding: '1.5rem',
+              maxWidth: '500px',
+              width: '100%'
+            }}
+            onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <div style={{
+                    fontSize: '48px',
+                    width: '64px',
+                    height: '64px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#f0fdfa',
+                    borderRadius: '12px'
+                  }}>
+                    {selectedVolunteer.icon}
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e293b', margin: '0 0 4px 0' }}>{selectedVolunteer.name}</h3>
+                    <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>{selectedVolunteer.role}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedVolunteer(null)} style={{ background: 'none', border: 'none', fontSize: '24px', color: '#64748b', cursor: 'pointer', padding: 0 }}>×</button>
+              </div>
+              
+              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', marginBottom: '1rem' }}>
+                {selectedVolunteer.bio}
+              </p>
+              
+              <div style={{ marginBottom: '1rem' }}>
+                <p style={{ fontSize: '12px', color: '#64748b', fontWeight: '600', marginBottom: '6px' }}>Interests</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {selectedVolunteer.interests?.map((interest, idx) => (
+                    <span key={idx} style={{ fontSize: '11px', padding: '4px 9px', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '12px' }}>
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div style={{ marginBottom: '1.5rem' }}>
+                <p style={{ fontSize: '12px', color: '#64748b', fontWeight: '600', marginBottom: '6px' }}>Can help with</p>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  {selectedVolunteer.helpsWith?.map((help, idx) => (
+                    <span key={idx} style={{ fontSize: '11px', padding: '4px 9px', backgroundColor: '#ecfdf5', color: '#059669', borderRadius: '12px', fontWeight: '500' }}>
+                      {help}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <button style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: 'white',
+                backgroundColor: '#0d9488',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}>
+                Get in Touch
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   // Messages View Component
   const MessagesView = () => (
