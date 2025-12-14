@@ -549,6 +549,15 @@ export default function DashboardPage() {
     const [selectedVolunteerForSchedule, setSelectedVolunteerForSchedule] = useState(null);
     const [editingVisitId, setEditingVisitId] = useState(null);
     const [editingVisit, setEditingVisit] = useState(null);
+    const [showNewVisitModal, setShowNewVisitModal] = useState(false);
+    const [newVisitData, setNewVisitData] = useState({
+      volunteerId: matches[0]?.id || '',
+      volunteerName: matches[0]?.name || '',
+      activity: 'Coffee & Chat',
+      location: 'Zoom',
+      date: '',
+      time: '10:00 AM'
+    });
 
     // Mock initial visits
     const [visits, setVisits] = useState([
@@ -632,6 +641,32 @@ export default function DashboardPage() {
       setEditingVisitId(null);
     };
 
+    const handleSaveNewVisit = () => {
+      if (!newVisitData.date) {
+        alert('Please select a date');
+        return;
+      }
+      
+      const newVisit = {
+        id: Date.now(),
+        ...newVisitData,
+        color: 'blue'
+      };
+      
+      setVisits(prev => [...prev, newVisit]);
+      alert(`Scheduled successfully with ${newVisitData.volunteerName} for ${newVisitData.date} at ${newVisitData.time}!`);
+      
+      setShowNewVisitModal(false);
+      setNewVisitData({
+        volunteerId: matches[0]?.id || '',
+        volunteerName: matches[0]?.name || '',
+        activity: 'Coffee & Chat',
+        location: 'Zoom',
+        date: '',
+        time: '10:00 AM'
+      });
+    };
+
     const handleDeleteVisit = (visitId) => {
       if (confirm('Are you sure you want to delete this visit?')) {
         setVisits(prev => prev.filter(v => v.id !== visitId));
@@ -677,6 +712,161 @@ export default function DashboardPage() {
       '4:00 PM',
       '5:00 PM'
     ];
+
+    // Render new visit modal
+    const renderNewVisitModal = () => {
+      if (!showNewVisitModal) return null;
+
+      return (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '1rem'
+        }}>
+          <div style={{ backgroundColor: 'white', borderRadius: '12px', padding: '1.5rem', maxWidth: '700px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1e293b', margin: 0 }}>
+                Schedule New Visit
+              </h3>
+              <button
+                onClick={() => setShowNewVisitModal(false)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', color: '#64748b', padding: '0', lineHeight: 1 }}
+              >
+                ×
+              </button>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem 1.5rem', marginBottom: '1.5rem' }}>
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Volunteer</label>
+                <select
+                  value={newVisitData.volunteerId}
+                  onChange={(e) => {
+                    const selectedVol = matches.find(m => m.id === e.target.value);
+                    setNewVisitData({ ...newVisitData, volunteerId: e.target.value, volunteerName: selectedVol?.name || '' });
+                  }}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {matches.map(vol => (
+                    <option key={vol.id} value={vol.id}>{vol.name}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Activity</label>
+                <select
+                  value={newVisitData.activity}
+                  onChange={(e) => setNewVisitData({ ...newVisitData, activity: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {activityOptions.map(act => (
+                    <option key={act} value={act}>{act}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Meeting Type</label>
+                <select
+                  value={showCustomLocation ? 'custom' : newVisitData.location}
+                  onChange={(e) => {
+                    if (e.target.value === 'custom') {
+                      setShowCustomLocation(true);
+                    } else {
+                      setShowCustomLocation(false);
+                      setNewVisitData({ ...newVisitData, location: e.target.value });
+                    }
+                  }}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {virtualLocationOptions.map(loc => (
+                    <option key={loc} value={loc}>{loc}</option>
+                  ))}
+                  <option value="custom">Custom location...</option>
+                </select>
+                {showCustomLocation && (
+                  <input
+                    type="text"
+                    value={customLocation}
+                    onChange={(e) => {
+                      setCustomLocation(e.target.value);
+                      setNewVisitData({ ...newVisitData, location: e.target.value });
+                    }}
+                    placeholder="Enter specific location or meeting link"
+                    style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', marginTop: '8px' }}
+                  />
+                )}
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Date</label>
+                <input
+                  type="date"
+                  value={newVisitData.date}
+                  onChange={(e) => setNewVisitData({ ...newVisitData, date: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px' }}
+                />
+              </div>
+              
+              <div>
+                <label style={{ fontSize: '12px', color: '#64748b', fontWeight: '500', marginBottom: '4px', display: 'block' }}>Time</label>
+                <select
+                  value={newVisitData.time}
+                  onChange={(e) => setNewVisitData({ ...newVisitData, time: e.target.value })}
+                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: '6px', fontSize: '13px', fontFamily: 'inherit', cursor: 'pointer' }}
+                >
+                  {timeOptions.map(time => (
+                    <option key={time} value={time}>{time}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+              <button
+                onClick={() => setShowNewVisitModal(false)}
+                style={{
+                  padding: '8px 14px',
+                  backgroundColor: 'transparent',
+                  color: '#64748b',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveNewVisit}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#0d9488',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Schedule Visit
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    };
 
     // Render edit modal as overlay instead of replacing the view
     const renderEditModal = () => {
@@ -874,48 +1064,12 @@ export default function DashboardPage() {
       );
     }
 
-    if (schedulingStep === 'select-volunteer') {
-      return (
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5rem', gap: '1rem' }}>
-            <button
-              onClick={() => setSchedulingStep('list')}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#64748b', display: 'flex', alignItems: 'center'
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            </button>
-            <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Select a Volunteer</h2>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            {matches.map(volunteer => (
-              <div key={volunteer.id} onClick={() => {
-                setSelectedVolunteerForSchedule(volunteer);
-                setEditingVisitId(null); // Ensure we are in "create" mode
-                setSchedulingStep('calendar');
-              }}>
-                <VolunteerCard volunteer={volunteer} />
-              </div>
-            ))}
-            {matches.length === 0 && (
-              <p style={{ color: '#64748b' }}>No matches found yet. Check your matches tab!</p>
-            )}
-          </div>
-        </div>
-      );
-    }
-
     return (
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h2 style={{ fontSize: '20px', color: '#334155', fontWeight: '600', margin: 0 }}>Upcoming Visits</h2>
           <button 
-            onClick={() => {
-              setEditingVisitId(null);
-              setSchedulingStep('select-volunteer');
-            }}
+            onClick={() => setShowNewVisitModal(true)}
             style={{ backgroundColor: '#0d9488', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '6px', fontWeight: '500', cursor: 'pointer', fontSize: '13px' }}>
             + Schedule New
           </button>
@@ -982,6 +1136,7 @@ export default function DashboardPage() {
             );
           })}
         </div>
+        {renderNewVisitModal()}
         {renderEditModal()}
       </div>
     );
