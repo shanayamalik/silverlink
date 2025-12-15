@@ -192,15 +192,13 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
           <div style={{ borderTop: '1px solid #f3f4f6', margin: '4px 0' }}></div>
 
           {/* Support */}
-          {/* TODO: Implement Help Center/Documentation page with FAQs, guides, and support resources */}
           <div style={{ padding: '8px 0' }}>
             <MenuItem 
               icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>} 
               text="Help" 
               onClick={() => {
                 setShowMenu(false);
-                // TODO: Navigate to help center when implemented
-                // navigate('/help');
+                navigate('/help-center-preview');
               }}
             />
           </div>

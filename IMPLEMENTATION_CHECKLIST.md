@@ -81,8 +81,13 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] **ProfileMenu Component:** Global navigation with user avatar + name, dropdown menu on all authenticated pages
   - [x] Navigation to Profile, Schedule, Messages, Matches tabs in Dashboard
   - [x] Settings link (consolidated with Profile)
-  - [x] Help placeholder (TODO: implement Help Center)
+  - [x] Help Center with FAQ and guides
   - [x] Sign Out functionality
+- [x] **Help Center:** Category-based FAQ page with tabbed navigation
+  - [x] Four categories: Getting Started, Scheduling & Visits, Communication, Accessibility
+  - [x] Accordion-style Q&A for easy navigation
+  - [x] Contact Support section for additional help
+  - [x] Clean tab-based design (no sidebar) to avoid menu bar clutter
 - [x] **Volunteer Cards:** Two-column grid layout with modal for full profile details
 - [ ] Ensure "About Me" generated in first person
 - [ ] First-time user onboarding flow
