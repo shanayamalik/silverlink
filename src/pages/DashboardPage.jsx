@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import VolunteerCard from '../components/VolunteerCard';
 import SchedulingCalendar from '../components/SchedulingCalendar';
 import ProfileMenu from '../components/ProfileMenu';
@@ -146,13 +146,14 @@ function ExtendedProfileModal({ volunteer, onClose }) {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   // Initialize user from localStorage to prevent flash of null/crash
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('user');
     return saved ? JSON.parse(saved) : null;
   });
   const [matches, setMatches] = useState([]);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(location.state?.activeTab || 'dashboard');
   const [profileVolunteer, setProfileVolunteer] = useState(null);
   
   // State for unread messages (persisted in localStorage for prototype)
@@ -179,6 +180,15 @@ export default function DashboardPage() {
     localStorage.removeItem('user');
     navigate('/login');
   };
+
+  // Handle navigation state changes (when coming from ProfileMenu)
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+      // Clear the state to prevent it from persisting
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (!user) {

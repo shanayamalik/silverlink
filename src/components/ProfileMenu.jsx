@@ -79,6 +79,13 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
         }}>
           {userName.charAt(0)}
         </div>
+        <span style={{
+          fontSize: '14px',
+          fontWeight: '500',
+          color: '#1f2937'
+        }}>
+          {userName.split(' ')[0]}
+        </span>
         <svg 
           width="16" 
           height="16" 
@@ -134,7 +141,8 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
               text="Profile" 
               onClick={() => {
                 setShowMenu(false);
-                navigate('/preferences');
+                // Navigate to dashboard and set active tab to profile via state
+                navigate('/dashboard', { state: { activeTab: 'profile' } });
               }}
             />
             <MenuItem 
@@ -142,7 +150,8 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
               text="Schedule" 
               onClick={() => {
                 setShowMenu(false);
-                navigate('/dashboard');
+                // Navigate to dashboard and set active tab to schedule via state
+                navigate('/dashboard', { state: { activeTab: 'schedule' } });
               }}
             />
             <MenuItem 
@@ -150,7 +159,8 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
               text="Messages" 
               onClick={() => {
                 setShowMenu(false);
-                navigate('/dashboard');
+                // Navigate to dashboard and set active tab to messages via state
+                navigate('/dashboard', { state: { activeTab: 'messages' } });
               }}
             />
             <MenuItem 
@@ -158,7 +168,8 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
               text="Matches" 
               onClick={() => {
                 setShowMenu(false);
-                navigate('/volunteers');
+                // Navigate to dashboard and set active tab to matches via state
+                navigate('/dashboard', { state: { activeTab: 'matches' } });
               }}
             />
           </div>
@@ -172,15 +183,8 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
               text="Settings" 
               onClick={() => {
                 setShowMenu(false);
-                navigate('/preferences');
-              }}
-            />
-            <MenuItem 
-              icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>} 
-              text="Accessibility" 
-              onClick={() => {
-                setShowMenu(false);
-                navigate('/preferences');
+                // Navigate to dashboard and set active tab to profile via state (settings including accessibility are in profile)
+                navigate('/dashboard', { state: { activeTab: 'profile' } });
               }}
             />
           </div>
@@ -188,11 +192,16 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
           <div style={{ borderTop: '1px solid #f3f4f6', margin: '4px 0' }}></div>
 
           {/* Support */}
+          {/* TODO: Implement Help Center/Documentation page with FAQs, guides, and support resources */}
           <div style={{ padding: '8px 0' }}>
             <MenuItem 
               icon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>} 
               text="Help" 
-              onClick={() => setShowMenu(false)}
+              onClick={() => {
+                setShowMenu(false);
+                // TODO: Navigate to help center when implemented
+                // navigate('/help');
+              }}
             />
           </div>
 
