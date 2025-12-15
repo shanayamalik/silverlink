@@ -78,13 +78,27 @@ Track your progress as you build the app! Check off items as you complete them.
 ### UI/UX Improvements
 - [x] Color-coded interest tags, vertical spacing (Profile)
 - [x] Teal/minimalist SilverLink aesthetic maintained
-- [ ] Logout button on all pages, global navigation menu
+- [x] **ProfileMenu Component:** Global navigation with user avatar + name, dropdown menu on all authenticated pages
+  - [x] Navigation to Profile, Schedule, Messages, Matches tabs in Dashboard
+  - [x] Settings link (consolidated with Profile)
+  - [x] Help Center with FAQ and guides
+  - [x] Sign Out functionality
+- [x] **Help Center:** Category-based FAQ page with tabbed navigation
+  - [x] Four categories: Getting Started, Scheduling & Visits, Communication, Accessibility
+  - [x] Accordion-style Q&A for easy navigation
+  - [x] Contact Support section for additional help
+  - [x] Clean tab-based design (no sidebar) to avoid menu bar clutter
+- [x] **Volunteer Cards:** Two-column grid layout with modal for full profile details
 - [ ] Ensure "About Me" generated in first person
 - [ ] First-time user onboarding flow
 
 ### Features
 - [ ] Privacy: Remove unnecessary contact fields
-- [ ] Multi-language AI support
+- [x] **Multi-language AI support:** 7 languages (English, Spanish, Chinese, Hindi, French, Portuguese, Japanese)
+  - [x] Language selector with bilingual labels in Voice Interview header
+  - [x] Speech recognition and TTS support for selected language
+  - [x] Backend language parameter for AI responses
+  - [x] Tooltip explaining language feature
 - [ ] Delightful animations & interactions (confetti, smooth transitions)
 
 ---

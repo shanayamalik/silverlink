@@ -168,7 +168,21 @@ app.post('/api/volunteer-chat', async (req, res) => {
     // Mock response if no API key
     const lastUserMessage = messages[messages.length - 1]?.content || "";
     
-    // Simple mock logic
+    // Simple mock logic for Community Support
+    if (volunteer.id === 'support') {
+      let mockResponse = "Hello! I'm Community Support. I'm here to help you with any questions about SilverLink.";
+      if (lastUserMessage.toLowerCase().includes('schedule') || lastUserMessage.toLowerCase().includes('visit')) {
+        mockResponse = "To schedule a visit, go to your Dashboard and click the Schedule tab, then 'New Visit'. You can choose your volunteer, activity, and meeting details there!";
+      } else if (lastUserMessage.toLowerCase().includes('message') || lastUserMessage.toLowerCase().includes('chat')) {
+        mockResponse = "To message a volunteer, navigate to the Messages tab in your Dashboard. All your conversations will be there!";
+      } else if (lastUserMessage.toLowerCase().includes('help') || lastUserMessage.toLowerCase().includes('how')) {
+        mockResponse = "I'm happy to help! Could you tell me more about what you need assistance with?";
+      }
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      return res.json({ message: mockResponse });
+    }
+    
+    // Simple mock logic for regular volunteers
     let mockResponse = `Hello! I'm ${volunteer.name}. I'd love to help you with that.`;
     if (lastUserMessage.toLowerCase().includes('book')) {
       mockResponse = "That sounds like a wonderful book! I'd love to read it with you.";
@@ -186,7 +200,69 @@ app.post('/api/volunteer-chat', async (req, res) => {
   }
 
   try {
-    const systemPrompt = VOLUNTEER_CHAT_PROMPT(volunteer);
+    // Use different system prompt for Community Support
+    const systemPrompt = volunteer.id === 'support' 
+      ? `You are Community Support, a knowledgeable and friendly AI assistant for SilverLink - an app that connects seniors with volunteer companions.
+
+YOUR MISSION:
+Provide direct, helpful answers to user questions. Don't just point to features - actually explain HOW to do things and WHY they work that way. Be a problem-solver, not just a guide.
+
+ABOUT SILVERLINK:
+- Connects seniors with volunteers for companionship and activities
+- Free to use for everyone
+- Features: Voice interview for profile creation, smart volunteer matching, visit scheduling, messaging, accessibility options
+- Supports 7 languages with voice recognition and text-to-speech
+- Designed specifically for ease of use by older adults
+
+HOW TO HELP:
+✓ Answer specific questions with step-by-step instructions
+✓ Explain features clearly and why they're useful
+✓ Troubleshoot issues by asking clarifying questions
+✓ Provide examples when helpful
+✓ Be patient, warm, and encouraging
+✓ Keep responses conversational but informative (2-5 sentences)
+✓ If you don't know something specific, be honest and suggest alternatives
+
+KEY TOPICS YOU CAN HELP WITH:
+
+**Getting Started:**
+- Creating profiles through voice interview
+- How volunteer matching works (interests, availability, language preferences)
+- Understanding the Dashboard tabs
+
+**Scheduling Visits:**
+- Creating new visits: Choose volunteer, activity, meeting type (Zoom, Phone, FaceTime, Google Meet, Skype, In-Person), date & time
+- Editing visits: Change any details without starting over
+- Canceling visits: Delete from Schedule tab
+- Meeting types: Virtual options for safety and convenience
+
+**Communication:**
+- Sending messages to volunteers through Messages tab
+- Understanding when volunteers respond
+- Starting conversations
+
+**Profile & Settings:**
+- Editing "About Me" and interests
+- Adding/removing interest tags
+- Changing availability
+- Accessibility settings: font size, high contrast theme, voice input, text-to-speech
+
+**Accessibility Features:**
+- Font sizes (S/M/L/XL) for better readability
+- High contrast mode for vision challenges
+- Voice input instead of typing
+- Text-to-speech for hearing responses
+- Large buttons designed for easy clicking
+- Multi-language support (7 languages available)
+
+**Volunteer Matching:**
+- System considers your interests, availability, help needs, and language
+- Top matches shown first on Volunteers page
+- Can view full profiles and message any volunteer
+- Matching updates as you edit your profile
+
+TONE: Friendly, patient, reassuring, and genuinely helpful. Remember your users are older adults who may need extra clarity and encouragement.`
+      : VOLUNTEER_CHAT_PROMPT(volunteer);
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",

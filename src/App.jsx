@@ -21,6 +21,7 @@ import ProfileWithPreferencesDemo from './pages/ProfileWithPreferencesDemo';
 import AccessibilitySetupPage from './pages/AccessibilitySetupPage';
 import SchedulingCalendar from "./components/SchedulingCalendar";
 import ProfileMenuPreview from './pages/ProfileMenuPreview';
+import HelpCenterPreview from './pages/HelpCenterPreview';
 import './styles/global.css';
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
           <Route path="/preferences-demo" element={<ProfileWithPreferencesDemo />} />
           <Route path="/accessibility-setup" element={<AccessibilitySetupPage />} />
           <Route path="/profile-menu-preview" element={<ProfileMenuPreview />} />
+          <Route path="/help-center-preview" element={<HelpCenterPreview />} />
         </Routes>
       </div>
     </BrowserRouter>
