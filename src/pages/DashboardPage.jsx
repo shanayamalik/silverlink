@@ -1965,64 +1965,6 @@ export default function DashboardPage() {
             </button>
           ))}
         </nav>
-
-        <div style={{ marginTop: 'auto' }}>
-          
-          <div style={{ 
-            padding: '16px', 
-            borderRadius: '12px', 
-            backgroundColor: 'rgba(15, 23, 42, 0.6)', 
-            border: '1px solid rgba(255,255,255,0.08)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ 
-                width: '40px', height: '40px', borderRadius: '50%', 
-                backgroundColor: '#0d9488', 
-                color: 'white', 
-                display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                fontWeight: '600', fontSize: '16px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-              }}>
-                {user.name ? user.name.charAt(0) : 'U'}
-              </div>
-              <div style={{ overflow: 'hidden' }}>
-                <div style={{ fontWeight: '600', fontSize: '14px', color: 'white' }}>{user.name}</div>
-                <div style={{ fontSize: '12px', color: '#94a3b8' }}>Volunteer</div>
-              </div>
-            </div>
-            
-            <button 
-              onClick={handleLogout}
-              style={{ 
-                width: '100%',
-                padding: '10px',
-                backgroundColor: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: '8px',
-                color: '#e2e8f0', 
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: '500',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                transition: 'all 0.2s'
-              }}
-              onMouseOver={(e) => { 
-                e.currentTarget.style.backgroundColor = '#ef4444'; 
-                e.currentTarget.style.borderColor = '#ef4444';
-                e.currentTarget.style.color = 'white';
-              }}
-              onMouseOut={(e) => { 
-                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; 
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-                e.currentTarget.style.color = '#e2e8f0';
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-              Log Out
-            </button>
-          </div>
-
-        </div>
       </div>
 
       {/* Main Content */}
