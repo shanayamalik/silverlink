@@ -9,7 +9,6 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] **Project Setup:** npm install, routing, verify app runs
 - [x] **Design System:** CSS variables, global styles, common components (Button, Card, Header)
 - [x] **Mock Data:** 15 diverse volunteers, matching algorithm with hard/soft scoring
-- [ ] **localStorage Utilities:** Save/get user, preferences, interests, chats (TODO)
 
 ---
 
@@ -27,7 +26,6 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] **VolunteerCard:** Compact card with icon, name, verified badge, profession, bio, interests
 - [x] **VolunteersPage:** Load profile, filter with matching algorithm, display top 3 matches, extended profile modal
 - [x] **SchedulingCalendar:** Week view, time slots, confirmation (currently used for rescheduling)
-- [ ] **TODO:** Backend chat endpoints (POST /api/chats, GET /api/chats/user/:userId)
 
 ---
 
@@ -38,7 +36,6 @@ Track your progress as you build the app! Check off items as you complete them.
 - [x] **ProfileCreationPage:** Auto-fill bio/interests/availability, editable fields, interest modal, PDF download
 - [x] **Data Flow:** Interview → Analysis → Profile → Save to backend (users.json)
 - [x] **TTS Toggle:** Text-to-speech for AI responses (optional)
-- [ ] **TODO:** Form validation, loading overlay, improved bio generation
 
 ---
 
@@ -53,13 +50,6 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] Delete visit functionality
   - [x] Removed redundant "Reschedule" button (Edit does everything)
 - [x] **Profile Tab:** Colorful interest tags, inline editing, availability display
-- [ ] **TODO:** First-time onboarding, backend chat persistence
-
-### Error Handling & Polish
-- [ ] Loading states (spinners, skeleton screens)
-- [ ] Edge cases (no matches, offline, empty states)
-- [ ] Form validation (email format, required fields)
-- [ ] User-friendly error messages
 
 ---
 
@@ -89,48 +79,17 @@ Track your progress as you build the app! Check off items as you complete them.
   - [x] Contact Support section for additional help
   - [x] Clean tab-based design (no sidebar) to avoid menu bar clutter
 - [x] **Volunteer Cards:** Two-column grid layout with modal for full profile details
-- [ ] Ensure "About Me" generated in first person
-- [ ] First-time user onboarding flow
-
-### Features
-- [ ] Privacy: Remove unnecessary contact fields
 - [x] **Multi-language AI support:** 7 languages (English, Spanish, Chinese, Hindi, French, Portuguese, Japanese)
   - [x] Language selector with bilingual labels in Voice Interview header
   - [x] Speech recognition and TTS support for selected language
   - [x] Backend language parameter for AI responses
   - [x] Tooltip explaining language feature
-- [ ] Delightful animations & interactions (confetti, smooth transitions)
 
 ---
 
-## 🎨 Delightful Elements
+## ♿ Accessibility ✅
 
-### Micro-interactions
-- [ ] Confetti on volunteer match, card flip animations, mic pulse during interview
-- [ ] Typing indicator when AI is processing, success checkmarks
-- [ ] Floating hearts/stars when selecting interests
-
-### Personality & Warmth
-- [ ] Personalized greetings, friendly loading messages
-- [ ] Encouraging messages during interview, fun facts while waiting
-- [ ] Seasonal themes, daily inspiration quotes
-
-### Gamification
-- [ ] Profile completeness meter, completion badges, streak tracking
-
----
-
-## ♿ Accessibility
-
-### Implemented ✅
 - [x] High contrast mode, font size controls (S/M/L/XL), reduce motion option
 - [x] Large button sizing (44x44px min), compact tile-based design
 - [x] Simple language, consistent navigation, progress indicators, undo/back options
 - [x] Live transcripts, visual mic feedback, text input alternative, TTS toggle
-
-### Remaining
-- [ ] WCAG AA contrast ratios (4.5:1), ARIA labels, semantic HTML
-- [ ] Screen reader testing (VoiceOver, NVDA), modal focus trapping
-- [ ] Full keyboard navigation, keyboard shortcuts, skip links
-- [ ] Error messages with suggestions, memory aids
-- [ ] Lighthouse audit, zoom testing (200%), color blind verification
