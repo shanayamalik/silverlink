@@ -54,7 +54,7 @@ SilverLink addresses social isolation among seniors by providing an easy-to-use 
 
 **Developers:** Shanaya Malik, Carrie Wan, Minghui Wang  
 **Course:** CS 260 - Web Programming  
-**Institution:** Brigham Young University
+**Institution:** University of California, Berkeley
 
 ## License
 
