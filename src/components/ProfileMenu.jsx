@@ -6,7 +6,9 @@ function ProfileMenu({ userName = 'Demo User', userEmail = 'demo.user@gmail.com'
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
+    localStorage.removeItem('hasSeenWelcome');
+    localStorage.removeItem('unreadMessageIds');
     navigate('/');
   };
 

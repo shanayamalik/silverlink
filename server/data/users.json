@@ -9,29 +9,28 @@
     "preferences": {},
     "hasProfile": true,
     "profile": {
-      "bio": "This person enjoys reading books and is eager to learn how to garden. They speak Hindi and are available on Saturdays.",
+      "bio": "I enjoy cooking and gardening. I am looking for a volunteer to assist me with gardening and possibly be a cooking buddy.",
       "interests": [
-        "Reading books",
+        "Cooking",
         "Gardening"
       ],
       "availability": {
-        "text": "Usually free on Saturdays",
+        "text": "Available on Saturdays",
         "checks": {
           "Weekends": false,
           "Weekdays": false,
-          "Mornings": false,
+          "Mornings": true,
           "Afternoons": false,
           "Evenings": false
         }
       },
-      "languages": "Hindi",
+      "languages": "",
       "skills": "",
       "helpNeeded": [
-        "Hobbies Together",
-        "Gentle Exercise"
+        "Hobbies Together"
       ],
-      "completedAt": "2025-12-08T03:26:31.296Z"
+      "completedAt": "2025-12-16T08:31:02.477Z"
     },
-    "updatedAt": "2025-12-08T03:26:31.305Z"
+    "updatedAt": "2025-12-16T08:31:02.487Z"
   }
 ]

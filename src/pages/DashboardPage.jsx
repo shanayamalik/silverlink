@@ -630,17 +630,23 @@ export default function DashboardPage() {
                 </div>
               </div>
               
-              <button style={{
-                width: '100%',
-                padding: '10px',
-                fontSize: '14px',
-                fontWeight: '600',
-                color: 'white',
-                backgroundColor: '#0d9488',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer'
-              }}>
+              <button 
+                onClick={() => navigate(`/chat/${selectedVolunteer.id}`, { state: { volunteer: selectedVolunteer } })}
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: 'white',
+                  backgroundColor: '#0d9488',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#0f766e'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#0d9488'}
+              >
                 Get in Touch
               </button>
             </div>
